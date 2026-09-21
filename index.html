@@ -8,29 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome for cute icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Kanit & Prompt for friendly Thai typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        kanit: ['Kanit', 'sans-serif'],
-                        prompt: ['Prompt', 'sans-serif'],
-                    },
-                    colors: {
-                        pastelBlue: '#E0F2FE',
-                        pastelYellow: '#FEF3C7',
-                        pastelPink: '#FCE7F3',
-                        pastelGreen: '#DCFCE7',
-                        pastelPurple: '#EDE9FE',
-                        brandBlue: '#0284C7',
-                        brandPink: '#DB2777',
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Google Fonts: Kanit -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Kanit', sans-serif; }
         .tab-content { display: none; }
@@ -40,42 +19,43 @@
 </head>
 <body class="bg-slate-50 text-slate-700 min-h-screen flex flex-col selection:bg-pink-200 selection:text-pink-800">
 
-    <!-- Navbar -->
-    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-sky-100">
+    <!-- Navbar ตามแบบต้นฉบับเป๊ะๆ -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-sky-100">
         <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- Logo Section -->
             <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-sky-400 to-pink-400 flex items-center justify-center text-white shadow-md transform hover:rotate-12 transition">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-sky-400 to-pink-400 flex items-center justify-center text-white shadow-md">
                     <i class="fa-solid fa-laptop-code text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg text-slate-800 leading-tight">โค้ดดิ้งกับครูมีน</h1>
-                    <p class="text-xs text-sky-600 font-medium">Coding & Computer Kids Lab</p>
+                    <h1 class="font-bold text-base md:text-lg text-slate-800 leading-tight">โค้ดดิ้งกับครูมีน</h1>
+                    <p class="text-[11px] text-sky-600 font-medium">Coding & Computer Kids Lab</p>
                 </div>
             </div>
 
-            <nav class="hidden md:flex items-center space-x-1">
-                <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-full font-medium text-sm text-sky-600 bg-sky-50 transition">หน้าแรก</button>
-                <button onclick="switchTab('courses')" id="nav-courses" class="nav-btn px-4 py-2 rounded-full font-medium text-sm text-slate-600 hover:bg-slate-100 transition">คอร์สเรียนทั้งหมด</button>
-                <button onclick="switchTab('gallery')" id="nav-gallery" class="nav-btn px-4 py-2 rounded-full font-medium text-sm text-slate-600 hover:bg-slate-100 transition">ภาพกิจกรรม & ผลงาน</button>
+            <!-- Navigation Links ตรงกลาง -->
+            <nav class="hidden md:flex items-center space-x-2 bg-slate-100/70 p-1 rounded-full border border-slate-200/60">
+                <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-5 py-2 rounded-full font-medium text-sm text-sky-600 bg-white shadow-sm transition">หน้าแรก</button>
+                <button onclick="switchTab('courses')" id="nav-courses" class="nav-btn px-5 py-2 rounded-full font-medium text-sm text-slate-600 hover:text-slate-900 transition">คอร์สเรียนทั้งหมด</button>
+                <button onclick="switchTab('gallery')" id="nav-gallery" class="nav-btn px-5 py-2 rounded-full font-medium text-sm text-slate-600 hover:text-slate-900 transition">ภาพกิจกรรม & ผลงาน</button>
             </nav>
 
+            <!-- Right Buttons (Login & Line) -->
             <div class="flex items-center gap-2">
-                <div id="header-user-status" class="hidden items-center gap-2 bg-sky-50 px-3 py-1.5 rounded-full border border-sky-100">
+                <div id="header-user-status" class="hidden items-center gap-2 bg-sky-50 px-3.5 py-1.5 rounded-full border border-sky-100">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span id="header-username-display" class="text-xs font-bold text-slate-700">ผู้ใช้งาน</span>
-                    <button onclick="handleLogout()" class="text-xs text-rose-500 hover:text-rose-700 font-bold ml-2 pl-2 border-l border-slate-200">
-                        <i class="fa-solid fa-power-off mr-1"></i>ออกจากระบบ
-                    </button>
+                    <button onclick="handleLogout()" class="text-xs text-rose-500 hover:text-rose-700 font-bold ml-1 pl-2 border-l border-slate-200">ออกจากระบบ</button>
                 </div>
                 <div id="header-login-btn-container">
-                    <button onclick="openLoginRoleModal()" class="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-full text-sm font-medium shadow-sm transition flex items-center gap-2 transform hover:scale-105">
-                        <i class="fa-solid fa-right-to-bracket"></i>
+                    <button onclick="openLoginRoleModal()" class="bg-sky-400 hover:bg-sky-500 text-white px-5 py-2 rounded-full text-sm font-medium shadow-sm transition flex items-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket text-xs"></i>
                         <span>เข้าสู่ระบบ</span>
                     </button>
                 </div>
-                <a href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-full text-sm font-medium shadow-sm transition flex items-center gap-2 transform hover:scale-105">
-                    <i class="fa-brands fa-line text-lg"></i>
-                    <span class="hidden sm:inline">ไลน์ครูมีน</span>
+                <a href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2 rounded-full text-sm font-medium shadow-sm transition flex items-center gap-2">
+                    <i class="fa-brands fa-line text-base"></i>
+                    <span>ไลน์ครูมีน</span>
                 </a>
                 <button onclick="toggleMobileMenu()" class="md:hidden text-slate-600 p-2 rounded-lg hover:bg-slate-100">
                     <i class="fa-solid fa-bars text-xl"></i>
@@ -83,10 +63,11 @@
             </div>
         </div>
 
+        <!-- Mobile Menu Drawer -->
         <div id="mobileMenu" class="hidden md:hidden bg-white border-b border-slate-100 px-4 pt-2 pb-4 space-y-2">
             <button onclick="switchTab('home'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg font-medium text-sky-600 bg-sky-50">หน้าแรก</button>
-            <button onclick="switchTab('courses'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg font-medium text-slate-600 hover:bg-slate-100">คอร์สเรียนทั้งหมด</button>
-            <button onclick="switchTab('gallery'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg font-medium text-slate-600 hover:bg-slate-100">ภาพกิจกรรม & ผลงาน</button>
+            <button onclick="switchTab('courses'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg font-medium text-slate-600">คอร์สเรียนทั้งหมด</button>
+            <button onclick="switchTab('gallery'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg font-medium text-slate-600">ภาพกิจกรรม & ผลงาน</button>
             <div id="mobile-auth-btn-container">
                 <button onclick="openLoginRoleModal(); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg font-medium text-sky-600 bg-sky-50">เข้าสู่ระบบ</button>
             </div>
@@ -97,10 +78,10 @@
     <main class="flex-grow">
         <!-- TAB 1: HOME PAGE -->
         <div id="tab-home" class="tab-content active">
-            <section class="relative overflow-hidden py-12 md:py-20 bg-gradient-to-b from-sky-50 via-pink-50/30 to-white">
+            <section class="relative overflow-hidden py-12 md:py-20 bg-gradient-to-b from-sky-50/60 via-pink-50/30 to-white">
                 <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                     <div class="space-y-6 text-center md:text-left">
-                        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-yellow-100 text-yellow-800 text-xs font-semibold tracking-wide shadow-sm">
+                        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold tracking-wide shadow-sm">
                             <i class="fa-solid fa-star text-amber-500"></i> เปิดรับสมัครน้องๆ อายุ 6-15 ปีแล้ววันนี้!
                         </span>
                         <h2 class="text-3xl md:text-5xl font-bold text-slate-800 leading-tight">
@@ -111,16 +92,33 @@
                             เปลี่ยนเวลาเล่นเกมมือถือให้เป็นทักษะสร้างสรรค์อนาคต เรียนสนุก เข้าใจง่าย ปูพื้นฐานแน่นตั้งแต่ Scratch, Python จนถึงสร้างเกมและเว็บด้วยตัวเอง!
                         </p>
                         <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 pt-2">
-                            <button onclick="switchTab('courses')" class="w-full sm:w-auto bg-sky-500 hover:bg-sky-600 text-white font-medium px-7 py-3 rounded-2xl shadow-lg shadow-sky-200 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                            <button onclick="switchTab('courses')" class="w-full sm:w-auto bg-sky-400 hover:bg-sky-500 text-white font-medium px-7 py-3 rounded-2xl shadow-md transition flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-book-open"></i> ดูคอร์สเรียนทั้งหมด
                             </button>
-                            <button onclick="switchTab('gallery')" class="w-full sm:w-auto bg-purple-500 hover:bg-purple-600 text-white font-medium px-7 py-3 rounded-2xl shadow-lg shadow-purple-200 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                            <button onclick="switchTab('gallery')" class="w-full sm:w-auto bg-purple-500 hover:bg-purple-600 text-white font-medium px-7 py-3 rounded-2xl shadow-md transition flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-images"></i> ชมภาพกิจกรรม & ผลงาน
                             </button>
                         </div>
+                        <!-- Mini Stats -->
+                        <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-200/60 max-w-md mx-auto md:mx-0">
+                            <div>
+                                <h4 class="text-2xl font-bold text-sky-600">500+</h4>
+                                <p class="text-xs text-slate-500">น้องๆ ที่เรียนจบแล้ว</p>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-bold text-pink-500">4.9/5</h4>
+                                <p class="text-xs text-slate-500">คะแนนรีวิวผู้ปกครอง</p>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-bold text-purple-600">100%</h4>
+                                <p class="text-xs text-slate-500">สนุกและเข้าใจง่าย</p>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Hero Card -->
                     <div class="relative flex justify-center">
-                        <div class="relative bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-2xl border border-sky-100 max-w-sm w-full space-y-4">
+                        <div class="relative bg-white/95 backdrop-blur-md p-6 rounded-3xl shadow-2xl border border-sky-100 max-w-sm w-full space-y-4">
                             <div class="flex items-center space-x-4">
                                 <div class="w-14 h-14 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-500 text-2xl shadow-inner">👩‍🏫</div>
                                 <div>
@@ -131,6 +129,9 @@
                             <div class="bg-sky-50 rounded-2xl p-4 space-y-2 text-sm text-slate-600">
                                 <p class="font-medium text-sky-900"><i class="fa-solid fa-quote-left text-sky-400 mr-1"></i> "โค้ดดิ้งไม่ใช่เรื่องยาก แค่เริ่มต้นด้วยความสนุก น้องๆ ก็สร้างสรรค์ผลงานเจ๋งๆ ได้เพียบเลยค่ะ!"</p>
                             </div>
+                            <a href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow transition">
+                                <i class="fa-brands fa-line text-base"></i> แอดไลน์พูดคุยกับครูมีน
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -166,19 +167,18 @@
                     </button>
                     <div class="w-16 h-16 bg-pink-100 rounded-2xl mx-auto flex items-center justify-center text-pink-500 text-2xl shadow-inner">👦</div>
                     <h3 class="text-2xl font-bold text-slate-800">เข้าสู่ระบบ (นักเรียน / ผู้ปกครอง)</h3>
-                    <p class="text-xs text-slate-500">กรอกรหัสประจำตัวนักเรียนและรหัสผ่านส่วนตัวเพื่อดูชั่วโมงเรียน</p>
                 </div>
                 <form onsubmit="handleUserLogin(event)" class="space-y-4">
                     <div class="space-y-1.5">
                         <label class="block text-xs font-bold text-slate-700">รหัสประจำตัวนักเรียน (Student ID):</label>
-                        <input type="text" id="user-login-id" placeholder="เช่น KM-88920" required class="w-full text-sm px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-400 bg-slate-50">
+                        <input type="text" id="user-login-id" placeholder="เช่น KM-88920" required class="w-full text-sm px-4 py-3 rounded-xl border border-slate-200 bg-slate-50">
                     </div>
                     <div class="space-y-1.5">
                         <label class="block text-xs font-bold text-slate-700">รหัสผ่าน / PIN ส่วนตัว:</label>
-                        <input type="password" id="user-login-pin" placeholder="••••" required class="w-full text-sm px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-400 bg-slate-50">
+                        <input type="password" id="user-login-pin" placeholder="••••" required class="w-full text-sm px-4 py-3 rounded-xl border border-slate-200 bg-slate-50">
                     </div>
                     <div id="user-login-error" class="hidden text-xs text-rose-500 font-medium text-center bg-rose-50 p-2 rounded-lg">รหัสประจำตัวหรือรหัสผ่านไม่ถูกต้อง</div>
-                    <button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-medium py-3 rounded-xl shadow-md transition text-sm flex items-center justify-center gap-2">
+                    <button type="submit" class="w-full bg-sky-400 hover:bg-sky-500 text-white font-medium py-3 rounded-xl shadow-md transition text-sm flex items-center justify-center gap-2">
                         <i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบนักเรียน
                     </button>
                 </form>
@@ -225,7 +225,7 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button onclick="togglePaymentSection()" class="bg-sky-500 hover:bg-sky-600 text-white text-sm font-medium px-4 py-2.5 rounded-xl shadow-md transition flex items-center gap-2">
+                        <button onclick="togglePaymentSection()" class="bg-sky-400 hover:bg-sky-500 text-white text-sm font-medium px-4 py-2.5 rounded-xl shadow-md transition flex items-center gap-2">
                             <i class="fa-solid fa-qrcode"></i> ต่อคอร์ส / แจ้งชำระเงิน
                         </button>
                         <button onclick="handleLogout()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-medium px-4 py-2.5 rounded-xl transition flex items-center gap-2">
@@ -450,7 +450,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs, setDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Firebase Configuration (เชื่อมต่อกับโปรเจกต์ของคุณ)
         const firebaseConfig = {
             apiKey: "AIzaSyDr-hMV-58YbwLOiou9NWobfLvMsL9qrNA",
             authDomain: "kru-mean-coding.firebaseapp.com",
@@ -464,7 +463,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // กำหนดค่าเริ่มต้น (Default Data) ถือว่าถ้าฐานข้อมูลยังว่างอยู่ให้เพิ่มข้อมูลตัวอย่างลงไปอัตโนมัติ
         const defaultStudents = {
             "KM-88920": { id: "KM-88920", pin: "1234", name: "น้องต้นกล้า ใจดี", avatar: "👦", badge: "นักเรียน Python", course: "Python for Kids", hoursLeft: 8, hoursTotal: 12, progressWidth: "66%" },
             "KM-10245": { id: "KM-10245", pin: "5678", name: "น้องใบตอง สดใส", avatar: "👧", badge: "นักเรียน Scratch", course: "Scratch Junior", hoursLeft: 4, hoursTotal: 10, progressWidth: "40%" }
@@ -479,7 +477,6 @@
             { id: "g-1", title: "บรรยากาศเรียนสนุกกับ Scratch", category: "บรรยากาศการเรียน", imageUrl: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80", desc: "น้องๆ กำลังสนุกกับการสร้างแอนิเมชัน" }
         ];
 
-        // ฟังก์ชันดึงและบันทึกข้อมูลผ่าน Firestore
         window.getStudentDB = async function() {
             try {
                 const querySnapshot = await getDocs(collection(db, "students"));
@@ -495,21 +492,14 @@
             } catch (e) { return defaultStudents; }
         };
 
-        window.saveStudentToDB = async function(id, studentData) {
-            await setDoc(doc(db, "students", id), studentData);
-        };
-
-        window.deleteStudentFromDB = async function(id) {
-            await deleteDoc(doc(db, "students", id));
-        };
+        window.saveStudentToDB = async function(id, studentData) { await setDoc(doc(db, "students", id), studentData); };
+        window.deleteStudentFromDB = async function(id) { await deleteDoc(doc(db, "students", id)); };
 
         window.getCoursesDB = async function() {
             try {
                 const querySnapshot = await getDocs(collection(db, "courses"));
                 if (querySnapshot.empty) {
-                    for (let c of defaultCourses) {
-                        await setDoc(doc(db, "courses", c.id), c);
-                    }
+                    for (let c of defaultCourses) { await setDoc(doc(db, "courses", c.id), c); }
                     return defaultCourses;
                 }
                 let data = [];
@@ -518,21 +508,14 @@
             } catch (e) { return defaultCourses; }
         };
 
-        window.saveCourseToDB = async function(id, courseData) {
-            await setDoc(doc(db, "courses", id), courseData);
-        };
-
-        window.deleteCourseFromDB = async function(id) {
-            await deleteDoc(doc(db, "courses", id));
-        };
+        window.saveCourseToDB = async function(id, courseData) { await setDoc(doc(db, "courses", id), courseData); };
+        window.deleteCourseFromDB = async function(id) { await deleteDoc(doc(db, "courses", id)); };
 
         window.getGalleryDB = async function() {
             try {
                 const querySnapshot = await getDocs(collection(db, "gallery"));
                 if (querySnapshot.empty) {
-                    for (let g of defaultGallery) {
-                        await setDoc(doc(db, "gallery", g.id), g);
-                    }
+                    for (let g of defaultGallery) { await setDoc(doc(db, "gallery", g.id), g); }
                     return defaultGallery;
                 }
                 let data = [];
@@ -541,18 +524,10 @@
             } catch (e) { return defaultGallery; }
         };
 
-        window.saveGalleryToDB = async function(id, galleryData) {
-            await setDoc(doc(db, "gallery", id), galleryData);
-        };
+        window.saveGalleryToDB = async function(id, galleryData) { await setDoc(doc(db, "gallery", id), galleryData); };
+        window.deleteGalleryFromDB = async function(id) { await deleteDoc(doc(db, "gallery", id)); };
 
-        window.deleteGalleryFromDB = async function(id) {
-            await deleteDoc(doc(db, "gallery", id));
-        };
-
-        // โหลดข้อมูลเริ่มต้นเมื่อเปิดเว็บ
-        window.addEventListener('DOMContentLoaded', async () => {
-            await initApp();
-        });
+        window.addEventListener('DOMContentLoaded', async () => { await initApp(); });
     </script>
 
     <!-- APPLICATION LOGIC -->
@@ -572,7 +547,7 @@
                 const db = await window.getStudentDB();
                 if (db[activeUser]) {
                     updateHeaderAuthUI(db[activeUser].name, 'user');
-                    loadDashboardData(activeUser);
+                    loadDashboardData(activeUser, db);
                     switchTab('dashboard');
                 }
             } else {
@@ -833,9 +808,7 @@
             const hoursLeft = parseInt(document.getElementById('modal-student-hours-left').value);
             const hoursTotal = parseInt(document.getElementById('modal-student-hours-total').value);
 
-            if (originalId && originalId !== newId) {
-                await window.deleteStudentFromDB(originalId);
-            }
+            if (originalId && originalId !== newId) { await window.deleteStudentFromDB(originalId); }
 
             const studentData = {
                 id: newId, pin, name, avatar: "👦", badge: "นักเรียน " + course, course, hoursLeft, hoursTotal,
