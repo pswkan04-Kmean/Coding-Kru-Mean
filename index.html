@@ -19,7 +19,7 @@
 </head>
 <body class="bg-slate-50 text-slate-700 min-h-screen flex flex-col selection:bg-pink-200 selection:text-pink-800">
 
-    <!-- Navbar -->
+    <!-- Navbar (แก้ไขปุ่มซ้ำซ้อนแล้ว) -->
     <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-sky-100">
         <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
             <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
@@ -39,10 +39,10 @@
             </nav>
 
             <div class="flex items-center gap-2">
-                <div id="header-user-status" class="hidden items-center gap-2 bg-sky-50 px-3.5 py-1.5 rounded-full border border-sky-100">
+                <!-- สถานะการเข้าสู่ระบบแบบกระชับ (ตัดปุ่มออกจากระบบซ้ำซ้อนออกแล้ว) -->
+                <div id="header-user-status" class="hidden items-center gap-2 bg-sky-50 px-4 py-1.5 rounded-full border border-sky-100">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span id="header-username-display" class="text-xs font-bold text-slate-700">ผู้ใช้งาน</span>
-                    <button onclick="handleLogout()" class="text-xs text-rose-500 hover:text-rose-700 font-bold ml-1 pl-2 border-l border-slate-200">ออกจากระบบ</button>
                 </div>
                 <div id="header-login-btn-container">
                     <button onclick="openLoginRoleModal()" class="bg-sky-400 hover:bg-sky-500 text-white px-5 py-2 rounded-full text-sm font-medium shadow-sm transition flex items-center gap-2">
@@ -183,7 +183,7 @@
                     </div>
                 </div>
 
-                <!-- สรุปชั่วโมงเรียนฉบับละเอียด -->
+                <!-- สรุปชั่วโมงเรียน -->
                 <div class="bg-gradient-to-r from-sky-50 via-indigo-50/50 to-pink-50 rounded-2xl p-6 border border-sky-100/60 space-y-4">
                     <h4 class="font-bold text-slate-800 text-lg">รายละเอียดชั่วโมงเรียนของคุณ</h4>
                     <div class="grid grid-cols-3 gap-3 text-center">
@@ -205,13 +205,23 @@
                         <div id="progress-bar" class="h-full bg-gradient-to-r from-sky-400 to-pink-500 rounded-full transition-all duration-1000" style="width: 0%;"></div>
                     </div>
 
-                    <!-- กล่องเตือนหมายเหตุผู้ปกครอง หากเรียนเกินชั่วโมง -->
+                    <!-- หมายเหตุเรียนเกินชั่วโมง -->
                     <div id="overdue-student-notice" class="hidden bg-rose-50 border border-rose-200 text-rose-700 p-3.5 rounded-xl text-xs flex items-center gap-2.5">
                         <i class="fa-solid fa-triangle-exclamation text-base text-rose-500"></i>
                         <div>
                             <p class="font-bold">เรียนเกินชั่วโมงคอร์สเรียน (มีชั่วโมงค้างชำระ): <span id="overdue-hours-count" class="underline">0</span> ชั่วโมง</p>
                             <p class="text-[11px] text-rose-600">รบกวนคุณแม่/คุณพ่อ ติดต่อครูมีนเพื่อสแกนชำระเงินต่อคอร์สเรียนเพิ่มเติมด้านล่างนะคะ</p>
                         </div>
+                    </div>
+                </div>
+
+                <!-- การ์ดแสดงรายละเอียดบทเรียนที่เรียนไปแล้ว -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 space-y-4">
+                    <h4 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-book-bookmark text-sky-500"></i> ประวัติและรายละเอียดเนื้อหาที่เรียนไปแล้ว
+                    </h4>
+                    <div id="student-lesson-history-list" class="space-y-2 text-xs text-slate-600">
+                        <p class="text-slate-400 italic">ยังไม่มีข้อมูลบันทึกบทเรียน...</p>
                     </div>
                 </div>
 
@@ -317,31 +327,37 @@
 
                 <!-- SUBTAB 4: QR CODE MANAGEMENT -->
                 <div id="admin-subtab-qrcode" class="admin-subtab-content hidden space-y-6">
-                    <h4 class="font-bold text-slate-800 text-base">จัดการฟิลด์อัปโหลดรูปภาพ QR Code (Firestore)</h4>
+                    <h4 class="font-bold text-slate-800 text-base">อัปโหลดภาพ QR Code (PromptPay & LINE)</h4>
                     <form onsubmit="handleSaveQRCodes(event)" class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Payment QR -->
                             <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
                                 <h5 class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-qrcode text-indigo-500 mr-1"></i> QR Code สแกนจ่ายเงิน (PromptPay)</h5>
-                                <div class="w-32 h-36 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 mx-auto flex items-center justify-center">
+                                <div class="w-36 h-44 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 mx-auto flex items-center justify-center p-2">
                                     <img id="admin-preview-payment-qr" src="S__33611778.jpg" class="w-full h-full object-contain">
                                 </div>
-                                <input type="file" accept="image/*" onchange="handleQRFileSelect(event, 'payment')" class="w-full text-xs text-slate-500 border border-slate-200 rounded-lg p-1.5 bg-slate-50">
-                                <input type="url" id="admin-qr-payment-url" placeholder="หรือระบุ Image URL..." class="w-full text-xs px-3 py-2 rounded-lg border border-slate-200">
+                                <div class="space-y-1">
+                                    <label class="block text-xs font-semibold text-slate-600">อัปโหลดรูปภาพใหม่:</label>
+                                    <input type="file" accept="image/*" onchange="handleQRFileSelect(event, 'payment')" class="w-full text-xs text-slate-500 border border-slate-200 rounded-lg p-1.5 bg-slate-50">
+                                </div>
+                                <input type="url" id="admin-qr-payment-url" placeholder="หรือวาง Image URL..." class="w-full text-xs px-3 py-2 rounded-lg border border-slate-200">
                             </div>
 
                             <!-- Line QR -->
                             <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
                                 <h5 class="font-bold text-slate-800 text-sm"><i class="fa-brands fa-line text-emerald-500 mr-1"></i> QR Code สแกนเพิ่มเพื่อน LINE</h5>
-                                <div class="w-32 h-36 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 mx-auto flex items-center justify-center">
+                                <div class="w-36 h-44 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 mx-auto flex items-center justify-center p-2">
                                     <img id="admin-preview-line-qr" src="S__33603594.jpg" class="w-full h-full object-contain">
                                 </div>
-                                <input type="file" accept="image/*" onchange="handleQRFileSelect(event, 'line')" class="w-full text-xs text-slate-500 border border-slate-200 rounded-lg p-1.5 bg-slate-50">
-                                <input type="url" id="admin-qr-line-url" placeholder="หรือระบุ Image URL..." class="w-full text-xs px-3 py-2 rounded-lg border border-slate-200">
+                                <div class="space-y-1">
+                                    <label class="block text-xs font-semibold text-slate-600">อัปโหลดรูปภาพใหม่:</label>
+                                    <input type="file" accept="image/*" onchange="handleQRFileSelect(event, 'line')" class="w-full text-xs text-slate-500 border border-slate-200 rounded-lg p-1.5 bg-slate-50">
+                                </div>
+                                <input type="url" id="admin-qr-line-url" placeholder="หรือวาง Image URL..." class="w-full text-xs px-3 py-2 rounded-lg border border-slate-200">
                             </div>
                         </div>
-                        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-medium px-6 py-2.5 rounded-xl text-xs shadow transition">
-                            <i class="fa-solid fa-save mr-1"></i> บันทึกข้อมูล QR Code ลง Firebase
+                        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-medium px-6 py-2.5 rounded-xl text-xs shadow transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> บันทึกและอัปเดต QR Code ลงระบบ
                         </button>
                     </form>
                 </div>
@@ -370,19 +386,31 @@
         </div>
     </div>
 
-    <!-- MODAL: STUDENT -->
+    <!-- MODAL: STUDENT (เพิ่มช่องกรอกประวัติเนื้อหาที่เรียน) -->
     <div id="studentModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 space-y-6 relative">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 space-y-5 relative max-h-[90vh] overflow-y-auto">
             <button onclick="closeStudentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
-            <h3 id="student-modal-title" class="text-xl font-bold text-slate-800">เพิ่มนักเรียนใหม่</h3>
+            <h3 id="student-modal-title" class="text-xl font-bold text-slate-800">จัดการข้อมูลนักเรียน</h3>
             <form id="studentForm" onsubmit="handleSaveStudent(event)" class="space-y-4">
                 <input type="hidden" id="student-edit-original-id" value="">
                 <div class="grid grid-cols-2 gap-3">
-                    <input type="text" id="modal-student-id" placeholder="Student ID" required class="text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 font-mono">
-                    <input type="text" id="modal-student-pin" placeholder="PIN" required class="text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 font-mono">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Student ID:</label>
+                        <input type="text" id="modal-student-id" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">PIN เข้าสู่ระบบ:</label>
+                        <input type="text" id="modal-student-pin" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 font-mono">
+                    </div>
                 </div>
-                <input type="text" id="modal-student-name" placeholder="ชื่อ-นามสกุล" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
-                <input type="text" id="modal-student-course" placeholder="คอร์สเรียน" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">ชื่อ-นามสกุล นักเรียน:</label>
+                    <input type="text" id="modal-student-name" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">คอร์สเรียน:</label>
+                    <input type="text" id="modal-student-course" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">ชั่วโมงในคอร์ส:</label>
@@ -393,7 +421,14 @@
                         <input type="number" id="modal-student-hours-used" placeholder="0" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
                     </div>
                 </div>
-                <button type="submit" class="w-full bg-purple-600 text-white font-medium py-3 rounded-xl text-sm">บันทึกข้อมูล</button>
+
+                <!-- ช่องบันทึกรายละเอียดเนื้อหาที่เรียน -->
+                <div class="space-y-1.5 pt-2 border-t border-slate-200">
+                    <label class="block text-xs font-bold text-slate-700">บันทึกประวัติการเรียน (ขึ้นบรรทัดใหม่เพื่อแยกหัวข้อ):</label>
+                    <textarea id="modal-student-lesson-history" rows="4" placeholder="เช่น:&#10;21/09/2026: เรียนเรื่อง Variables & Loops ใน Python&#10;28/09/2026: ทำแบบทดสอบสร้างเกมด้วย Pygame" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 bg-slate-50"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 rounded-xl text-sm transition">บันทึกข้อมูลนักเรียน</button>
             </form>
         </div>
     </div>
@@ -470,10 +505,10 @@
         const db = getFirestore(app);
 
         const defaultStudents = {
-            "KM-13443": { id: "KM-13443", pin: "2203", name: "N ' Axon", avatar: "👦", badge: "นักเรียน Python", course: "Python for Kids", hoursUsed: 3, hoursTotal: 10 },
-            "KM-30416": { id: "KM-30416", pin: "1422", name: "น้องลมหมอก", avatar: "👦", badge: "นักเรียน Scratch", course: "Scratch & Block Coding", hoursUsed: 4, hoursTotal: 10 },
-            "KM-44958": { id: "KM-44958", pin: "9949", name: "น้องนะโม&น้องกะเพรา", avatar: "👦", badge: "นักเรียน Scratch", course: "Scratch & Block Coding", hoursUsed: 12, hoursTotal: 10 },
-            "ST0928": { id: "ST0928", pin: "123456", name: "น้องภูเขา", avatar: "👦", badge: "นักเรียน Scratch", course: "Scratch & Block Coding", hoursUsed: 9, hoursTotal: 20 }
+            "KM-13443": { id: "KM-13443", pin: "2203", name: "N ' Axon", avatar: "👦", badge: "นักเรียน Python", course: "Python for Kids", hoursUsed: 3, hoursTotal: 10, lessonHistory: "21/09/2026: เรียนเรื่อง Syntax & Variables เบื้องต้น" },
+            "KM-30416": { id: "KM-30416", pin: "1422", name: "น้องลมหมอก", avatar: "👦", badge: "นักเรียน Scratch", course: "Scratch & Block Coding", hoursUsed: 4, hoursTotal: 10, lessonHistory: "21/09/2026: สร้างเกมหลบอุปสรรคเวอร์ชันแรก" },
+            "KM-44958": { id: "KM-44958", pin: "9949", name: "น้องนะโม&น้องกะเพรา", avatar: "👦", badge: "นักเรียน Scratch", course: "Scratch & Block Coding", hoursUsed: 12, hoursTotal: 10, lessonHistory: "21/09/2026: ฝึกทำโจทย์ตรรกะการเคลื่อนที่ขั้นสูง" },
+            "ST0928": { id: "ST0928", pin: "123456", name: "น้องภูเขา", avatar: "👦", badge: "นักเรียน Scratch", course: "Scratch & Block Coding", hoursUsed: 9, hoursTotal: 20, lessonHistory: "21/09/2026: เรียนเรื่อง Broadcast Message & Costumes" }
         };
 
         const defaultCourses = [
@@ -724,6 +759,23 @@
             } else {
                 noticeBox.classList.add('hidden');
             }
+
+            // แสดงรายการเนื้อหาที่เรียนไปแล้ว
+            const historyListDiv = document.getElementById('student-lesson-history-list');
+            if (student.lessonHistory && student.lessonHistory.trim() !== '') {
+                const lines = student.lessonHistory.split('\n').filter(line => line.trim() !== '');
+                historyListDiv.innerHTML = '';
+                lines.forEach(line => {
+                    historyListDiv.innerHTML += `
+                        <div class="flex items-start gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                            <i class="fa-solid fa-circle-check text-emerald-500 mt-0.5"></i>
+                            <p class="text-slate-700">${line}</p>
+                        </div>
+                    `;
+                });
+            } else {
+                historyListDiv.innerHTML = `<p class="text-slate-400 italic">ยังไม่มีข้อมูลบันทึกบทเรียน...</p>`;
+            }
         }
 
         function switchAdminSubTab(subTab) {
@@ -837,6 +889,7 @@
             document.getElementById('modal-student-course').value = "Python for Kids";
             document.getElementById('modal-student-hours-total').value = "10";
             document.getElementById('modal-student-hours-used').value = "0";
+            document.getElementById('modal-student-lesson-history').value = "";
             document.getElementById('studentModal').classList.remove('hidden');
         }
 
@@ -852,6 +905,7 @@
             document.getElementById('modal-student-course').value = s.course;
             document.getElementById('modal-student-hours-total').value = s.hoursTotal || 10;
             document.getElementById('modal-student-hours-used').value = s.hoursUsed || 0;
+            document.getElementById('modal-student-lesson-history').value = s.lessonHistory || "";
             document.getElementById('studentModal').classList.remove('hidden');
         }
 
@@ -866,11 +920,12 @@
             const course = document.getElementById('modal-student-course').value.trim();
             const hoursTotal = parseInt(document.getElementById('modal-student-hours-total').value) || 0;
             const hoursUsed = parseInt(document.getElementById('modal-student-hours-used').value) || 0;
+            const lessonHistory = document.getElementById('modal-student-lesson-history').value;
 
             if (originalId && originalId !== newId) { await window.deleteStudentFromDB(originalId); }
 
             const studentData = {
-                id: newId, pin, name, avatar: "👦", badge: "นักเรียน " + course, course, hoursTotal, hoursUsed
+                id: newId, pin, name, avatar: "👦", badge: "นักเรียน " + course, course, hoursTotal, hoursUsed, lessonHistory
             };
 
             await window.saveStudentToDB(newId, studentData);
@@ -976,7 +1031,7 @@
             const finalLineQR = tempLineQRBase64 || lineUrl || document.getElementById('admin-preview-line-qr').src;
 
             await window.saveQRCodesToDB({ paymentQR: finalPaymentQR, lineQR: finalLineQR });
-            alert("บันทึกข้อมูล QR Code เรียบร้อยแล้ว!");
+            alert("บันทึกข้อมูล QR Code ลง Firebase เรียบร้อยแล้ว!");
             loadQRImages();
         }
 
