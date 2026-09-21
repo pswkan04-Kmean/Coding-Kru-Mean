@@ -6,7 +6,7 @@
     <title>เรียนคอมพิวเตอร์และโค้ดดิ้งกับครูมีน - Coding & Tech for Kids</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for cute icons -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: Kanit -->
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -59,15 +59,6 @@
                 </button>
             </div>
         </div>
-
-        <div id="mobileMenu" class="hidden md:hidden bg-white border-b border-slate-100 px-4 pt-2 pb-4 space-y-2">
-            <button onclick="switchTab('home'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg font-medium text-sky-600 bg-sky-50">หน้าแรก</button>
-            <button onclick="switchTab('courses'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg font-medium text-slate-600">คอร์สเรียนทั้งหมด</button>
-            <button onclick="switchTab('gallery'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg font-medium text-slate-600">ภาพกิจกรรม & ผลงาน</button>
-            <div id="mobile-auth-btn-container">
-                <button onclick="openLoginRoleModal(); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg font-medium text-sky-600 bg-sky-50">เข้าสู่ระบบ</button>
-            </div>
-        </div>
     </header>
 
     <!-- Main Content Area -->
@@ -95,11 +86,6 @@
                                 <i class="fa-solid fa-images"></i> ชมภาพกิจกรรม & ผลงาน
                             </button>
                         </div>
-                        <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-200/60 max-w-md mx-auto md:mx-0">
-                            <div><h4 class="text-2xl font-bold text-sky-600">500+</h4><p class="text-xs text-slate-500">น้องๆ ที่เรียนจบแล้ว</p></div>
-                            <div><h4 class="text-2xl font-bold text-pink-500">4.9/5</h4><p class="text-xs text-slate-500">คะแนนรีวิวผู้ปกครอง</p></div>
-                            <div><h4 class="text-2xl font-bold text-purple-600">100%</h4><p class="text-xs text-slate-500">สนุกและเข้าใจง่าย</p></div>
-                        </div>
                     </div>
                     <div class="relative flex justify-center">
                         <div class="relative bg-white/95 backdrop-blur-md p-6 rounded-3xl shadow-2xl border border-sky-100 max-w-sm w-full space-y-4">
@@ -124,7 +110,6 @@
             <div class="text-center space-y-3 mb-10">
                 <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full">Course Catalog</span>
                 <h2 class="text-3xl font-bold text-slate-800">คอร์สเรียนคอมพิวเตอร์และโค้ดดิ้ง</h2>
-                <p class="text-slate-500 text-sm max-w-xl mx-auto">เลือกคอร์สที่ใช่สำหรับน้องๆ สนุกและได้ทักษะคิดเชิงคำนวณติดตัวไปตลอดชีวิต</p>
             </div>
             <div id="public-courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
         </div>
@@ -134,7 +119,6 @@
             <div class="text-center space-y-3 mb-10">
                 <span class="text-xs font-bold uppercase tracking-wider text-purple-600 bg-purple-50 px-3 py-1 rounded-full">Activity & Projects</span>
                 <h2 class="text-3xl font-bold text-slate-800">ภาพบรรยากาศการเรียนและผลงานนักเรียน</h2>
-                <p class="text-slate-500 text-sm max-w-xl mx-auto">รวมความสนุกสนานในห้องเรียนและผลงานการเขียนโปรแกรมสุดเจ๋งฝีมือเด็กๆ โดยครูมีน</p>
             </div>
             <div id="public-gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
@@ -150,18 +134,10 @@
                     <h3 class="text-2xl font-bold text-slate-800">เข้าสู่ระบบ (นักเรียน / ผู้ปกครอง)</h3>
                 </div>
                 <form onsubmit="handleUserLogin(event)" class="space-y-4">
-                    <div class="space-y-1.5">
-                        <label class="block text-xs font-bold text-slate-700">รหัสประจำตัวนักเรียน (Student ID):</label>
-                        <input type="text" id="user-login-id" placeholder="เช่น KM-88920" required class="w-full text-sm px-4 py-3 rounded-xl border border-slate-200 bg-slate-50">
-                    </div>
-                    <div class="space-y-1.5">
-                        <label class="block text-xs font-bold text-slate-700">รหัสผ่าน / PIN ส่วนตัว:</label>
-                        <input type="password" id="user-login-pin" placeholder="••••" required class="w-full text-sm px-4 py-3 rounded-xl border border-slate-200 bg-slate-50">
-                    </div>
+                    <input type="text" id="user-login-id" placeholder="รหัสประจำตัวนักเรียน (Student ID)" required class="w-full text-sm px-4 py-3 rounded-xl border border-slate-200 bg-slate-50">
+                    <input type="password" id="user-login-pin" placeholder="รหัสผ่าน / PIN ส่วนตัว" required class="w-full text-sm px-4 py-3 rounded-xl border border-slate-200 bg-slate-50">
                     <div id="user-login-error" class="hidden text-xs text-rose-500 font-medium text-center bg-rose-50 p-2 rounded-lg">รหัสประจำตัวหรือรหัสผ่านไม่ถูกต้อง</div>
-                    <button type="submit" class="w-full bg-sky-400 hover:bg-sky-500 text-white font-medium py-3 rounded-xl shadow-md transition text-sm flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบนักเรียน
-                    </button>
+                    <button type="submit" class="w-full bg-sky-400 hover:bg-sky-500 text-white font-medium py-3 rounded-xl shadow-md transition text-sm">เข้าสู่ระบบนักเรียน</button>
                 </form>
             </div>
         </div>
@@ -177,18 +153,10 @@
                     <h3 class="text-2xl font-bold text-slate-800">เข้าสู่ระบบผู้ดูแลระบบ (Admin)</h3>
                 </div>
                 <form onsubmit="handleAdminLogin(event)" class="space-y-4">
-                    <div class="space-y-1.5">
-                        <label class="block text-xs font-bold text-slate-700">ชื่อผู้ใช้งานแอดมิน:</label>
-                        <input type="text" id="admin-username" placeholder="admin" required class="w-full text-sm px-4 py-3 rounded-xl border border-slate-200 bg-slate-50">
-                    </div>
-                    <div class="space-y-1.5">
-                        <label class="block text-xs font-bold text-slate-700">รหัสผ่านแอดมิน:</label>
-                        <input type="password" id="admin-password" placeholder="••••••••" required class="w-full text-sm px-4 py-3 rounded-xl border border-slate-200 bg-slate-50">
-                    </div>
-                    <div id="admin-login-error" class="hidden text-xs text-rose-500 font-medium text-center bg-rose-50 p-2 rounded-lg">รหัสผ่านไม่ถูกต้อง (ค่าเริ่มต้น: admin / krumean123)</div>
-                    <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 rounded-xl shadow-md transition text-sm flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-lock-open"></i> เข้าสู่หลังบ้าน Admin
-                    </button>
+                    <input type="text" id="admin-username" placeholder="ชื่อผู้ใช้งานแอดมิน" required class="w-full text-sm px-4 py-3 rounded-xl border border-slate-200 bg-slate-50">
+                    <input type="password" id="admin-password" placeholder="รหัสผ่านแอดมิน" required class="w-full text-sm px-4 py-3 rounded-xl border border-slate-200 bg-slate-50">
+                    <div id="admin-login-error" class="hidden text-xs text-rose-500 font-medium text-center bg-rose-50 p-2 rounded-lg">รหัสผ่านไม่ถูกต้อง</div>
+                    <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 rounded-xl shadow-md transition text-sm">เข้าสู่หลังบ้าน Admin</button>
                 </form>
             </div>
         </div>
@@ -215,18 +183,35 @@
                     </div>
                 </div>
 
+                <!-- สรุปชั่วโมงเรียนฉบับละเอียด -->
                 <div class="bg-gradient-to-r from-sky-50 via-indigo-50/50 to-pink-50 rounded-2xl p-6 border border-sky-100/60 space-y-4">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h4 class="font-bold text-slate-800 text-lg">ชั่วโมงเรียนคงเหลือของคุณ</h4>
+                    <h4 class="font-bold text-slate-800 text-lg">รายละเอียดชั่วโมงเรียนของคุณ</h4>
+                    <div class="grid grid-cols-3 gap-3 text-center">
+                        <div class="bg-white/80 p-3 rounded-xl border border-sky-100">
+                            <p class="text-xs text-slate-500 font-medium">ชั่วโมงในคอร์ส</p>
+                            <p class="text-xl font-bold text-slate-800" id="student-display-total">0 ชม.</p>
                         </div>
-                        <div class="text-right">
-                            <span class="text-3xl font-extrabold text-sky-600" id="hours-left">0</span>
-                            <span class="text-sm font-medium text-slate-600" id="hours-total">/ 0 ชม.</span>
+                        <div class="bg-white/80 p-3 rounded-xl border border-sky-100">
+                            <p class="text-xs text-slate-500 font-medium">เรียนไปแล้ว</p>
+                            <p class="text-xl font-bold text-purple-600" id="student-display-used">0 ชม.</p>
+                        </div>
+                        <div class="bg-white/80 p-3 rounded-xl border border-sky-100">
+                            <p class="text-xs text-slate-500 font-medium">ชั่วโมงคงเหลือ</p>
+                            <p class="text-xl font-bold text-emerald-600" id="student-display-left">0 ชม.</p>
                         </div>
                     </div>
-                    <div class="h-4 w-full bg-white rounded-full p-0.5 shadow-inner overflow-hidden">
+
+                    <div class="h-3 w-full bg-white rounded-full p-0.5 shadow-inner overflow-hidden">
                         <div id="progress-bar" class="h-full bg-gradient-to-r from-sky-400 to-pink-500 rounded-full transition-all duration-1000" style="width: 0%;"></div>
+                    </div>
+
+                    <!-- กล่องเตือนหมายเหตุผู้ปกครอง หากเรียนเกินชั่วโมง -->
+                    <div id="overdue-student-notice" class="hidden bg-rose-50 border border-rose-200 text-rose-700 p-3.5 rounded-xl text-xs flex items-center gap-2.5">
+                        <i class="fa-solid fa-triangle-exclamation text-base text-rose-500"></i>
+                        <div>
+                            <p class="font-bold">เรียนเกินชั่วโมงคอร์สเรียน (มีชั่วโมงค้างชำระ): <span id="overdue-hours-count" class="underline">0</span> ชั่วโมง</p>
+                            <p class="text-[11px] text-rose-600">รบกวนคุณแม่/คุณพ่อ ติดต่อครูมีนเพื่อสแกนชำระเงินต่อคอร์สเรียนเพิ่มเติมด้านล่างนะคะ</p>
+                        </div>
                     </div>
                 </div>
 
@@ -241,7 +226,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                         <div class="bg-white p-5 rounded-2xl border border-slate-200 flex flex-col items-center justify-center space-y-3 shadow-sm">
                             <div class="w-48 h-56 bg-slate-50 p-2 rounded-xl border border-slate-200 flex items-center justify-center relative overflow-hidden">
-                                <img src="S__33611778.jpg" alt="Payment QR Code" class="w-full h-full object-contain rounded-lg" onerror="this.src='https://placehold.co/400x500/1E1B4B/FFFFFF?text=PromptPay+QR';">
+                                <img id="display-user-payment-qr" src="S__33611778.jpg" alt="Payment QR Code" class="w-full h-full object-contain rounded-lg" onerror="this.src='https://placehold.co/400x500/1E1B4B/FFFFFF?text=PromptPay+QR';">
                             </div>
                             <div class="text-center space-y-0.5">
                                 <p class="text-xs font-bold text-slate-800">น.ส. กัญณภัทร ใจเพียร</p>
@@ -285,6 +270,7 @@
                     <button onclick="switchAdminSubTab('students')" id="admin-subtab-btn-students" class="pb-3 border-b-2 border-purple-600 text-purple-700 font-bold text-sm transition whitespace-nowrap">จัดการนักเรียน</button>
                     <button onclick="switchAdminSubTab('courses')" id="admin-subtab-btn-courses" class="pb-3 border-b-2 border-transparent text-slate-500 font-medium text-sm transition whitespace-nowrap">จัดการคอร์สเรียน</button>
                     <button onclick="switchAdminSubTab('gallery')" id="admin-subtab-btn-gallery" class="pb-3 border-b-2 border-transparent text-slate-500 font-medium text-sm transition whitespace-nowrap">จัดการภาพกิจกรรม</button>
+                    <button onclick="switchAdminSubTab('qrcode')" id="admin-subtab-btn-qrcode" class="pb-3 border-b-2 border-transparent text-slate-500 font-medium text-sm transition whitespace-nowrap">จัดการ QR Code</button>
                 </div>
 
                 <!-- SUBTAB 1: STUDENTS -->
@@ -299,8 +285,10 @@
                                 <tr>
                                     <th class="p-4">นักเรียน / ID</th>
                                     <th class="p-4">PIN</th>
-                                    <th class="p-4">คอร์ส</th>
-                                    <th class="p-4">ชั่วโมงคงเหลือ</th>
+                                    <th class="p-4">คอร์ส (ชั่วโมง)</th>
+                                    <th class="p-4">เรียนแล้ว</th>
+                                    <th class="p-4">คงเหลือ</th>
+                                    <th class="p-4">ค้างชำระ (ชั่วโมงเกิน)</th>
                                     <th class="p-4 text-center">จัดการ</th>
                                 </tr>
                             </thead>
@@ -325,6 +313,37 @@
                         <button onclick="openAddGalleryModal()" class="bg-purple-600 text-white text-xs font-medium px-3.5 py-2 rounded-xl shadow transition flex items-center gap-1.5"><i class="fa-solid fa-plus"></i> เพิ่มภาพใหม่</button>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="admin-gallery-grid"></div>
+                </div>
+
+                <!-- SUBTAB 4: QR CODE MANAGEMENT -->
+                <div id="admin-subtab-qrcode" class="admin-subtab-content hidden space-y-6">
+                    <h4 class="font-bold text-slate-800 text-base">จัดการฟิลด์อัปโหลดรูปภาพ QR Code (Firestore)</h4>
+                    <form onsubmit="handleSaveQRCodes(event)" class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Payment QR -->
+                            <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
+                                <h5 class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-qrcode text-indigo-500 mr-1"></i> QR Code สแกนจ่ายเงิน (PromptPay)</h5>
+                                <div class="w-32 h-36 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 mx-auto flex items-center justify-center">
+                                    <img id="admin-preview-payment-qr" src="S__33611778.jpg" class="w-full h-full object-contain">
+                                </div>
+                                <input type="file" accept="image/*" onchange="handleQRFileSelect(event, 'payment')" class="w-full text-xs text-slate-500 border border-slate-200 rounded-lg p-1.5 bg-slate-50">
+                                <input type="url" id="admin-qr-payment-url" placeholder="หรือระบุ Image URL..." class="w-full text-xs px-3 py-2 rounded-lg border border-slate-200">
+                            </div>
+
+                            <!-- Line QR -->
+                            <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
+                                <h5 class="font-bold text-slate-800 text-sm"><i class="fa-brands fa-line text-emerald-500 mr-1"></i> QR Code สแกนเพิ่มเพื่อน LINE</h5>
+                                <div class="w-32 h-36 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 mx-auto flex items-center justify-center">
+                                    <img id="admin-preview-line-qr" src="S__33603594.jpg" class="w-full h-full object-contain">
+                                </div>
+                                <input type="file" accept="image/*" onchange="handleQRFileSelect(event, 'line')" class="w-full text-xs text-slate-500 border border-slate-200 rounded-lg p-1.5 bg-slate-50">
+                                <input type="url" id="admin-qr-line-url" placeholder="หรือระบุ Image URL..." class="w-full text-xs px-3 py-2 rounded-lg border border-slate-200">
+                            </div>
+                        </div>
+                        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-medium px-6 py-2.5 rounded-xl text-xs shadow transition">
+                            <i class="fa-solid fa-save mr-1"></i> บันทึกข้อมูล QR Code ลง Firebase
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -365,10 +384,16 @@
                 <input type="text" id="modal-student-name" placeholder="ชื่อ-นามสกุล" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
                 <input type="text" id="modal-student-course" placeholder="คอร์สเรียน" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
                 <div class="grid grid-cols-2 gap-3">
-                    <input type="number" id="modal-student-hours-left" placeholder="ชม.คงเหลือ" required class="text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
-                    <input type="number" id="modal-student-hours-total" placeholder="ชม.ทั้งหมด" required class="text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">ชั่วโมงในคอร์ส:</label>
+                        <input type="number" id="modal-student-hours-total" placeholder="10" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">เรียนไปแล้ว (ชม.):</label>
+                        <input type="number" id="modal-student-hours-used" placeholder="0" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                    </div>
                 </div>
-                <button type="submit" class="w-full bg-purple-600 text-white font-medium py-3 rounded-xl text-sm">บันทึก</button>
+                <button type="submit" class="w-full bg-purple-600 text-white font-medium py-3 rounded-xl text-sm">บันทึกข้อมูล</button>
             </form>
         </div>
     </div>
@@ -429,7 +454,7 @@
     <!-- FIREBASE & APP SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, setDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, setDoc, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDr-hMV-58YbwLOiou9NWobfLvMsL9qrNA",
@@ -445,17 +470,15 @@
         const db = getFirestore(app);
 
         const defaultStudents = {
-            "KM-88920": { id: "KM-88920", pin: "1234", name: "น้องต้นกล้า ใจดี", avatar: "👦", badge: "นักเรียน Python", course: "Python for Kids", hoursLeft: 8, hoursTotal: 12, progressWidth: "66%" },
-            "KM-10245": { id: "KM-10245", pin: "5678", name: "น้องใบตอง สดใส", avatar: "👧", badge: "นักเรียน Scratch", course: "Scratch Junior", hoursLeft: 4, hoursTotal: 10, progressWidth: "40%" }
+            "KM-13443": { id: "KM-13443", pin: "2203", name: "N ' Axon", avatar: "👦", badge: "นักเรียน Python", course: "Python for Kids", hoursUsed: 3, hoursTotal: 10 },
+            "KM-30416": { id: "KM-30416", pin: "1422", name: "น้องลมหมอก", avatar: "👦", badge: "นักเรียน Scratch", course: "Scratch & Block Coding", hoursUsed: 4, hoursTotal: 10 },
+            "KM-44958": { id: "KM-44958", pin: "9949", name: "น้องนะโม&น้องกะเพรา", avatar: "👦", badge: "นักเรียน Scratch", course: "Scratch & Block Coding", hoursUsed: 12, hoursTotal: 10 },
+            "ST0928": { id: "ST0928", pin: "123456", name: "น้องภูเขา", avatar: "👦", badge: "นักเรียน Scratch", course: "Scratch & Block Coding", hoursUsed: 9, hoursTotal: 20 }
         };
 
         const defaultCourses = [
-            { id: "c-1", title: "Scratch Junior & Game", subtitle: "สร้างเกมแรกด้วยบล็อก", age: "อายุ 6-9 ปี", icon: "🐱", hours: "10 ชั่วโมง", tag: "ยอดนิยม", tagColor: "text-emerald-600", desc: "เรียนรู้ตรรกะเบื้องต้นผ่านการลากวางบล็อกสร้างเกมง่ายๆ", price: "2,500.-", oldPrice: "3,200.-", gradient: "from-sky-300 to-blue-400" },
-            { id: "c-2", title: "Python for Kids", subtitle: "ภาษาจริงฉบับเด็กๆ", age: "อายุ 10-15 ปี", icon: "🐍", hours: "12 ชั่วโมง", tag: "แนะนำ", tagColor: "text-pink-600", desc: "ฝึกเขียนโค้ด Python เบื้องต้น ตัวแปร ลูป เงื่อนไข", price: "3,500.-", oldPrice: "4,200.-", gradient: "from-pink-400 to-rose-400" }
-        ];
-
-        const defaultGallery = [
-            { id: "g-1", title: "บรรยากาศเรียนสนุกกับ Scratch", category: "บรรยากาศการเรียน", imageUrl: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80", desc: "น้องๆ กำลังสนุกกับการสร้างแอนิเมชัน" }
+            { id: "c-1", title: "Scratch & Block Coding", subtitle: "สร้างเกมแรกด้วยบล็อก", age: "อายุ 6-9 ปี", icon: "🐱", hours: "10 ชั่วโมง", tag: "ยอดนิยม", tagColor: "text-emerald-600", desc: "เรียนรู้ตรรกะเบื้องต้นผ่านการลากวางบล็อกสร้างเกมง่ายๆ", price: "2,500.-", oldPrice: "3,200.-", gradient: "from-sky-300 to-blue-400" },
+            { id: "c-2", title: "Python for Kids", subtitle: "ภาษาจริงฉบับเด็กๆ", age: "อายุ 10-15 ปี", icon: "🐍", hours: "10 ชั่วโมง", tag: "แนะนำ", tagColor: "text-pink-600", desc: "ฝึกเขียนโค้ด Python เบื้องต้น ตัวแปร ลูป เงื่อนไข", price: "3,500.-", oldPrice: "4,200.-", gradient: "from-pink-400 to-rose-400" }
         ];
 
         window.getStudentDB = async function() {
@@ -495,18 +518,24 @@
         window.getGalleryDB = async function() {
             try {
                 const querySnapshot = await getDocs(collection(db, "gallery"));
-                if (querySnapshot.empty) {
-                    for (let g of defaultGallery) { await setDoc(doc(db, "gallery", g.id), g); }
-                    return defaultGallery;
-                }
                 let data = [];
                 querySnapshot.forEach((doc) => { data.push(doc.data()); });
                 return data;
-            } catch (e) { return defaultGallery; }
+            } catch (e) { return []; }
         };
 
         window.saveGalleryToDB = async function(id, galleryData) { await setDoc(doc(db, "gallery", id), galleryData); };
         window.deleteGalleryFromDB = async function(id) { await deleteDoc(doc(db, "gallery", id)); };
+
+        window.getQRCodesDB = async function() {
+            try {
+                const docSnap = await getDoc(doc(db, "settings", "qrcodes"));
+                if (docSnap.exists()) return docSnap.data();
+                return { paymentQR: "S__33611778.jpg", lineQR: "S__33603594.jpg" };
+            } catch (e) { return { paymentQR: "S__33611778.jpg", lineQR: "S__33603594.jpg" }; }
+        };
+
+        window.saveQRCodesToDB = async function(data) { await setDoc(doc(db, "settings", "qrcodes"), data); };
 
         window.addEventListener('DOMContentLoaded', async () => { await initApp(); });
     </script>
@@ -516,6 +545,7 @@
         async function initApp() {
             await renderPublicCourses();
             await renderPublicGallery();
+            await loadQRImages();
 
             const activeUser = localStorage.getItem('kruMeanActiveUser');
             const adminAuth = localStorage.getItem('kruMeanAdminAuth');
@@ -533,6 +563,17 @@
                 }
             } else {
                 updateHeaderAuthUI(null, null);
+            }
+        }
+
+        async function loadQRImages() {
+            const qrData = await window.getQRCodesDB();
+            if (qrData.paymentQR) {
+                document.getElementById('display-user-payment-qr').src = qrData.paymentQR;
+                document.getElementById('admin-preview-payment-qr').src = qrData.paymentQR;
+            }
+            if (qrData.lineQR) {
+                document.getElementById('admin-preview-line-qr').src = qrData.lineQR;
             }
         }
 
@@ -659,17 +700,34 @@
             const student = db[studentId];
             if (!student) return;
 
+            const total = parseInt(student.hoursTotal) || 0;
+            const used = parseInt(student.hoursUsed) || 0;
+            const hoursLeft = Math.max(0, total - used);
+            const overdueHours = used > total ? used - total : 0;
+
             document.getElementById('student-avatar').innerText = student.avatar || '👦';
             document.getElementById('student-badge').innerText = student.badge || 'นักเรียน';
             document.getElementById('student-name').innerText = student.name;
             document.getElementById('student-meta').innerText = `ID: ${student.id} • คอร์ส: ${student.course}`;
-            document.getElementById('hours-left').innerText = student.hoursLeft;
-            document.getElementById('hours-total').innerText = `/ ${student.hoursTotal} ชม.`;
-            document.getElementById('progress-bar').style.width = student.progressWidth || Math.round((student.hoursLeft / student.hoursTotal) * 100) + '%';
+
+            document.getElementById('student-display-total').innerText = total + " ชม.";
+            document.getElementById('student-display-used').innerText = used + " ชม.";
+            document.getElementById('student-display-left').innerText = hoursLeft + " ชม.";
+
+            const progressPct = Math.min(100, Math.round((used / total) * 100));
+            document.getElementById('progress-bar').style.width = progressPct + '%';
+
+            const noticeBox = document.getElementById('overdue-student-notice');
+            if (overdueHours > 0) {
+                document.getElementById('overdue-hours-count').innerText = overdueHours;
+                noticeBox.classList.remove('hidden');
+            } else {
+                noticeBox.classList.add('hidden');
+            }
         }
 
         function switchAdminSubTab(subTab) {
-            ['students', 'courses', 'gallery'].forEach(tab => {
+            ['students', 'courses', 'gallery', 'qrcode'].forEach(tab => {
                 document.getElementById(`admin-subtab-${tab}`).classList.add('hidden');
                 document.getElementById(`admin-subtab-btn-${tab}`).className = "pb-3 border-b-2 border-transparent text-slate-500 font-medium text-sm transition whitespace-nowrap";
             });
@@ -677,13 +735,15 @@
             document.getElementById(`admin-subtab-btn-${subTab}`).className = "pb-3 border-b-2 border-purple-600 text-purple-700 font-bold text-sm transition whitespace-nowrap";
             if (subTab === 'students') loadAdminStudents();
             else if (subTab === 'courses') loadAdminCourses();
-            else loadAdminGallery();
+            else if (subTab === 'gallery') loadAdminGallery();
+            else loadQRImages();
         }
 
         async function loadAdminDashboard() {
             await loadAdminStudents();
             await loadAdminCourses();
             await loadAdminGallery();
+            await loadQRImages();
         }
 
         async function loadAdminStudents() {
@@ -695,12 +755,24 @@
             for (const key in db) {
                 const s = db[key];
                 count++;
+
+                const total = parseInt(s.hoursTotal) || 0;
+                const used = parseInt(s.hoursUsed) || 0;
+                const hoursLeft = Math.max(0, total - used);
+                const overdueHours = used > total ? used - total : 0;
+
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50 transition border-b border-slate-100">
                         <td class="p-4"><p class="font-bold text-slate-800">${s.name}</p><p class="text-xs text-sky-600 font-mono">ID: ${s.id}</p></td>
                         <td class="p-4"><code class="bg-purple-50 text-purple-700 px-2 py-1 rounded font-bold">${s.pin}</code></td>
-                        <td class="p-4 text-xs font-medium text-slate-600">${s.course}</td>
-                        <td class="p-4"><span class="font-bold text-sky-600">${s.hoursLeft}</span> / <span class="text-slate-500">${s.hoursTotal} ชม.</span></td>
+                        <td class="p-4 text-xs font-medium text-slate-600">${s.course} (${total} ชม.)</td>
+                        <td class="p-4 text-xs font-semibold text-purple-600">${used} ชม.</td>
+                        <td class="p-4"><span class="font-bold text-sky-600">${hoursLeft}</span> / <span class="text-slate-500">${total} ชม.</span></td>
+                        <td class="p-4">
+                            ${overdueHours > 0 
+                                ? `<span class="font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-full text-xs">-${overdueHours} ชม.</span>` 
+                                : `<span class="text-slate-400 text-xs">-</span>`}
+                        </td>
                         <td class="p-4 text-center space-x-2">
                             <button onclick="openEditStudentModal('${s.id}')" class="bg-sky-50 text-sky-700 p-2 rounded-lg text-xs font-medium"><i class="fa-solid fa-pen-to-square"></i> แก้ไข</button>
                             <button onclick="deleteStudent('${s.id}')" class="bg-rose-50 text-rose-600 p-2 rounded-lg text-xs font-medium"><i class="fa-solid fa-trash"></i> ลบ</button>
@@ -763,8 +835,8 @@
             document.getElementById('modal-student-pin').value = Math.floor(1000 + Math.random() * 9000);
             document.getElementById('modal-student-name').value = "";
             document.getElementById('modal-student-course').value = "Python for Kids";
-            document.getElementById('modal-student-hours-left').value = "12";
-            document.getElementById('modal-student-hours-total').value = "12";
+            document.getElementById('modal-student-hours-total').value = "10";
+            document.getElementById('modal-student-hours-used').value = "0";
             document.getElementById('studentModal').classList.remove('hidden');
         }
 
@@ -778,8 +850,8 @@
             document.getElementById('modal-student-pin').value = s.pin;
             document.getElementById('modal-student-name').value = s.name;
             document.getElementById('modal-student-course').value = s.course;
-            document.getElementById('modal-student-hours-left').value = s.hoursLeft;
-            document.getElementById('modal-student-hours-total').value = s.hoursTotal;
+            document.getElementById('modal-student-hours-total').value = s.hoursTotal || 10;
+            document.getElementById('modal-student-hours-used').value = s.hoursUsed || 0;
             document.getElementById('studentModal').classList.remove('hidden');
         }
 
@@ -792,14 +864,13 @@
             const pin = document.getElementById('modal-student-pin').value.trim();
             const name = document.getElementById('modal-student-name').value.trim();
             const course = document.getElementById('modal-student-course').value.trim();
-            const hoursLeft = parseInt(document.getElementById('modal-student-hours-left').value);
-            const hoursTotal = parseInt(document.getElementById('modal-student-hours-total').value);
+            const hoursTotal = parseInt(document.getElementById('modal-student-hours-total').value) || 0;
+            const hoursUsed = parseInt(document.getElementById('modal-student-hours-used').value) || 0;
 
             if (originalId && originalId !== newId) { await window.deleteStudentFromDB(originalId); }
 
             const studentData = {
-                id: newId, pin, name, avatar: "👦", badge: "นักเรียน " + course, course, hoursLeft, hoursTotal,
-                progressWidth: Math.round((hoursLeft / hoursTotal) * 100) + '%'
+                id: newId, pin, name, avatar: "👦", badge: "นักเรียน " + course, course, hoursTotal, hoursUsed
             };
 
             await window.saveStudentToDB(newId, studentData);
@@ -874,6 +945,39 @@
                 loadAdminCourses();
                 renderPublicCourses();
             }
+        }
+
+        let tempPaymentQRBase64 = "";
+        let tempLineQRBase64 = "";
+
+        function handleQRFileSelect(event, type) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (type === 'payment') {
+                        tempPaymentQRBase64 = e.target.result;
+                        document.getElementById('admin-preview-payment-qr').src = tempPaymentQRBase64;
+                    } else {
+                        tempLineQRBase64 = e.target.result;
+                        document.getElementById('admin-preview-line-qr').src = tempLineQRBase64;
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function handleSaveQRCodes(event) {
+            event.preventDefault();
+            const paymentUrl = document.getElementById('admin-qr-payment-url').value.trim();
+            const lineUrl = document.getElementById('admin-qr-line-url').value.trim();
+
+            const finalPaymentQR = tempPaymentQRBase64 || paymentUrl || document.getElementById('admin-preview-payment-qr').src;
+            const finalLineQR = tempLineQRBase64 || lineUrl || document.getElementById('admin-preview-line-qr').src;
+
+            await window.saveQRCodesToDB({ paymentQR: finalPaymentQR, lineQR: finalLineQR });
+            alert("บันทึกข้อมูล QR Code เรียบร้อยแล้ว!");
+            loadQRImages();
         }
 
         let uploadedImageBase64 = "";
