@@ -19,7 +19,7 @@
 </head>
 <body class="bg-slate-50 text-slate-700 min-h-screen flex flex-col selection:bg-pink-200 selection:text-pink-800">
 
-    <!-- Navbar (แก้ไขปุ่มซ้ำซ้อนแล้ว) -->
+    <!-- Navbar (เพิ่มปุ่มไอคอนดินสอสำหรับ Admin) -->
     <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-sky-100">
         <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
             <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
@@ -39,17 +39,28 @@
             </nav>
 
             <div class="flex items-center gap-2">
-                <!-- สถานะการเข้าสู่ระบบแบบกระชับ (ตัดปุ่มออกจากระบบซ้ำซ้อนออกแล้ว) -->
-                <div id="header-user-status" class="hidden items-center gap-2 bg-sky-50 px-4 py-1.5 rounded-full border border-sky-100">
+                <!-- สถานะผู้ใช้งาน -->
+                <div id="header-user-status" class="hidden items-center gap-2 bg-sky-50 px-3.5 py-1.5 rounded-full border border-sky-100">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span id="header-username-display" class="text-xs font-bold text-slate-700">ผู้ใช้งาน</span>
                 </div>
+
+                <!-- ปุ่มไอคอนดินสอ สำหรับ Admin สลับกลับเข้าหน้าจัดการหลังบ้านตลอดเวลา -->
+                <div id="header-admin-edit-btn-container" class="hidden">
+                    <button onclick="switchTab('admin-dashboard')" class="bg-purple-600 hover:bg-purple-700 text-white px-3.5 py-1.5 rounded-full text-xs font-bold shadow-sm transition flex items-center gap-1.5 animate-bounce">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>จัดการระบบ</span>
+                    </button>
+                </div>
+
+                <!-- ปุ่มเข้าสู่ระบบ -->
                 <div id="header-login-btn-container">
                     <button onclick="openLoginRoleModal()" class="bg-sky-400 hover:bg-sky-500 text-white px-5 py-2 rounded-full text-sm font-medium shadow-sm transition flex items-center gap-2">
                         <i class="fa-solid fa-right-to-bracket text-xs"></i>
                         <span>เข้าสู่ระบบ</span>
                     </button>
                 </div>
+                
                 <a href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2 rounded-full text-sm font-medium shadow-sm transition flex items-center gap-2">
                     <i class="fa-brands fa-line text-base"></i>
                     <span>ไลน์ครูมีน</span>
@@ -233,7 +244,7 @@
                         </h4>
                         <button onclick="togglePaymentSection()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i> ซ่อน</button>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                         <div class="bg-white p-5 rounded-2xl border border-slate-200 flex flex-col items-center justify-center space-y-3 shadow-sm">
                             <div class="w-48 h-56 bg-slate-50 p-2 rounded-xl border border-slate-200 flex items-center justify-center relative overflow-hidden">
                                 <img id="display-user-payment-qr" src="S__33611778.jpg" alt="Payment QR Code" class="w-full h-full object-contain rounded-lg" onerror="this.src='https://placehold.co/400x500/1E1B4B/FFFFFF?text=PromptPay+QR';">
@@ -243,17 +254,19 @@
                                 <p class="text-xs text-slate-500 font-mono">พร้อมเพย์ / ธนาคารกรุงเทพ</p>
                             </div>
                         </div>
-                        <div class="bg-white p-5 rounded-2xl border border-slate-200 space-y-4">
-                            <h5 class="font-bold text-slate-800 text-sm">แนบหลักฐานการโอนเงินเพื่อต่อคอร์ส</h5>
-                            <form id="paymentForm" onsubmit="handlePaymentSubmit(event)" class="space-y-3">
-                                <input type="file" required class="w-full text-xs text-slate-500 border border-slate-200 rounded-xl p-1.5 bg-slate-50">
-                                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2.5 rounded-xl shadow transition text-xs flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-circle-check"></i> ยืนยันส่งสลิปต่อคอร์ส
-                                </button>
-                            </form>
-                            <div id="successMessage" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-800 p-3 rounded-xl text-center text-xs">
-                                ✓ ส่งสลิปสำเร็จ! ครูมีนจะตรวจสอบและเติมชั่วโมงให้ทันทีค่ะ
+
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 text-center space-y-4 shadow-sm">
+                            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl mx-auto flex items-center justify-center text-2xl">
+                                <i class="fa-brands fa-line"></i>
                             </div>
+                            <div>
+                                <h5 class="font-bold text-slate-800 text-base">ชำระเงินเรียบร้อยแล้ว?</h5>
+                                <p class="text-xs text-slate-500 mt-1">กรุณาส่งภาพสลิปการโอนเงินทางแชท LINE ครูมีน เพื่อให้ครูเติมชั่วโมงเรียนเข้าสู่ระบบทันทีค่ะ</p>
+                            </div>
+                            <a id="send-slip-line-btn" href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-3 rounded-xl shadow-md transition text-xs flex items-center justify-center gap-2">
+                                <i class="fa-brands fa-line text-lg"></i>
+                                <span>ส่งสลิปชำระเงินทางไลน์ครูมีนทันที</span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -386,7 +399,7 @@
         </div>
     </div>
 
-    <!-- MODAL: STUDENT (เพิ่มช่องกรอกประวัติเนื้อหาที่เรียน) -->
+    <!-- MODAL: STUDENT -->
     <div id="studentModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 space-y-5 relative max-h-[90vh] overflow-y-auto">
             <button onclick="closeStudentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
@@ -422,7 +435,6 @@
                     </div>
                 </div>
 
-                <!-- ช่องบันทึกรายละเอียดเนื้อหาที่เรียน -->
                 <div class="space-y-1.5 pt-2 border-t border-slate-200">
                     <label class="block text-xs font-bold text-slate-700">บันทึกประวัติการเรียน (ขึ้นบรรทัดใหม่เพื่อแยกหัวข้อ):</label>
                     <textarea id="modal-student-lesson-history" rows="4" placeholder="เช่น:&#10;21/09/2026: เรียนเรื่อง Variables & Loops ใน Python&#10;28/09/2026: ทำแบบทดสอบสร้างเกมด้วย Pygame" class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 bg-slate-50"></textarea>
@@ -719,14 +731,23 @@
         function updateHeaderAuthUI(name, role) {
             const userStatusDiv = document.getElementById('header-user-status');
             const loginBtnContainer = document.getElementById('header-login-btn-container');
+            const adminEditBtnContainer = document.getElementById('header-admin-edit-btn-container');
             const nameDisplay = document.getElementById('header-username-display');
+
             if (name) {
                 userStatusDiv.classList.remove('hidden'); userStatusDiv.classList.add('flex');
                 loginBtnContainer.classList.add('hidden');
                 nameDisplay.innerText = name;
+
+                if (role === 'admin') {
+                    adminEditBtnContainer.classList.remove('hidden');
+                } else {
+                    adminEditBtnContainer.classList.add('hidden');
+                }
             } else {
                 userStatusDiv.classList.remove('flex'); userStatusDiv.classList.add('hidden');
                 loginBtnContainer.classList.remove('hidden');
+                adminEditBtnContainer.classList.add('hidden');
             }
         }
 
@@ -760,7 +781,10 @@
                 noticeBox.classList.add('hidden');
             }
 
-            // แสดงรายการเนื้อหาที่เรียนไปแล้ว
+            const lineSendBtn = document.getElementById('send-slip-line-btn');
+            const lineMessage = encodeURIComponent(`สวัสดีค่ะครูมีน แจ้งโอนเงินต่อคอร์สสำหรับ ${student.name} (ID: ${student.id}) ค่ะ/ครับ [แนบรูปสลิป]`);
+            lineSendBtn.href = `https://line.me/ti/p/HfOkhDEkpm?text=${lineMessage}`;
+
             const historyListDiv = document.getElementById('student-lesson-history-list');
             if (student.lessonHistory && student.lessonHistory.trim() !== '') {
                 const lines = student.lessonHistory.split('\n').filter(line => line.trim() !== '');
@@ -1102,11 +1126,6 @@
         }
 
         function togglePaymentSection() { document.getElementById('private-payment-section').classList.toggle('hidden'); }
-        function handlePaymentSubmit(event) {
-            event.preventDefault();
-            document.getElementById('successMessage').classList.remove('hidden');
-            setTimeout(() => document.getElementById('paymentForm').reset(), 3000);
-        }
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
