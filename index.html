@@ -19,10 +19,9 @@
 </head>
 <body class="bg-slate-50 text-slate-700 min-h-screen flex flex-col selection:bg-pink-200 selection:text-pink-800">
 
-    <!-- Navbar ตามแบบต้นฉบับเป๊ะๆ -->
+    <!-- Navbar -->
     <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-sky-100">
         <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-            <!-- Logo Section -->
             <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
                 <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-sky-400 to-pink-400 flex items-center justify-center text-white shadow-md">
                     <i class="fa-solid fa-laptop-code text-lg"></i>
@@ -33,14 +32,12 @@
                 </div>
             </div>
 
-            <!-- Navigation Links ตรงกลาง -->
             <nav class="hidden md:flex items-center space-x-2 bg-slate-100/70 p-1 rounded-full border border-slate-200/60">
                 <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-5 py-2 rounded-full font-medium text-sm text-sky-600 bg-white shadow-sm transition">หน้าแรก</button>
                 <button onclick="switchTab('courses')" id="nav-courses" class="nav-btn px-5 py-2 rounded-full font-medium text-sm text-slate-600 hover:text-slate-900 transition">คอร์สเรียนทั้งหมด</button>
                 <button onclick="switchTab('gallery')" id="nav-gallery" class="nav-btn px-5 py-2 rounded-full font-medium text-sm text-slate-600 hover:text-slate-900 transition">ภาพกิจกรรม & ผลงาน</button>
             </nav>
 
-            <!-- Right Buttons (Login & Line) -->
             <div class="flex items-center gap-2">
                 <div id="header-user-status" class="hidden items-center gap-2 bg-sky-50 px-3.5 py-1.5 rounded-full border border-sky-100">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -63,7 +60,6 @@
             </div>
         </div>
 
-        <!-- Mobile Menu Drawer -->
         <div id="mobileMenu" class="hidden md:hidden bg-white border-b border-slate-100 px-4 pt-2 pb-4 space-y-2">
             <button onclick="switchTab('home'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg font-medium text-sky-600 bg-sky-50">หน้าแรก</button>
             <button onclick="switchTab('courses'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg font-medium text-slate-600">คอร์สเรียนทั้งหมด</button>
@@ -99,32 +95,17 @@
                                 <i class="fa-solid fa-images"></i> ชมภาพกิจกรรม & ผลงาน
                             </button>
                         </div>
-                        <!-- Mini Stats -->
                         <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-200/60 max-w-md mx-auto md:mx-0">
-                            <div>
-                                <h4 class="text-2xl font-bold text-sky-600">500+</h4>
-                                <p class="text-xs text-slate-500">น้องๆ ที่เรียนจบแล้ว</p>
-                            </div>
-                            <div>
-                                <h4 class="text-2xl font-bold text-pink-500">4.9/5</h4>
-                                <p class="text-xs text-slate-500">คะแนนรีวิวผู้ปกครอง</p>
-                            </div>
-                            <div>
-                                <h4 class="text-2xl font-bold text-purple-600">100%</h4>
-                                <p class="text-xs text-slate-500">สนุกและเข้าใจง่าย</p>
-                            </div>
+                            <div><h4 class="text-2xl font-bold text-sky-600">500+</h4><p class="text-xs text-slate-500">น้องๆ ที่เรียนจบแล้ว</p></div>
+                            <div><h4 class="text-2xl font-bold text-pink-500">4.9/5</h4><p class="text-xs text-slate-500">คะแนนรีวิวผู้ปกครอง</p></div>
+                            <div><h4 class="text-2xl font-bold text-purple-600">100%</h4><p class="text-xs text-slate-500">สนุกและเข้าใจง่าย</p></div>
                         </div>
                     </div>
-
-                    <!-- Hero Card -->
                     <div class="relative flex justify-center">
                         <div class="relative bg-white/95 backdrop-blur-md p-6 rounded-3xl shadow-2xl border border-sky-100 max-w-sm w-full space-y-4">
                             <div class="flex items-center space-x-4">
                                 <div class="w-14 h-14 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-500 text-2xl shadow-inner">👩‍🏫</div>
-                                <div>
-                                    <h3 class="font-bold text-slate-800 text-lg">ครูมีน (Kru Mean)</h3>
-                                    <p class="text-xs text-slate-500">ผู้เชี่ยวชาญวิทยาการคำนวณ</p>
-                                </div>
+                                <div><h3 class="font-bold text-slate-800 text-lg">ครูมีน (Kru Mean)</h3><p class="text-xs text-slate-500">ผู้เชี่ยวชาญวิทยาการคำนวณ</p></div>
                             </div>
                             <div class="bg-sky-50 rounded-2xl p-4 space-y-2 text-sm text-slate-600">
                                 <p class="font-medium text-sky-900"><i class="fa-solid fa-quote-left text-sky-400 mr-1"></i> "โค้ดดิ้งไม่ใช่เรื่องยาก แค่เริ่มต้นด้วยความสนุก น้องๆ ก็สร้างสรรค์ผลงานเจ๋งๆ ได้เพียบเลยค่ะ!"</p>
@@ -565,22 +546,22 @@
                     <div class="bg-white rounded-3xl shadow-sm border border-sky-100 overflow-hidden flex flex-col justify-between hover:shadow-lg transition">
                         <div>
                             <div class="h-40 bg-gradient-to-tr ${c.gradient || 'from-sky-300 to-blue-400'} p-4 flex flex-col justify-between text-white relative">
-                                <span class="absolute top-3 right-3 bg-white/90 text-slate-800 text-xs px-2.5 py-1 rounded-full font-bold">${c.age}</span>
-                                <div class="text-3xl">${c.icon}</div>
+                                <span class="absolute top-3 right-3 bg-white/90 text-slate-800 text-xs px-2.5 py-1 rounded-full font-bold">${c.age || ''}</span>
+                                <div class="text-3xl">${c.icon || '💻'}</div>
                                 <div><h3 class="font-bold text-lg">${c.title}</h3><p class="text-xs text-sky-100">${c.subtitle || ''}</p></div>
                             </div>
                             <div class="p-5 space-y-3">
                                 <div class="flex items-center justify-between text-xs text-slate-500">
-                                    <span><i class="fa-regular fa-clock mr-1"></i> ${c.hours}</span>
+                                    <span><i class="fa-regular fa-clock mr-1"></i> ${c.hours || ''}</span>
                                     <span class="${c.tagColor || 'text-sky-600'} font-medium">${c.tag || 'แนะนำ'}</span>
                                 </div>
-                                <p class="text-xs text-slate-600 line-clamp-2">${c.desc}</p>
+                                <p class="text-xs text-slate-600 line-clamp-2">${c.desc || ''}</p>
                             </div>
                         </div>
                         <div class="p-5 pt-0">
                             <div class="flex items-center justify-between mb-3">
-                                <span class="text-lg font-bold text-sky-600">${c.price}</span>
-                                <span class="text-xs text-slate-400 line-through">${c.oldPrice}</span>
+                                <span class="text-lg font-bold text-sky-600">${c.price || ''}</span>
+                                <span class="text-xs text-slate-400 line-through">${c.oldPrice || ''}</span>
                             </div>
                             <a href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2.5 rounded-xl text-sm shadow-md transition flex items-center justify-center gap-1.5">
                                 <i class="fa-brands fa-line"></i> สนใจสมัครผ่านไลน์
@@ -597,14 +578,15 @@
             if (!container) return;
             container.innerHTML = '';
             gallery.forEach(item => {
+                const categoryText = item.category || 'บรรยากาศการเรียน';
                 container.innerHTML += `
                     <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition">
                         <div class="h-48 overflow-hidden relative bg-slate-100">
-                            <img src="${item.imageUrl}" alt="${item.title}" class="w-full h-full object-cover transform hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x400/E0F2FE/0284C7?text=Kru+Mean'">
-                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-purple-700 text-xs px-2.5 py-1 rounded-full font-bold">${item.category}</span>
+                            <img src="${item.imageUrl || ''}" alt="${item.title || ''}" class="w-full h-full object-cover transform hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x400/E0F2FE/0284C7?text=Kru+Mean'">
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-purple-700 text-xs px-2.5 py-1 rounded-full font-bold">${categoryText}</span>
                         </div>
                         <div class="p-5 space-y-2">
-                            <h3 class="font-bold text-slate-800 text-base">${item.title}</h3>
+                            <h3 class="font-bold text-slate-800 text-base">${item.title || ''}</h3>
                             <p class="text-xs text-slate-500">${item.desc || ''}</p>
                         </div>
                     </div>
@@ -720,8 +702,8 @@
                         <td class="p-4 text-xs font-medium text-slate-600">${s.course}</td>
                         <td class="p-4"><span class="font-bold text-sky-600">${s.hoursLeft}</span> / <span class="text-slate-500">${s.hoursTotal} ชม.</span></td>
                         <td class="p-4 text-center space-x-2">
-                            <button onclick="openEditStudentModal('${s.id}')" class="bg-sky-50 text-sky-700 p-2 rounded-lg text-xs font-medium"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button onclick="deleteStudent('${s.id}')" class="bg-rose-50 text-rose-600 p-2 rounded-lg text-xs font-medium"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="openEditStudentModal('${s.id}')" class="bg-sky-50 text-sky-700 p-2 rounded-lg text-xs font-medium"><i class="fa-solid fa-pen-to-square"></i> แก้ไข</button>
+                            <button onclick="deleteStudent('${s.id}')" class="bg-rose-50 text-rose-600 p-2 rounded-lg text-xs font-medium"><i class="fa-solid fa-trash"></i> ลบ</button>
                         </td>
                     </tr>
                 `;
@@ -739,12 +721,12 @@
                 container.innerHTML += `
                     <div class="bg-slate-50 rounded-2xl border border-slate-200 p-4 flex flex-col justify-between space-y-3">
                         <div class="flex items-start justify-between">
-                            <div class="flex items-center gap-3"><span class="text-2xl">${c.icon}</span><div><h5 class="font-bold text-slate-800 text-sm">${c.title}</h5><p class="text-xs text-sky-600">${c.age}</p></div></div>
-                            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">${c.price}</span>
+                            <div class="flex items-center gap-3"><span class="text-2xl">${c.icon || '💻'}</span><div><h5 class="font-bold text-slate-800 text-sm">${c.title}</h5><p class="text-xs text-sky-600">${c.age || ''}</p></div></div>
+                            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">${c.price || ''}</span>
                         </div>
                         <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
-                            <button onclick="openEditCourseModal('${c.id}')" class="bg-sky-50 text-sky-600 px-3 py-1 rounded-lg text-xs">แก้ไข</button>
-                            <button onclick="deleteCourse('${c.id}')" class="bg-rose-50 text-rose-600 px-3 py-1 rounded-lg text-xs">ลบ</button>
+                            <button onclick="openEditCourseModal('${c.id}')" class="bg-sky-50 text-sky-600 px-3 py-1 rounded-lg text-xs font-medium"><i class="fa-solid fa-pen-to-square"></i> แก้ไข</button>
+                            <button onclick="deleteCourse('${c.id}')" class="bg-rose-50 text-rose-600 px-3 py-1 rounded-lg text-xs font-medium"><i class="fa-solid fa-trash"></i> ลบ</button>
                         </div>
                     </div>
                 `;
@@ -757,12 +739,17 @@
             if (!container) return;
             container.innerHTML = '';
             gallery.forEach(item => {
+                const categoryText = item.category || 'บรรยากาศการเรียน';
                 container.innerHTML += `
                     <div class="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden flex flex-col justify-between">
-                        <div class="h-32 bg-slate-200"><img src="${item.imageUrl}" class="w-full h-full object-cover"></div>
-                        <div class="p-3"><h5 class="font-bold text-slate-800 text-xs">${item.title}</h5></div>
+                        <div class="h-32 bg-slate-200 relative">
+                            <img src="${item.imageUrl || ''}" class="w-full h-full object-cover">
+                            <span class="absolute top-2 left-2 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-full">${categoryText}</span>
+                        </div>
+                        <div class="p-3"><h5 class="font-bold text-slate-800 text-xs">${item.title || ''}</h5></div>
                         <div class="p-3 pt-0 flex justify-end gap-2 border-t border-slate-100">
-                            <button onclick="deleteGalleryItem('${item.id}')" class="bg-rose-50 text-rose-600 px-2 py-1 rounded-lg text-xs">ลบ</button>
+                            <button onclick="openEditGalleryModal('${item.id}')" class="bg-sky-50 text-sky-600 px-3 py-1 rounded-lg text-xs font-medium"><i class="fa-solid fa-pen-to-square"></i> แก้ไข</button>
+                            <button onclick="deleteGalleryItem('${item.id}')" class="bg-rose-50 text-rose-600 px-3 py-1 rounded-lg text-xs font-medium"><i class="fa-solid fa-trash"></i> ลบ</button>
                         </div>
                     </div>
                 `;
@@ -830,6 +817,13 @@
         function openAddCourseModal() {
             document.getElementById('course-modal-title').innerText = "เพิ่มคอร์สใหม่";
             document.getElementById('course-edit-id').value = "";
+            document.getElementById('course-title').value = "";
+            document.getElementById('course-age').value = "อายุ 8-14 ปี";
+            document.getElementById('course-icon').value = "💻";
+            document.getElementById('course-price').value = "3000";
+            document.getElementById('course-old-price').value = "3800";
+            document.getElementById('course-hours').value = "10 ชั่วโมง";
+            document.getElementById('course-desc').value = "";
             document.getElementById('courseModal').classList.remove('hidden');
         }
 
@@ -837,7 +831,7 @@
             const courses = await window.getCoursesDB();
             const c = courses.find(item => item.id === id);
             if (!c) return;
-            document.getElementById('course-modal-title').innerText = "แก้ไขคอร์ส";
+            document.getElementById('course-modal-title').innerText = "แก้ไขข้อมูลคอร์สเรียน";
             document.getElementById('course-edit-id').value = c.id;
             document.getElementById('course-title').value = c.title;
             document.getElementById('course-age').value = c.age;
@@ -898,7 +892,25 @@
         function openAddGalleryModal() {
             document.getElementById('gallery-modal-title').innerText = "เพิ่มภาพกิจกรรม";
             document.getElementById('gallery-edit-id').value = "";
+            document.getElementById('gallery-file-input').value = "";
+            document.getElementById('gallery-url').value = "";
+            document.getElementById('gallery-title').value = "";
+            document.getElementById('gallery-desc').value = "";
             uploadedImageBase64 = "";
+            document.getElementById('galleryModal').classList.remove('hidden');
+        }
+
+        async function openEditGalleryModal(id) {
+            const gallery = await window.getGalleryDB();
+            const item = gallery.find(g => g.id === id);
+            if (!item) return;
+            document.getElementById('gallery-modal-title').innerText = "แก้ไขภาพกิจกรรม";
+            document.getElementById('gallery-edit-id').value = item.id;
+            document.getElementById('gallery-url').value = item.imageUrl.startsWith('data:') ? '' : item.imageUrl;
+            document.getElementById('gallery-title').value = item.title;
+            document.getElementById('gallery-category').value = item.category || 'บรรยากาศการเรียน';
+            document.getElementById('gallery-desc').value = item.desc || '';
+            uploadedImageBase64 = item.imageUrl.startsWith('data:') ? item.imageUrl : "";
             document.getElementById('galleryModal').classList.remove('hidden');
         }
 
@@ -906,7 +918,8 @@
 
         async function handleSaveGallery(event) {
             event.preventDefault();
-            const id = 'g-' + Date.now();
+            const editId = document.getElementById('gallery-edit-id').value;
+            const id = editId || 'g-' + Date.now();
             const imageUrl = uploadedImageBase64 || document.getElementById('gallery-url').value.trim() || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80";
             const galleryData = {
                 id,
