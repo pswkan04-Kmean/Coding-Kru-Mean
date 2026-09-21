@@ -19,7 +19,7 @@
 </head>
 <body class="bg-slate-50 text-slate-700 min-h-screen flex flex-col selection:bg-pink-200 selection:text-pink-800">
 
-    <!-- Navbar (เพิ่มปุ่มไอคอนดินสอสำหรับ Admin) -->
+    <!-- Navbar -->
     <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-sky-100">
         <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
             <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
@@ -39,17 +39,14 @@
             </nav>
 
             <div class="flex items-center gap-2">
-                <!-- สถานะผู้ใช้งาน -->
+                <!-- แถบแสดงสถานะ + ปุ่มแก้ไขแอดมิน -->
                 <div id="header-user-status" class="hidden items-center gap-2 bg-sky-50 px-3.5 py-1.5 rounded-full border border-sky-100">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span id="header-username-display" class="text-xs font-bold text-slate-700">ผู้ใช้งาน</span>
-                </div>
-
-                <!-- ปุ่มไอคอนดินสอ สำหรับ Admin สลับกลับเข้าหน้าจัดการหลังบ้านตลอดเวลา -->
-                <div id="header-admin-edit-btn-container" class="hidden">
-                    <button onclick="switchTab('admin-dashboard')" class="bg-purple-600 hover:bg-purple-700 text-white px-3.5 py-1.5 rounded-full text-xs font-bold shadow-sm transition flex items-center gap-1.5 animate-bounce">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                        <span>จัดการระบบ</span>
+                    
+                    <button id="admin-edit-badge-btn" onclick="switchTab('admin-dashboard')" class="hidden bg-purple-600 hover:bg-purple-700 text-white px-2.5 py-1 rounded-full text-[11px] font-bold shadow-sm transition items-center gap-1 ml-1">
+                        <i class="fa-solid fa-pen-to-square text-[10px]"></i>
+                        <span>แก้ไขระบบ</span>
                     </button>
                 </div>
 
@@ -452,18 +449,39 @@
             <h3 id="course-modal-title" class="text-xl font-bold text-slate-800">เพิ่มคอร์สใหม่</h3>
             <form id="courseForm" onsubmit="handleSaveCourse(event)" class="space-y-4">
                 <input type="hidden" id="course-edit-id" value="">
-                <input type="text" id="course-title" placeholder="ชื่อคอร์ส" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
-                <div class="grid grid-cols-2 gap-3">
-                    <input type="text" id="course-age" placeholder="ช่วงวัย" required class="text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
-                    <input type="text" id="course-icon" placeholder="ไอคอน (อีโมจิ)" required class="text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">ชื่อคอร์ส:</label>
+                    <input type="text" id="course-title" placeholder="ชื่อคอร์ส" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
-                    <input type="number" id="course-price" placeholder="ราคา" required class="text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
-                    <input type="number" id="course-old-price" placeholder="ราคาเต็ม" required class="text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">ช่วงวัย:</label>
+                        <input type="text" id="course-age" placeholder="เช่น อายุ 6-9 ปี" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">ไอคอน (อีโมจิ):</label>
+                        <input type="text" id="course-icon" placeholder="🐱" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                    </div>
                 </div>
-                <input type="text" id="course-hours" placeholder="จำนวนชั่วโมง" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
-                <textarea id="course-desc" rows="2" placeholder="รายละเอียด..." required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50"></textarea>
-                <button type="submit" class="w-full bg-purple-600 text-white font-medium py-3 rounded-xl text-sm">บันทึก</button>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">ราคาโปรโมชัน (บาท):</label>
+                        <input type="number" id="course-price" placeholder="2500" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">ราคาเต็ม (บาท):</label>
+                        <input type="number" id="course-old-price" placeholder="3200" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">จำนวนชั่วโมง:</label>
+                    <input type="text" id="course-hours" placeholder="10 ชั่วโมง" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">รายละเอียดคอร์ส:</label>
+                    <textarea id="course-desc" rows="2" placeholder="รายละเอียด..." required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 rounded-xl text-sm transition">บันทึกข้อมูลคอร์ส</button>
             </form>
         </div>
     </div>
@@ -475,16 +493,31 @@
             <h3 id="gallery-modal-title" class="text-xl font-bold text-slate-800">เพิ่มภาพกิจกรรม</h3>
             <form id="galleryForm" onsubmit="handleSaveGallery(event)" class="space-y-4">
                 <input type="hidden" id="gallery-edit-id" value="">
-                <input type="file" id="gallery-file-input" accept="image/*" onchange="handleImageFileSelect(event)" class="w-full text-xs text-slate-500 border border-slate-200 rounded-xl p-1.5 bg-slate-50">
-                <input type="url" id="gallery-url" placeholder="หรือใส่ Image URL..." class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
-                <input type="text" id="gallery-title" placeholder="หัวข้อผลงาน" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
-                <select id="gallery-category" class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
-                    <option value="บรรยากาศการเรียน">บรรยากาศการเรียน</option>
-                    <option value="ผลงานนักเรียน">ผลงานนักเรียน</option>
-                    <option value="กิจกรรมพิเศษ">กิจกรรมพิเศษ</option>
-                </select>
-                <textarea id="gallery-desc" rows="2" placeholder="รายละเอียด..." class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50"></textarea>
-                <button type="submit" class="w-full bg-purple-600 text-white font-medium py-3 rounded-xl text-sm">บันทึก</button>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">รูปภาพกิจกรรม:</label>
+                    <input type="file" id="gallery-file-input" accept="image/*" onchange="handleImageFileSelect(event)" class="w-full text-xs text-slate-500 border border-slate-200 rounded-xl p-1.5 bg-slate-50">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">หรือวาง Image URL:</label>
+                    <input type="url" id="gallery-url" placeholder="https://..." class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">หัวข้อภาพกิจกรรม / ผลงาน:</label>
+                    <input type="text" id="gallery-title" placeholder="หัวข้อผลงาน" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">หมวดหมู่:</label>
+                    <select id="gallery-category" class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                        <option value="บรรยากาศการเรียน">บรรยากาศการเรียน</option>
+                        <option value="ผลงานนักเรียน">ผลงานนักเรียน</option>
+                        <option value="กิจกรรมพิเศษ">กิจกรรมพิเศษ</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">รายละเอียดเพิ่มเติม:</label>
+                    <textarea id="gallery-desc" rows="2" placeholder="รายละเอียด..." class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 rounded-xl text-sm transition">บันทึกภาพกิจกรรม</button>
             </form>
         </div>
     </div>
@@ -554,25 +587,33 @@
                     return defaultCourses;
                 }
                 let data = [];
-                querySnapshot.forEach((doc) => { data.push(doc.data()); });
+                querySnapshot.forEach((doc) => { 
+                    let item = doc.data();
+                    item.id = doc.id;
+                    data.push(item); 
+                });
                 return data;
             } catch (e) { return defaultCourses; }
         };
 
-        window.saveCourseToDB = async function(id, courseData) { await setDoc(doc(db, "courses", id), courseData); };
-        window.deleteCourseFromDB = async function(id) { await deleteDoc(doc(db, "courses", id)); };
+        window.saveCourseToDB = async function(id, courseData) { await setDoc(doc(db, "courses", String(id)), courseData); };
+        window.deleteCourseFromDB = async function(id) { await deleteDoc(doc(db, "courses", String(id))); };
 
         window.getGalleryDB = async function() {
             try {
                 const querySnapshot = await getDocs(collection(db, "gallery"));
                 let data = [];
-                querySnapshot.forEach((doc) => { data.push(doc.data()); });
+                querySnapshot.forEach((doc) => { 
+                    let item = doc.data();
+                    item.id = doc.id;
+                    data.push(item); 
+                });
                 return data;
             } catch (e) { return []; }
         };
 
-        window.saveGalleryToDB = async function(id, galleryData) { await setDoc(doc(db, "gallery", id), galleryData); };
-        window.deleteGalleryFromDB = async function(id) { await deleteDoc(doc(db, "gallery", id)); };
+        window.saveGalleryToDB = async function(id, galleryData) { await setDoc(doc(db, "gallery", String(id)), galleryData); };
+        window.deleteGalleryFromDB = async function(id) { await deleteDoc(doc(db, "gallery", String(id))); };
 
         window.getQRCodesDB = async function() {
             try {
@@ -731,23 +772,28 @@
         function updateHeaderAuthUI(name, role) {
             const userStatusDiv = document.getElementById('header-user-status');
             const loginBtnContainer = document.getElementById('header-login-btn-container');
-            const adminEditBtnContainer = document.getElementById('header-admin-edit-btn-container');
+            const adminEditBadgeBtn = document.getElementById('admin-edit-badge-btn');
             const nameDisplay = document.getElementById('header-username-display');
 
             if (name) {
-                userStatusDiv.classList.remove('hidden'); userStatusDiv.classList.add('flex');
+                userStatusDiv.classList.remove('hidden'); 
+                userStatusDiv.classList.add('flex');
                 loginBtnContainer.classList.add('hidden');
                 nameDisplay.innerText = name;
 
                 if (role === 'admin') {
-                    adminEditBtnContainer.classList.remove('hidden');
+                    adminEditBadgeBtn.classList.remove('hidden');
+                    adminEditBadgeBtn.classList.add('inline-flex');
                 } else {
-                    adminEditBtnContainer.classList.add('hidden');
+                    adminEditBadgeBtn.classList.add('hidden');
+                    adminEditBadgeBtn.classList.remove('inline-flex');
                 }
             } else {
-                userStatusDiv.classList.remove('flex'); userStatusDiv.classList.add('hidden');
+                userStatusDiv.classList.remove('flex'); 
+                userStatusDiv.classList.add('hidden');
                 loginBtnContainer.classList.remove('hidden');
-                adminEditBtnContainer.classList.add('hidden');
+                adminEditBadgeBtn.classList.add('hidden');
+                adminEditBadgeBtn.classList.remove('inline-flex');
             }
         }
 
@@ -979,17 +1025,17 @@
 
         async function openEditCourseModal(id) {
             const courses = await window.getCoursesDB();
-            const c = courses.find(item => item.id === id);
+            const c = courses.find(item => String(item.id) === String(id));
             if (!c) return;
             document.getElementById('course-modal-title').innerText = "แก้ไขข้อมูลคอร์สเรียน";
             document.getElementById('course-edit-id').value = c.id;
-            document.getElementById('course-title').value = c.title;
-            document.getElementById('course-age').value = c.age;
-            document.getElementById('course-icon').value = c.icon;
-            document.getElementById('course-price').value = c.price.replace(/[^0-9]/g, '');
-            document.getElementById('course-old-price').value = c.oldPrice.replace(/[^0-9]/g, '');
-            document.getElementById('course-hours').value = c.hours;
-            document.getElementById('course-desc').value = c.desc;
+            document.getElementById('course-title').value = c.title || '';
+            document.getElementById('course-age').value = c.age || '';
+            document.getElementById('course-icon').value = c.icon || '💻';
+            document.getElementById('course-price').value = c.price ? String(c.price).replace(/[^0-9]/g, '') : '';
+            document.getElementById('course-old-price').value = c.oldPrice ? String(c.oldPrice).replace(/[^0-9]/g, '') : '';
+            document.getElementById('course-hours').value = c.hours || '';
+            document.getElementById('course-desc').value = c.desc || '';
             document.getElementById('courseModal').classList.remove('hidden');
         }
 
@@ -998,7 +1044,7 @@
         async function handleSaveCourse(event) {
             event.preventDefault();
             const editId = document.getElementById('course-edit-id').value;
-            const id = editId || 'c-' + Date.now();
+            const id = editId ? String(editId) : 'c-' + Date.now();
             const newCourseData = {
                 id,
                 title: document.getElementById('course-title').value.trim(),
@@ -1085,15 +1131,15 @@
 
         async function openEditGalleryModal(id) {
             const gallery = await window.getGalleryDB();
-            const item = gallery.find(g => g.id === id);
+            const item = gallery.find(g => String(g.id) === String(id));
             if (!item) return;
             document.getElementById('gallery-modal-title').innerText = "แก้ไขภาพกิจกรรม";
             document.getElementById('gallery-edit-id').value = item.id;
-            document.getElementById('gallery-url').value = item.imageUrl.startsWith('data:') ? '' : item.imageUrl;
-            document.getElementById('gallery-title').value = item.title;
+            document.getElementById('gallery-url').value = (item.imageUrl && item.imageUrl.startsWith('data:')) ? '' : (item.imageUrl || '');
+            document.getElementById('gallery-title').value = item.title || '';
             document.getElementById('gallery-category').value = item.category || 'บรรยากาศการเรียน';
             document.getElementById('gallery-desc').value = item.desc || '';
-            uploadedImageBase64 = item.imageUrl.startsWith('data:') ? item.imageUrl : "";
+            uploadedImageBase64 = (item.imageUrl && item.imageUrl.startsWith('data:')) ? item.imageUrl : "";
             document.getElementById('galleryModal').classList.remove('hidden');
         }
 
@@ -1102,7 +1148,7 @@
         async function handleSaveGallery(event) {
             event.preventDefault();
             const editId = document.getElementById('gallery-edit-id').value;
-            const id = editId || 'g-' + Date.now();
+            const id = editId ? String(editId) : 'g-' + Date.now();
             const imageUrl = uploadedImageBase64 || document.getElementById('gallery-url').value.trim() || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80";
             const galleryData = {
                 id,
