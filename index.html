@@ -456,11 +456,11 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">ช่วงวัย:</label>
-                        <input type="text" id="course-age" placeholder="เช่น อายุ 6-9 ปี" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                        <input type="text" id="course-age" placeholder="เช่น 7-10 ปี" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">ไอคอน (อีโมจิ):</label>
-                        <input type="text" id="course-icon" placeholder="🐱" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">ไอคอน ( FontAwesome เช่น fa-gamepad หรือ อีโมจิ):</label>
+                        <input type="text" id="course-icon" placeholder="fa-gamepad หรือ 💻" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
@@ -557,8 +557,9 @@
         };
 
         const defaultCourses = [
-            { id: "c-1", title: "Scratch & Block Coding", subtitle: "สร้างเกมแรกด้วยบล็อก", age: "อายุ 6-9 ปี", icon: "🐱", hours: "10 ชั่วโมง", tag: "ยอดนิยม", tagColor: "text-emerald-600", desc: "เรียนรู้ตรรกะเบื้องต้นผ่านการลากวางบล็อกสร้างเกมง่ายๆ", price: "2,500.-", oldPrice: "3,200.-", gradient: "from-sky-300 to-blue-400" },
-            { id: "c-2", title: "Python for Kids", subtitle: "ภาษาจริงฉบับเด็กๆ", age: "อายุ 10-15 ปี", icon: "🐍", hours: "10 ชั่วโมง", tag: "แนะนำ", tagColor: "text-pink-600", desc: "ฝึกเขียนโค้ด Python เบื้องต้น ตัวแปร ลูป เงื่อนไข", price: "3,500.-", oldPrice: "4,200.-", gradient: "from-pink-400 to-rose-400" }
+            { id: "c-1", title: "Scratch & Block Coding", subtitle: "สร้างเกมแรกด้วยบล็อก", age: "7-10 ปี", icon: "fa-gamepad", hours: "10 ชั่วโมง", tag: "ยอดนิยม", tagColor: "text-emerald-600", desc: "เรียนรู้ตรรกะเบื้องต้นผ่านการลากวางบล็อกสร้างเกมง่ายๆ", price: "2,500.-", oldPrice: "3,200.-", gradient: "from-sky-300 to-blue-400" },
+            { id: "c-2", title: "Python for Kids & Teens", subtitle: "ภาษาจริงฉบับเด็กๆ", age: "11-15 ปี", icon: "fa-code", hours: "10 ชั่วโมง", tag: "แนะนำ", tagColor: "text-pink-600", desc: "ฝึกเขียนโค้ด Python เบื้องต้น ตัวแปร ลูป เงื่อนไข", price: "3,500.-", oldPrice: "4,200.-", gradient: "from-pink-400 to-rose-400" },
+            { id: "c-3", title: "IoT & Micro:bit Maker", subtitle: "นักประดิษฐ์รุ่นเยาว์", age: "10-15 ปี", icon: "fa-microchip", hours: "10 ชั่วโมง", tag: "ใหม่", tagColor: "text-purple-600", desc: "ต่อวงจรโค้ดดิ้งร่วมกับบอร์ด Micro:bit และเซนเซอร์ต่างๆ", price: "2,900.-", oldPrice: "3,600.-", gradient: "from-purple-400 to-indigo-400" }
         ];
 
         window.getStudentDB = async function() {
@@ -630,6 +631,16 @@
 
     <!-- APPLICATION LOGIC -->
     <script>
+        // ฟังก์ชันช่วยเหลือแปลงข้อความ Icon ให้แสดงผลได้ถูกต้อง
+        function renderIconHTML(iconStr) {
+            if (!iconStr) return '<i class="fa-solid fa-laptop text-2xl"></i>';
+            if (iconStr.includes('fa-')) {
+                const cleanIcon = iconStr.includes('fa-solid') ? iconStr : `fa-solid ${iconStr}`;
+                return `<i class="${cleanIcon} text-2xl"></i>`;
+            }
+            return `<span class="text-3xl">${iconStr}</span>`;
+        }
+
         async function initApp() {
             await renderPublicCourses();
             await renderPublicGallery();
@@ -676,7 +687,7 @@
                         <div>
                             <div class="h-40 bg-gradient-to-tr ${c.gradient || 'from-sky-300 to-blue-400'} p-4 flex flex-col justify-between text-white relative">
                                 <span class="absolute top-3 right-3 bg-white/90 text-slate-800 text-xs px-2.5 py-1 rounded-full font-bold">${c.age || ''}</span>
-                                <div class="text-3xl">${c.icon || '💻'}</div>
+                                <div>${renderIconHTML(c.icon)}</div>
                                 <div><h3 class="font-bold text-lg">${c.title}</h3><p class="text-xs text-sky-100">${c.subtitle || ''}</p></div>
                             </div>
                             <div class="p-5 space-y-3">
@@ -913,14 +924,22 @@
             document.getElementById('admin-course-count').innerText = courses.length;
             courses.forEach(c => {
                 container.innerHTML += `
-                    <div class="bg-slate-50 rounded-2xl border border-slate-200 p-4 flex flex-col justify-between space-y-3">
+                    <div class="bg-white rounded-2xl border border-slate-200 p-4 flex flex-col justify-between space-y-3 shadow-sm hover:shadow-md transition">
                         <div class="flex items-start justify-between">
-                            <div class="flex items-center gap-3"><span class="text-2xl">${c.icon || '💻'}</span><div><h5 class="font-bold text-slate-800 text-sm">${c.title}</h5><p class="text-xs text-sky-600">${c.age || ''}</p></div></div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                                    ${renderIconHTML(c.icon)}
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-slate-800 text-sm">${c.title}</h5>
+                                    <p class="text-xs text-sky-600 font-medium">${c.age || ''}</p>
+                                </div>
+                            </div>
                             <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">${c.price || ''}</span>
                         </div>
                         <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
-                            <button onclick="openEditCourseModal('${c.id}')" class="bg-sky-50 text-sky-600 px-3 py-1 rounded-lg text-xs font-medium"><i class="fa-solid fa-pen-to-square"></i> แก้ไข</button>
-                            <button onclick="deleteCourse('${c.id}')" class="bg-rose-50 text-rose-600 px-3 py-1 rounded-lg text-xs font-medium"><i class="fa-solid fa-trash"></i> ลบ</button>
+                            <button onclick="openEditCourseModal('${c.id}')" class="bg-sky-50 text-sky-600 px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-sky-100 transition"><i class="fa-solid fa-pen-to-square"></i> แก้ไข</button>
+                            <button onclick="deleteCourse('${c.id}')" class="bg-rose-50 text-rose-600 px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-rose-100 transition"><i class="fa-solid fa-trash"></i> ลบ</button>
                         </div>
                     </div>
                 `;
@@ -942,8 +961,8 @@
                         </div>
                         <div class="p-3"><h5 class="font-bold text-slate-800 text-xs">${item.title || ''}</h5></div>
                         <div class="p-3 pt-0 flex justify-end gap-2 border-t border-slate-100">
-                            <button onclick="openEditGalleryModal('${item.id}')" class="bg-sky-50 text-sky-600 px-3 py-1 rounded-lg text-xs font-medium"><i class="fa-solid fa-pen-to-square"></i> แก้ไข</button>
-                            <button onclick="deleteGalleryItem('${item.id}')" class="bg-rose-50 text-rose-600 px-3 py-1 rounded-lg text-xs font-medium"><i class="fa-solid fa-trash"></i> ลบ</button>
+                            <button onclick="openEditGalleryModal('${item.id}')" class="bg-sky-50 text-sky-600 px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-sky-100 transition"><i class="fa-solid fa-pen-to-square"></i> แก้ไข</button>
+                            <button onclick="deleteGalleryItem('${item.id}')" class="bg-rose-50 text-rose-600 px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-rose-100 transition"><i class="fa-solid fa-trash"></i> ลบ</button>
                         </div>
                     </div>
                 `;
@@ -1014,10 +1033,10 @@
             document.getElementById('course-modal-title').innerText = "เพิ่มคอร์สใหม่";
             document.getElementById('course-edit-id').value = "";
             document.getElementById('course-title').value = "";
-            document.getElementById('course-age').value = "อายุ 8-14 ปี";
-            document.getElementById('course-icon').value = "💻";
-            document.getElementById('course-price').value = "3000";
-            document.getElementById('course-old-price').value = "3800";
+            document.getElementById('course-age').value = "7-10 ปี";
+            document.getElementById('course-icon').value = "fa-gamepad";
+            document.getElementById('course-price').value = "2500";
+            document.getElementById('course-old-price').value = "3200";
             document.getElementById('course-hours').value = "10 ชั่วโมง";
             document.getElementById('course-desc').value = "";
             document.getElementById('courseModal').classList.remove('hidden');
@@ -1031,7 +1050,7 @@
             document.getElementById('course-edit-id').value = c.id;
             document.getElementById('course-title').value = c.title || '';
             document.getElementById('course-age').value = c.age || '';
-            document.getElementById('course-icon').value = c.icon || '💻';
+            document.getElementById('course-icon').value = c.icon || 'fa-gamepad';
             document.getElementById('course-price').value = c.price ? String(c.price).replace(/[^0-9]/g, '') : '';
             document.getElementById('course-old-price').value = c.oldPrice ? String(c.oldPrice).replace(/[^0-9]/g, '') : '';
             document.getElementById('course-hours').value = c.hours || '';
