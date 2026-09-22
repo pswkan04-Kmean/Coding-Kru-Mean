@@ -17,6 +17,12 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .color-dot-btn.active {
+            ring-2: 2px;
+            ring-offset-2: 2px;
+            transform: scale(1.15);
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
@@ -129,17 +135,6 @@
                 <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200">TIMETABLE</span>
                 <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">ตารางการสอนผู้สอน (เชื่อมโยงระบบเรียน)</h2>
                 <p class="text-slate-600 text-sm">ตรวจสอบตารางเวลาว่างและการจองรอบเรียนของผู้เรียนในแต่ละวัน</p>
-            </div>
-
-            <div class="flex items-center justify-center gap-4 mb-6 text-xs font-semibold">
-                <div class="flex items-center gap-2 bg-emerald-50 text-emerald-800 px-3 py-1.5 rounded-lg border border-emerald-200">
-                    <span class="w-3 h-3 rounded-full bg-emerald-600"></span>
-                    <span>สีเขียว = ว่าง (ลงทะเบียนได้)</span>
-                </div>
-                <div class="flex items-center gap-2 bg-rose-50 text-rose-800 px-3 py-1.5 rounded-lg border border-rose-200">
-                    <span class="w-3 h-3 rounded-full bg-rose-600"></span>
-                    <span>สีแดง = ติดสอน / มีผู้จองแล้ว</span>
-                </div>
             </div>
 
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden p-4 sm:p-6 space-y-4">
@@ -329,7 +324,7 @@
                     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                         <div>
                             <h4 class="font-bold text-slate-900 text-sm sm:text-base">ตารางจัดการเรียนและการจองรอบ</h4>
-                            <p class="text-xs text-slate-500">คลิกที่ช่วงเวลาเพื่อสลับสถานะ และสามารถเลือกระบุชื่อนักเรียนในรอบเวลานั้นได้ทันที</p>
+                            <p class="text-xs text-slate-500">คลิกที่ช่วงเวลาเพื่อกำหนดนักเรียน และเลือกสีสถานะประจำตัวผู้เรียนได้</p>
                         </div>
                         <button onclick="handleSaveScheduleFromAdmin()" class="bg-purple-700 hover:bg-purple-800 text-white text-xs font-medium px-4 py-2 rounded-xl shadow-sm transition">
                             <i class="fa-solid fa-cloud-arrow-up"></i> บันทึกตารางการสอน
@@ -380,20 +375,21 @@
         </div>
     </main>
 
-    <!-- MODAL: LINK STUDENT TO TIME SLOT -->
+    <!-- MODAL: LINK STUDENT & PALETTE COLOR SELECTION -->
     <div id="linkStudentModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6 space-y-4 relative border border-slate-200">
             <button onclick="closeLinkStudentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
             <h3 class="text-base font-bold text-slate-900">กำหนดผู้เรียนในรอบเวลานี้</h3>
             <p id="modal-slot-info" class="text-xs text-sky-700 font-semibold bg-sky-50 p-2 rounded-lg border border-sky-200"></p>
             
-            <div class="space-y-3">
+            <div class="space-y-3.5">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">เลือกนักเรียน:</label>
                     <select id="modal-select-student-id" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 bg-slate-50">
                         <option value="">-- ไม่ระบุ (รอบว่าง หรือกลุ่มทั่วไป) --</option>
                     </select>
                 </div>
+
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">สถานะรอบเรียน:</label>
                     <select id="modal-select-slot-status" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 bg-slate-50">
@@ -401,14 +397,33 @@
                         <option value="busy">🔴 ไม่ว่าง / มีเรียน (Busy)</option>
                     </select>
                 </div>
-                <div class="flex gap-2 pt-2">
-                    <button onclick="confirmSlotStudentLink()" class="flex-1 bg-purple-700 hover:bg-purple-800 text-white font-medium py-2 rounded-xl text-xs transition">บันทึกข้อมูล</button>
+
+                <!-- PALETTE 10 COLORS -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">สีแท็ก / สีสถานะประจำตัวผู้เรียน (10 สี):</label>
+                    <div class="grid grid-cols-5 gap-2.5 bg-slate-50 p-3 rounded-xl border border-slate-200 justify-items-center">
+                        <button type="button" onclick="selectPaletteColor('#10b981')" class="color-dot-btn w-7 h-7 rounded-full bg-[#10b981] border-2 border-white shadow-sm transition" data-color="#10b981" title="เขียว"></button>
+                        <button type="button" onclick="selectPaletteColor('#ef4444')" class="color-dot-btn w-7 h-7 rounded-full bg-[#ef4444] border-2 border-white shadow-sm transition" data-color="#ef4444" title="แดง"></button>
+                        <button type="button" onclick="selectPaletteColor('#0284c7')" class="color-dot-btn w-7 h-7 rounded-full bg-[#0284c7] border-2 border-white shadow-sm transition" data-color="#0284c7" title="ฟ้า (เช่น น้องภูเขา)"></button>
+                        <button type="button" onclick="selectPaletteColor('#8b5cf6')" class="color-dot-btn w-7 h-7 rounded-full bg-[#8b5cf6] border-2 border-white shadow-sm transition" data-color="#8b5cf6" title="ม่วง"></button>
+                        <button type="button" onclick="selectPaletteColor('#f97316')" class="color-dot-btn w-7 h-7 rounded-full bg-[#f97316] border-2 border-white shadow-sm transition" data-color="#f97316" title="ส้ม"></button>
+                        <button type="button" onclick="selectPaletteColor('#ec4899')" class="color-dot-btn w-7 h-7 rounded-full bg-[#ec4899] border-2 border-white shadow-sm transition" data-color="#ec4899" title="ชมพู"></button>
+                        <button type="button" onclick="selectPaletteColor('#eab308')" class="color-dot-btn w-7 h-7 rounded-full bg-[#eab308] border-2 border-white shadow-sm transition" data-color="#eab308" title="เหลือง"></button>
+                        <button type="button" onclick="selectPaletteColor('#06b6d4')" class="color-dot-btn w-7 h-7 rounded-full bg-[#06b6d4] border-2 border-white shadow-sm transition" data-color="#06b6d4" title="ฟ้าทะเล"></button>
+                        <button type="button" onclick="selectPaletteColor('#b45309')" class="color-dot-btn w-7 h-7 rounded-full bg-[#b45309] border-2 border-white shadow-sm transition" data-color="#b45309" title="น้ำตาล"></button>
+                        <button type="button" onclick="selectPaletteColor('#64748b')" class="color-dot-btn w-7 h-7 rounded-full bg-[#64748b] border-2 border-white shadow-sm transition" data-color="#64748b" title="เทา"></button>
+                    </div>
+                    <input type="hidden" id="modal-selected-color-hex" value="#ef4444">
+                </div>
+
+                <div class="pt-2">
+                    <button onclick="confirmSlotStudentLink()" class="w-full bg-purple-700 hover:bg-purple-800 text-white font-medium py-2.5 rounded-xl text-xs shadow-sm transition">บันทึกข้อมูล</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: COURSE (เพิ่ม/แก้ไขหลักสูตร) -->
+    <!-- MODAL: COURSE -->
     <div id="courseModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 space-y-4 relative border border-slate-200">
             <button onclick="closeCourseModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
@@ -452,7 +467,7 @@
         </div>
     </div>
 
-    <!-- MODAL: GALLERY (เพิ่ม/แก้ไขภาพกิจกรรม) -->
+    <!-- MODAL: GALLERY -->
     <div id="galleryModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 space-y-4 relative border border-slate-200">
             <button onclick="closeGalleryModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
@@ -542,20 +557,9 @@
             { id: "s10", label: "19:00 - 20:00" }
         ];
 
-        const defaultCourses = [
-            { id: "c-1", title: "Graphic Designer", subtitle: "การออกแบบสื่อสิ่งพิมพ์และดิจิทัล", age: "6-10 ปี", icon: "fa-palette", hours: "10 ชั่วโมง", tag: "หลักสูตรแนะนำ", desc: "ออกแบบสไลด์นำเสนอ, โปสเตอร์ และงานกราฟิกดิจิทัลเบื้องต้น", price: "2,000.-", oldPrice: "2,900.-" },
-            { id: "c-2", title: "Scratch & Block Coding", subtitle: "พื้นฐานการเขียนโปรแกรมแบบบล็อก", age: "7-12 ปี", icon: "fa-gamepad", hours: "10 ชั่วโมง", tag: "หลักสูตรแนะนำ", desc: "พัฒนาตรรกะการโปรแกรมผ่านการสร้างเกมและสื่อเคลื่อนไหว", price: "2,000.-", oldPrice: "2,900.-" },
-            { id: "c-3", title: "Python for Kids & Teens", subtitle: "ภาษาคอมพิวเตอร์ระดับสากล", age: "9-15 ปี", icon: "fa-code", hours: "10 ชั่วโมง", tag: "หลักสูตรแนะนำ", desc: "เริ่มต้นภาษาโค้ดด้วย Python ฝึกการคิดวิเคราะห์และแก้โจทย์", price: "3,500.-", oldPrice: "3,800.-" },
-            { id: "c-4", title: "Mini Project C/C++", subtitle: "โครงงานคอมพิวเตอร์ขั้นสูง", age: "10-15 ปี", icon: "fa-laptop-code", hours: "10 ชั่วโมง", tag: "หลักสูตรแนะนำ", desc: "เขียนภาษา C/C++ สำหรับการพัฒนาโครงงานและฮาร์ดแวร์", price: "5,000.-", oldPrice: "7,900.-" }
-        ];
-
         window.getCoursesDB = async function() {
             try {
                 const querySnapshot = await getDocs(collection(db, "courses"));
-                if (querySnapshot.empty) {
-                    for (let c of defaultCourses) { await setDoc(doc(db, "courses", c.id), c); }
-                    return defaultCourses;
-                }
                 let data = [];
                 querySnapshot.forEach((doc) => { 
                     let item = doc.data();
@@ -563,7 +567,7 @@
                     data.push(item); 
                 });
                 return data;
-            } catch (e) { return defaultCourses; }
+            } catch (e) { return []; }
         };
 
         window.saveCourseToDB = async function(id, courseData) { await setDoc(doc(db, "courses", String(id)), courseData); };
@@ -641,6 +645,17 @@
             return `<span class="text-xl">${iconStr}</span>`;
         }
 
+        function selectPaletteColor(hex) {
+            document.getElementById('modal-selected-color-hex').value = hex;
+            document.querySelectorAll('.color-dot-btn').forEach(btn => {
+                if (btn.getAttribute('data-color') === hex) {
+                    btn.classList.add('ring-2', 'ring-purple-600', 'ring-offset-2', 'scale-110');
+                } else {
+                    btn.classList.remove('ring-2', 'ring-purple-600', 'ring-offset-2', 'scale-110');
+                }
+            });
+        }
+
         async function initApp() {
             currentTimeSlots = await window.getTimeSlotsDB();
             currentScheduleData = await window.getScheduleDB();
@@ -663,6 +678,129 @@
                     switchTab('dashboard');
                 }
             }
+        }
+
+        async function renderPublicSchedule() {
+            const headerTr = document.getElementById('public-schedule-header-tr');
+            const tbody = document.getElementById('public-schedule-tbody');
+            if (!headerTr || !tbody) return;
+
+            headerTr.innerHTML = `<th class="p-3 text-left w-28 sticky left-0 bg-slate-100 border-r border-slate-200">วัน / เวลา</th>`;
+            currentTimeSlots.forEach(slot => {
+                headerTr.innerHTML += `<th class="p-2 border-r border-slate-200">${slot.label}</th>`;
+            });
+
+            tbody.innerHTML = '';
+            const dbStudents = await window.getStudentDB();
+            const daysOrder = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+            const dayNames = { mon: "จันทร์", tue: "อังคาร", wed: "พุธ", thu: "พฤหัสบดี", fri: "ศุกร์", sat: "เสาร์", sun: "อาทิตย์" };
+
+            daysOrder.forEach(dayKey => {
+                const dayObj = currentScheduleData[dayKey] || {};
+                let rowHTML = `<tr class="hover:bg-slate-50 transition">
+                    <td class="p-3 text-left font-bold text-slate-900 border-r border-slate-200 sticky left-0 bg-white">วัน${dayNames[dayKey]}</td>`;
+
+                currentTimeSlots.forEach(slot => {
+                    const slotData = dayObj[slot.id] || { status: 'available', studentId: '', tagColor: '#10b981' };
+                    const tagColor = slotData.tagColor || (slotData.status === 'busy' ? '#ef4444' : '#10b981');
+                    let stName = slotData.status === 'busy' 
+                        ? (slotData.studentId && dbStudents[slotData.studentId] ? dbStudents[slotData.studentId].name : 'ติดสอน')
+                        : 'ว่าง';
+
+                    let badge = `<span style="background-color: ${tagColor}" class="inline-block text-white text-[11px] font-semibold px-2.5 py-0.5 rounded shadow-sm truncate max-w-[90px]">${stName}</span>`;
+
+                    rowHTML += `<td class="p-2 border-r border-slate-100">${badge}</td>`;
+                });
+
+                rowHTML += `</tr>`;
+                tbody.innerHTML += rowHTML;
+            });
+        }
+
+        async function loadAdminSchedule() {
+            const headerTr = document.getElementById('admin-schedule-header-tr');
+            const tbody = document.getElementById('admin-schedule-tbody');
+            if (!headerTr || !tbody) return;
+
+            headerTr.innerHTML = `<th class="p-2 text-left w-28 sticky left-0 bg-slate-100 border-r border-slate-200">วัน</th>`;
+            currentTimeSlots.forEach(slot => {
+                headerTr.innerHTML += `<th class="p-2 border-r border-slate-200">${slot.label}</th>`;
+            });
+
+            tbody.innerHTML = '';
+            const dbStudents = await window.getStudentDB();
+            const daysOrder = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+            const dayNames = { mon: "จันทร์", tue: "อังคาร", wed: "พุธ", thu: "พฤหัสบดี", fri: "ศุกร์", sat: "เสาร์", sun: "อาทิตย์" };
+
+            daysOrder.forEach(dayKey => {
+                const dayObj = currentScheduleData[dayKey] || {};
+                let rowHTML = `<tr>
+                    <td class="p-2 text-left font-bold text-slate-900 sticky left-0 bg-white border-r border-slate-200">วัน${dayNames[dayKey]}</td>`;
+
+                currentTimeSlots.forEach(slot => {
+                    const slotData = dayObj[slot.id] || { status: 'available', studentId: '', tagColor: '#10b981' };
+                    const tagColor = slotData.tagColor || (slotData.status === 'busy' ? '#ef4444' : '#10b981');
+                    let btnText = slotData.status === 'busy' 
+                        ? (slotData.studentId && dbStudents[slotData.studentId] ? dbStudents[slotData.studentId].name : 'ไม่ว่าง')
+                        : 'ว่าง';
+
+                    rowHTML += `<td class="p-1.5 border-r border-slate-100">
+                        <button type="button" onclick="openLinkStudentModal('${dayKey}', '${slot.id}')" style="background-color: ${tagColor}" class="text-white font-bold px-2 py-1 rounded text-[11px] transition shadow-sm truncate max-w-[95px]">
+                            ${btnText}
+                        </button>
+                    </td>`;
+                });
+
+                rowHTML += `</tr>`;
+                tbody.innerHTML += rowHTML;
+            });
+        }
+
+        async function openLinkStudentModal(dayKey, slotId) {
+            activeEditSlotCtx = { dayKey, slotId };
+            const dayNames = { mon: "จันทร์", tue: "อังคาร", wed: "พุธ", thu: "พฤหัสบดี", fri: "ศุกร์", sat: "เสาร์", sun: "อาทิตย์" };
+            const dayObj = currentScheduleData[dayKey] || {};
+            const slotData = dayObj[slotId] || { status: 'available', studentId: '', tagColor: '#10b981' };
+            const slotConfig = currentTimeSlots.find(s => s.id === slotId);
+
+            document.getElementById('modal-slot-info').innerText = `วัน${dayNames[dayKey]} • ช่วงเวลา ${slotConfig ? slotConfig.label : ''}`;
+
+            const studentSelect = document.getElementById('modal-select-student-id');
+            studentSelect.innerHTML = `<option value="">-- ไม่ระบุ (รอบว่าง หรือติดสอนทั่วไป) --</option>`;
+
+            const dbStudents = await window.getStudentDB();
+            for (let id in dbStudents) {
+                studentSelect.innerHTML += `<option value="${id}">${dbStudents[id].name} (ID: ${id})</option>`;
+            }
+
+            studentSelect.value = slotData.studentId || '';
+            document.getElementById('modal-select-slot-status').value = slotData.status || 'available';
+            
+            // เลือกสี Palette
+            const defaultColor = slotData.tagColor || (slotData.status === 'busy' ? '#ef4444' : '#10b981');
+            selectPaletteColor(defaultColor);
+
+            document.getElementById('linkStudentModal').classList.remove('hidden');
+        }
+
+        function closeLinkStudentModal() { document.getElementById('linkStudentModal').classList.add('hidden'); }
+
+        function confirmSlotStudentLink() {
+            if (!activeEditSlotCtx) return;
+            const { dayKey, slotId } = activeEditSlotCtx;
+            const selectedStudent = document.getElementById('modal-select-student-id').value;
+            const selectedStatus = document.getElementById('modal-select-slot-status').value;
+            const selectedColor = document.getElementById('modal-selected-color-hex').value;
+
+            if (!currentScheduleData[dayKey]) currentScheduleData[dayKey] = {};
+            currentScheduleData[dayKey][slotId] = {
+                status: selectedStatus,
+                studentId: selectedStudent,
+                tagColor: selectedColor
+            };
+
+            closeLinkStudentModal();
+            loadAdminSchedule();
         }
 
         async function renderPublicCourses() {
@@ -731,127 +869,6 @@
             });
         }
 
-        async function renderPublicSchedule() {
-            const headerTr = document.getElementById('public-schedule-header-tr');
-            const tbody = document.getElementById('public-schedule-tbody');
-            if (!headerTr || !tbody) return;
-
-            headerTr.innerHTML = `<th class="p-3 text-left w-28 sticky left-0 bg-slate-100 border-r border-slate-200">วัน / เวลา</th>`;
-            currentTimeSlots.forEach(slot => {
-                headerTr.innerHTML += `<th class="p-2 border-r border-slate-200">${slot.label}</th>`;
-            });
-
-            tbody.innerHTML = '';
-            const dbStudents = await window.getStudentDB();
-            const daysOrder = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
-            const dayNames = { mon: "จันทร์", tue: "อังคาร", wed: "พุธ", thu: "พฤหัสบดี", fri: "ศุกร์", sat: "เสาร์", sun: "อาทิตย์" };
-
-            daysOrder.forEach(dayKey => {
-                const dayObj = currentScheduleData[dayKey] || {};
-                let rowHTML = `<tr class="hover:bg-slate-50 transition">
-                    <td class="p-3 text-left font-bold text-slate-900 border-r border-slate-200 sticky left-0 bg-white">วัน${dayNames[dayKey]}</td>`;
-
-                currentTimeSlots.forEach(slot => {
-                    const slotData = dayObj[slot.id] || { status: 'available', studentId: '' };
-                    let badge = `<span class="inline-block bg-emerald-600 text-white text-[11px] font-semibold px-2 py-0.5 rounded">ว่าง</span>`;
-
-                    if (slotData.status === 'busy') {
-                        let stName = slotData.studentId && dbStudents[slotData.studentId] ? dbStudents[slotData.studentId].name : 'ติดสอน';
-                        badge = `<span class="inline-block bg-rose-600 text-white text-[11px] font-semibold px-2 py-0.5 rounded opacity-90 truncate max-w-[80px]">${stName}</span>`;
-                    }
-
-                    rowHTML += `<td class="p-2 border-r border-slate-100">${badge}</td>`;
-                });
-
-                rowHTML += `</tr>`;
-                tbody.innerHTML += rowHTML;
-            });
-        }
-
-        async function loadAdminSchedule() {
-            const headerTr = document.getElementById('admin-schedule-header-tr');
-            const tbody = document.getElementById('admin-schedule-tbody');
-            if (!headerTr || !tbody) return;
-
-            headerTr.innerHTML = `<th class="p-2 text-left w-28 sticky left-0 bg-slate-100 border-r border-slate-200">วัน</th>`;
-            currentTimeSlots.forEach(slot => {
-                headerTr.innerHTML += `<th class="p-2 border-r border-slate-200">${slot.label}</th>`;
-            });
-
-            tbody.innerHTML = '';
-            const dbStudents = await window.getStudentDB();
-            const daysOrder = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
-            const dayNames = { mon: "จันทร์", tue: "อังคาร", wed: "พุธ", thu: "พฤหัสบดี", fri: "ศุกร์", sat: "เสาร์", sun: "อาทิตย์" };
-
-            daysOrder.forEach(dayKey => {
-                const dayObj = currentScheduleData[dayKey] || {};
-                let rowHTML = `<tr>
-                    <td class="p-2 text-left font-bold text-slate-900 sticky left-0 bg-white border-r border-slate-200">วัน${dayNames[dayKey]}</td>`;
-
-                currentTimeSlots.forEach(slot => {
-                    const slotData = dayObj[slot.id] || { status: 'available', studentId: '' };
-                    let btnText = "🟢 ว่าง";
-                    let btnClass = "bg-emerald-600 text-white";
-
-                    if (slotData.status === 'busy') {
-                        let stName = slotData.studentId && dbStudents[slotData.studentId] ? dbStudents[slotData.studentId].name : 'ไม่ว่าง';
-                        btnText = `🔴 ${stName}`;
-                        btnClass = "bg-rose-600 text-white";
-                    }
-
-                    rowHTML += `<td class="p-1.5 border-r border-slate-100">
-                        <button type="button" onclick="openLinkStudentModal('${dayKey}', '${slot.id}')" class="${btnClass} font-bold px-2 py-1 rounded text-[11px] transition truncate max-w-[90px]">
-                            ${btnText}
-                        </button>
-                    </td>`;
-                });
-
-                rowHTML += `</tr>`;
-                tbody.innerHTML += rowHTML;
-            });
-        }
-
-        async function openLinkStudentModal(dayKey, slotId) {
-            activeEditSlotCtx = { dayKey, slotId };
-            const dayNames = { mon: "จันทร์", tue: "อังคาร", wed: "พุธ", thu: "พฤหัสบดี", fri: "ศุกร์", sat: "เสาร์", sun: "อาทิตย์" };
-            const dayObj = currentScheduleData[dayKey] || {};
-            const slotData = dayObj[slotId] || { status: 'available', studentId: '' };
-            const slotConfig = currentTimeSlots.find(s => s.id === slotId);
-
-            document.getElementById('modal-slot-info').innerText = `วัน${dayNames[dayKey]} • ช่วงเวลา ${slotConfig ? slotConfig.label : ''}`;
-
-            const studentSelect = document.getElementById('modal-select-student-id');
-            studentSelect.innerHTML = `<option value="">-- ไม่ระบุ (รอบว่าง หรือติดสอนทั่วไป) --</option>`;
-
-            const dbStudents = await window.getStudentDB();
-            for (let id in dbStudents) {
-                studentSelect.innerHTML += `<option value="${id}">${dbStudents[id].name} (ID: ${id})</option>`;
-            }
-
-            studentSelect.value = slotData.studentId || '';
-            document.getElementById('modal-select-slot-status').value = slotData.status || 'available';
-            document.getElementById('linkStudentModal').classList.remove('hidden');
-        }
-
-        function closeLinkStudentModal() { document.getElementById('linkStudentModal').classList.add('hidden'); }
-
-        function confirmSlotStudentLink() {
-            if (!activeEditSlotCtx) return;
-            const { dayKey, slotId } = activeEditSlotCtx;
-            const selectedStudent = document.getElementById('modal-select-student-id').value;
-            const selectedStatus = document.getElementById('modal-select-slot-status').value;
-
-            if (!currentScheduleData[dayKey]) currentScheduleData[dayKey] = {};
-            currentScheduleData[dayKey][slotId] = {
-                status: selectedStatus,
-                studentId: selectedStudent
-            };
-
-            closeLinkStudentModal();
-            loadAdminSchedule();
-        }
-
-        // จัดการหลักสูตรหลังบ้าน
         async function loadAdminCourses() {
             const courses = await window.getCoursesDB();
             const container = document.getElementById('admin-course-grid');
@@ -942,7 +959,6 @@
             }
         }
 
-        // จัดการภาพกิจกรรมหลังบ้าน
         async function loadAdminGallery() {
             const gallery = await window.getGalleryDB();
             const container = document.getElementById('admin-gallery-grid');
@@ -1097,10 +1113,11 @@
                     const slotData = dayObj[slot.id];
                     if (slotData && slotData.studentId === studentId) {
                         foundCount++;
+                        const colorHex = slotData.tagColor || '#0284c7';
                         linkedContainer.innerHTML += `
-                            <div class="bg-sky-50 border border-sky-200 p-2.5 rounded-lg flex items-center justify-between">
-                                <span class="font-bold text-sky-900">วัน${dayNames[dayKey]}</span>
-                                <span class="font-mono text-sky-700">${slot.label}</span>
+                            <div style="border-color: ${colorHex}" class="bg-white border-l-4 p-3 rounded-lg shadow-sm flex items-center justify-between">
+                                <span class="font-bold text-slate-900">วัน${dayNames[dayKey]}</span>
+                                <span class="font-mono text-slate-600">${slot.label}</span>
                             </div>
                         `;
                     }
