@@ -210,7 +210,7 @@
             </div>
         </div>
 
-        <!-- TAB 6: STUDENT DASHBOARD (เพิ่มกล่อง ค้างชำระ / เรียนเกิน) -->
+        <!-- TAB 6: STUDENT DASHBOARD -->
         <div id="tab-dashboard" class="tab-content py-10 max-w-5xl mx-auto px-4">
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 space-y-6">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b border-slate-200 text-center sm:text-left">
@@ -228,7 +228,15 @@
                 </div>
 
                 <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 space-y-4">
-                    <h4 class="font-bold text-slate-900 text-base">สรุปจำนวนชั่วโมงการเรียน</h4>
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                        <h4 class="font-bold text-slate-900 text-base">สรุปจำนวนชั่วโมงการเรียน</h4>
+                        <!-- ปุ่มชำระเงิน / ต่อคอร์ส -->
+                        <button onclick="openPaymentModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-4 py-2 rounded-xl shadow-sm transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-qrcode text-sm"></i>
+                            <span>ชำระค่าเรียน / ต่อคอร์ส</span>
+                        </button>
+                    </div>
+
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
                         <div class="bg-white p-3 rounded-lg border border-slate-200">
                             <p class="text-xs text-slate-500 font-medium">ชั่วโมงทั้งหมด</p>
@@ -242,7 +250,6 @@
                             <p class="text-xs text-slate-500 font-medium">คงเหลือ</p>
                             <p class="text-lg sm:text-xl font-bold text-emerald-700" id="student-display-left">0 ชม.</p>
                         </div>
-                        <!-- กล่องแสดงค้างชำระ / เรียนเกิน -->
                         <div class="bg-white p-3 rounded-lg border border-slate-200">
                             <p class="text-xs text-slate-500 font-medium">ค้างชำระ / เรียนเกิน</p>
                             <p class="text-lg sm:text-xl font-bold text-slate-400" id="student-display-overdue">0 ชม.</p>
@@ -288,6 +295,7 @@
                     <button onclick="switchAdminSubTab('students')" id="admin-subtab-btn-students" class="pb-2.5 border-b-2 border-purple-700 text-purple-800 font-bold text-xs sm:text-sm transition whitespace-nowrap">จัดการข้อมูลนักเรียน</button>
                     <button onclick="switchAdminSubTab('courses')" id="admin-subtab-btn-courses" class="pb-2.5 border-b-2 border-transparent text-slate-600 font-medium text-xs sm:text-sm transition whitespace-nowrap">จัดการหลักสูตร</button>
                     <button onclick="switchAdminSubTab('schedule')" id="admin-subtab-btn-schedule" class="pb-2.5 border-b-2 border-transparent text-slate-600 font-medium text-xs sm:text-sm transition whitespace-nowrap">จัดการตารางสอน & ลิงก์นักเรียน</button>
+                    <button onclick="switchAdminSubTab('payment')" id="admin-subtab-btn-payment" class="pb-2.5 border-b-2 border-transparent text-slate-600 font-medium text-xs sm:text-sm transition whitespace-nowrap">จัดการ QR Code ชำระเงิน</button>
                     <button onclick="switchAdminSubTab('timeslots')" id="admin-subtab-btn-timeslots" class="pb-2.5 border-b-2 border-transparent text-slate-600 font-medium text-xs sm:text-sm transition whitespace-nowrap">ปรับเปลี่ยนช่วงเวลาเรียน</button>
                     <button onclick="switchAdminSubTab('gallery')" id="admin-subtab-btn-gallery" class="pb-2.5 border-b-2 border-transparent text-slate-600 font-medium text-xs sm:text-sm transition whitespace-nowrap">จัดการภาพกิจกรรม</button>
                 </div>
@@ -353,7 +361,59 @@
                     </div>
                 </div>
 
-                <!-- SUBTAB 4: TIME SLOTS EDITOR -->
+                <!-- SUBTAB 4: PAYMENT & QR CODE CONFIG -->
+                <div id="admin-subtab-payment" class="admin-subtab-content hidden space-y-6">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm sm:text-base">ตั้งค่าช่องทางการชำระเงิน & QR Code</h4>
+                        <p class="text-xs text-slate-500">อัปเดตภาพ QR Code รับเงิน และ QR Code LINE สำหรับแสดงในหน้านักเรียน</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <!-- ฝั่ง QR Code สแกนจ่ายเงิน -->
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 space-y-4">
+                            <h5 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-qrcode text-emerald-600"></i> QR Code รับชำระเงิน (PromptPay)
+                            </h5>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">เลือกไฟล์ภาพ QR Code รับเงิน:</label>
+                                <input type="file" id="admin-pay-qr-file" accept="image/*" onchange="handlePayQRFileSelect(event)" class="w-full text-xs border border-slate-300 rounded-lg p-1.5 bg-slate-50">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">หรือระบุ URL ภาพ:</label>
+                                <input type="url" id="admin-pay-qr-url" placeholder="https://..." class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 bg-slate-50">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">รายละเอียดบัญชีธนาคาร:</label>
+                                <input type="text" id="admin-bank-info" placeholder="กสิกรไทย 123-4-56789-0 นางสาวกัญณภัทร" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 bg-slate-50">
+                            </div>
+                        </div>
+
+                        <!-- ฝั่ง QR Code LINE -->
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 space-y-4">
+                            <h5 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                                <i class="fa-brands fa-line text-emerald-600"></i> QR Code LINE รับแจ้งสลิป
+                            </h5>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">เลือกไฟล์ภาพ QR Code LINE:</label>
+                                <input type="file" id="admin-line-qr-file" accept="image/*" onchange="handleLineQRFileSelect(event)" class="w-full text-xs border border-slate-300 rounded-lg p-1.5 bg-slate-50">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">หรือระบุ URL ภาพ:</label>
+                                <input type="url" id="admin-line-qr-url" placeholder="https://..." class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 bg-slate-50">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">คำแนะนำเพิ่ม:</label>
+                                <input type="text" id="admin-line-info" placeholder="แอดไลน์แล้วส่งสลิปพร้อมระบุ ID นักเรียน" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 bg-slate-50">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="savePaymentSettings()" class="bg-purple-700 hover:bg-purple-800 text-white font-medium px-6 py-2.5 rounded-xl text-xs shadow-sm transition flex items-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> บันทึกข้อมูลการชำระเงิน
+                    </button>
+                </div>
+
+                <!-- SUBTAB 5: TIME SLOTS EDITOR -->
                 <div id="admin-subtab-timeslots" class="admin-subtab-content hidden space-y-6">
                     <div class="flex items-center justify-between">
                         <div>
@@ -370,7 +430,7 @@
                     </button>
                 </div>
 
-                <!-- SUBTAB 5: GALLERY MANAGEMENT -->
+                <!-- SUBTAB 6: GALLERY MANAGEMENT -->
                 <div id="admin-subtab-gallery" class="admin-subtab-content hidden space-y-6">
                     <div class="flex items-center justify-between">
                         <div>
@@ -384,6 +444,47 @@
             </div>
         </div>
     </main>
+
+    <!-- MODAL: PAYMENT FOR STUDENTS -->
+    <div id="studentPaymentModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6 space-y-5 relative max-h-[90vh] overflow-y-auto border border-slate-200">
+            <button onclick="closePaymentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+            <div class="text-center space-y-1">
+                <span class="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">PAYMENT & RENEWAL</span>
+                <h3 class="text-lg font-bold text-slate-900">ชำระค่าเรียน / ต่อคอร์สเรียน</h3>
+                <p class="text-xs text-slate-500">สแกน QR Code เพื่อชำระเงินและแจ้งส่งสลิปผ่านทาง LINE ครูมีน</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <!-- QR Code 1: Scan to Pay -->
+                <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center space-y-3 flex flex-col items-center justify-between">
+                    <span class="text-xs font-bold text-slate-800 flex items-center gap-1"><i class="fa-solid fa-qrcode text-emerald-600"></i> สแกนเพื่อชำระเงิน</span>
+                    <div class="w-36 h-36 bg-white p-2 rounded-lg border border-slate-200 flex items-center justify-center shadow-sm">
+                        <img id="student-pay-qr-img" src="" alt="PromptPay QR Code" class="max-h-full max-w-full object-contain" onerror="this.src='https://placehold.co/200x200/E2E8F0/1E293B?text=QR+PromptPay'">
+                    </div>
+                    <p id="student-bank-info-display" class="text-[11px] text-slate-600 font-medium leading-snug">กสิกรไทย 123-4-56789-0<br>นางสาวกัญณภัทร</p>
+                </div>
+
+                <!-- QR Code 2: Line Send Slip -->
+                <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center space-y-3 flex flex-col items-center justify-between">
+                    <span class="text-xs font-bold text-slate-800 flex items-center gap-1"><i class="fa-brands fa-line text-emerald-600"></i> สแกนแจ้งสลิปทาง LINE</span>
+                    <div class="w-36 h-36 bg-white p-2 rounded-lg border border-slate-200 flex items-center justify-center shadow-sm">
+                        <img id="student-line-qr-img" src="" alt="LINE QR Code" class="max-h-full max-w-full object-contain" onerror="this.src='https://placehold.co/200x200/E2E8F0/1E293B?text=QR+LINE'">
+                    </div>
+                    <p id="student-line-info-display" class="text-[11px] text-slate-600 font-medium leading-snug">สแกนแจ้งสลิปการโอน<br>พร้อมระบุชื่อ/ID นักเรียน</p>
+                </div>
+            </div>
+
+            <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl text-xs text-amber-800 space-y-1">
+                <p class="font-bold"><i class="fa-solid fa-circle-info mr-1"></i> หมายเหตุการต่อคอร์ส:</p>
+                <p>เมื่อแจ้งสลิปการโอนเงินผ่านทาง LINE เรียบร้อยแล้ว ครูมีนจะทำการเติมจำนวนชั่วโมงเรียนเข้าระบบให้ทันทีครับ</p>
+            </div>
+
+            <a href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-xl text-xs shadow-sm transition flex items-center justify-center gap-2">
+                <i class="fa-brands fa-line text-base"></i> ส่งสลิปแจ้งชำระเงินทาง LINE
+            </a>
+        </div>
+    </div>
 
     <!-- MODAL: LINK STUDENT & PALETTE COLOR SELECTION -->
     <div id="linkStudentModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
@@ -408,7 +509,6 @@
                     </select>
                 </div>
 
-                <!-- PALETTE 10 COLORS -->
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">สีแท็ก / สีสถานะประจำตัวผู้เรียน (10 สี):</label>
                     <div class="grid grid-cols-5 gap-2.5 bg-slate-50 p-3 rounded-xl border border-slate-200 justify-items-center">
@@ -682,6 +782,26 @@
         window.saveStudentToDB = async function(id, studentData) { await setDoc(doc(db, "students", id), studentData); };
         window.deleteStudentFromDB = async function(id) { await deleteDoc(doc(db, "students", id)); };
 
+        // FIREBASE DB FOR PAYMENT SETTINGS
+        window.getPaymentSettingsDB = async function() {
+            try {
+                const docSnap = await getDoc(doc(db, "settings", "payment"));
+                if (docSnap.exists()) return docSnap.data();
+                return {
+                    payQrUrl: "",
+                    bankInfo: "กสิกรไทย 123-4-56789-0 นางสาวกัญณภัทร",
+                    lineQrUrl: "",
+                    lineInfo: "สแกนแอดไลน์แล้วส่งสลิปพร้อมระบุชื่อ/ID นักเรียน"
+                };
+            } catch (e) {
+                return {};
+            }
+        };
+
+        window.savePaymentSettingsDB = async function(data) {
+            await setDoc(doc(db, "settings", "payment"), data);
+        };
+
         window.addEventListener('DOMContentLoaded', async () => { await initApp(); });
     </script>
 
@@ -691,6 +811,8 @@
         let currentScheduleData = {};
         let activeEditSlotCtx = null;
         let uploadedImageBase64 = "";
+        let uploadedPayQRBase64 = "";
+        let uploadedLineQRBase64 = "";
 
         function renderIconHTML(iconStr) {
             if (!iconStr) return '<i class="fa-solid fa-laptop text-[16px]"></i>';
@@ -736,7 +858,65 @@
             }
         }
 
-        // โหลดข้อมูล Dashboard สำหรับหน้านักเรียน (เพิ่มคำนวณ ค้างชำระ / เรียนเกิน)
+        async function openPaymentModal() {
+            const config = await window.getPaymentSettingsDB();
+            document.getElementById('student-pay-qr-img').src = config.payQrUrl || 'https://placehold.co/200x200/E2E8F0/1E293B?text=QR+PromptPay';
+            document.getElementById('student-bank-info-display').innerText = config.bankInfo || 'กสิกรไทย 123-4-56789-0 นางสาวกัญณภัทร';
+            document.getElementById('student-line-qr-img').src = config.lineQrUrl || 'https://placehold.co/200x200/E2E8F0/1E293B?text=QR+LINE';
+            document.getElementById('student-line-info-display').innerText = config.lineInfo || 'สแกนแอดไลน์แล้วส่งสลิปพร้อมระบุชื่อ/ID นักเรียน';
+
+            document.getElementById('studentPaymentModal').classList.remove('hidden');
+        }
+
+        function closePaymentModal() {
+            document.getElementById('studentPaymentModal').classList.add('hidden');
+        }
+
+        function handlePayQRFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedPayQRBase64 = e.target.result;
+                    document.getElementById('admin-pay-qr-url').value = "";
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleLineQRFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedLineQRBase64 = e.target.result;
+                    document.getElementById('admin-line-qr-url').value = "";
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function loadPaymentSettingsForAdmin() {
+            const config = await window.getPaymentSettingsDB();
+            document.getElementById('admin-pay-qr-url').value = (config.payQrUrl && config.payQrUrl.startsWith('data:')) ? '' : (config.payQrUrl || '');
+            document.getElementById('admin-bank-info').value = config.bankInfo || '';
+            document.getElementById('admin-line-qr-url').value = (config.lineQrUrl && config.lineQrUrl.startsWith('data:')) ? '' : (config.lineQrUrl || '');
+            document.getElementById('admin-line-info').value = config.lineInfo || '';
+            uploadedPayQRBase64 = (config.payQrUrl && config.payQrUrl.startsWith('data:')) ? config.payQrUrl : '';
+            uploadedLineQRBase64 = (config.lineQrUrl && config.lineQrUrl.startsWith('data:')) ? config.lineQrUrl : '';
+        }
+
+        async function savePaymentSettings() {
+            const payQrUrl = uploadedPayQRBase64 || document.getElementById('admin-pay-qr-url').value.trim();
+            const bankInfo = document.getElementById('admin-bank-info').value.trim();
+            const lineQrUrl = uploadedLineQRBase64 || document.getElementById('admin-line-qr-url').value.trim();
+            const lineInfo = document.getElementById('admin-line-info').value.trim();
+
+            const paymentData = { payQrUrl, bankInfo, lineQrUrl, lineInfo };
+            await window.savePaymentSettingsDB(paymentData);
+            alert("บันทึกข้อมูลช่องทางการชำระเงินเรียบร้อยแล้ว");
+        }
+
         async function loadDashboardData(studentId, cachedDb = null) {
             const db = cachedDb || await window.getStudentDB();
             const student = db[studentId];
@@ -1246,7 +1426,7 @@
         }
 
         function switchAdminSubTab(subTab) {
-            ['students', 'courses', 'schedule', 'timeslots', 'gallery'].forEach(tab => {
+            ['students', 'courses', 'schedule', 'payment', 'timeslots', 'gallery'].forEach(tab => {
                 document.getElementById(`admin-subtab-${tab}`).classList.add('hidden');
                 document.getElementById(`admin-subtab-btn-${tab}`).className = "pb-2.5 border-b-2 border-transparent text-slate-600 font-medium text-xs sm:text-sm transition whitespace-nowrap";
             });
@@ -1256,6 +1436,7 @@
             if (subTab === 'students') loadAdminStudents();
             else if (subTab === 'courses') loadAdminCourses();
             else if (subTab === 'schedule') loadAdminSchedule();
+            else if (subTab === 'payment') loadPaymentSettingsForAdmin();
             else if (subTab === 'timeslots') renderTimeSlotsEditor();
             else if (subTab === 'gallery') loadAdminGallery();
         }
@@ -1264,6 +1445,7 @@
             await loadAdminStudents();
             await loadAdminCourses();
             await loadAdminSchedule();
+            await loadPaymentSettingsForAdmin();
             await loadAdminGallery();
             renderTimeSlotsEditor();
         }
