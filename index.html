@@ -8,10 +8,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Kanit -->
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Mitr & Prompt -->
+    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Kanit', sans-serif; }
+        body { font-family: 'Prompt', 'Mitr', sans-serif; }
+        h1, h2, h3, h4, h5, .cute-font { font-family: 'Mitr', sans-serif; }
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
@@ -19,53 +21,67 @@
 </head>
 <body class="bg-slate-50 text-slate-700 min-h-screen flex flex-col selection:bg-pink-200 selection:text-pink-800">
 
-    <!-- Navbar -->
+    <!-- Header / Navbar -->
     <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-sky-100">
         <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-sky-400 to-pink-400 flex items-center justify-center text-white shadow-md">
-                    <i class="fa-solid fa-laptop-code text-lg"></i>
+            <!-- Logo -->
+            <div class="flex items-center space-x-2.5 sm:space-x-3 cursor-pointer" onclick="switchTab('home')">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-sky-400 to-pink-400 flex items-center justify-center text-white shadow-md shrink-0">
+                    <i class="fa-solid fa-laptop-code text-base sm:text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-base md:text-lg text-slate-800 leading-tight">โค้ดดิ้งกับครูมีน</h1>
-                    <p class="text-[11px] text-sky-600 font-medium">Coding & Computer Kids Lab</p>
+                    <h1 class="font-bold text-sm sm:text-base md:text-lg text-slate-800 leading-tight">โค้ดดิ้งกับครูมีน</h1>
+                    <p class="text-[10px] sm:text-[11px] text-sky-600 font-medium">Coding & Computer Kids Lab</p>
                 </div>
             </div>
 
-            <nav class="hidden md:flex items-center space-x-2 bg-slate-100/70 p-1 rounded-full border border-slate-200/60">
-                <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-5 py-2 rounded-full font-medium text-sm text-sky-600 bg-white shadow-sm transition">หน้าแรก</button>
-                <button onclick="switchTab('courses')" id="nav-courses" class="nav-btn px-5 py-2 rounded-full font-medium text-sm text-slate-600 hover:text-slate-900 transition">คอร์สเรียนทั้งหมด</button>
-                <button onclick="switchTab('gallery')" id="nav-gallery" class="nav-btn px-5 py-2 rounded-full font-medium text-sm text-slate-600 hover:text-slate-900 transition">ภาพกิจกรรม & ผลงาน</button>
+            <!-- Desktop Nav -->
+            <nav class="hidden lg:flex items-center space-x-1 bg-slate-100/70 p-1 rounded-full border border-slate-200/60">
+                <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-3.5 py-1.5 rounded-full font-medium text-xs md:text-sm text-sky-600 bg-white shadow-sm transition">หน้าแรก</button>
+                <button onclick="switchTab('courses')" id="nav-courses" class="nav-btn px-3.5 py-1.5 rounded-full font-medium text-xs md:text-sm text-slate-600 hover:text-slate-900 transition">คอร์สเรียนแยกตามอายุ</button>
+                <button onclick="switchTab('schedule')" id="nav-schedule" class="nav-btn px-3.5 py-1.5 rounded-full font-medium text-xs md:text-sm text-slate-600 hover:text-slate-900 transition">🗓️ ตารางสอนครูมีน</button>
+                <button onclick="switchTab('gallery')" id="nav-gallery" class="nav-btn px-3.5 py-1.5 rounded-full font-medium text-xs md:text-sm text-slate-600 hover:text-slate-900 transition">ภาพกิจกรรม & ผลงาน</button>
             </nav>
 
-            <div class="flex items-center gap-2">
-                <!-- แถบแสดงสถานะ + ปุ่มแก้ไขแอดมิน -->
-                <div id="header-user-status" class="hidden items-center gap-2 bg-sky-50 px-3.5 py-1.5 rounded-full border border-sky-100">
+            <!-- User Auth & Action Buttons -->
+            <div class="flex items-center gap-1.5 sm:gap-2">
+                <!-- User status badge -->
+                <div id="header-user-status" class="hidden items-center gap-1.5 bg-sky-50 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full border border-sky-100">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span id="header-username-display" class="text-xs font-bold text-slate-700">ผู้ใช้งาน</span>
+                    <span id="header-username-display" class="text-xs font-bold text-slate-700 max-w-[90px] sm:max-w-[130px] truncate">ผู้ใช้งาน</span>
                     
-                    <button id="admin-edit-badge-btn" onclick="switchTab('admin-dashboard')" class="hidden bg-purple-600 hover:bg-purple-700 text-white px-2.5 py-1 rounded-full text-[11px] font-bold shadow-sm transition items-center gap-1 ml-1">
-                        <i class="fa-solid fa-pen-to-square text-[10px]"></i>
-                        <span>แก้ไขระบบ</span>
+                    <button id="admin-edit-badge-btn" onclick="switchTab('admin-dashboard')" class="hidden bg-purple-600 hover:bg-purple-700 text-white px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[10px] sm:text-[11px] font-bold shadow-sm transition items-center gap-1 ml-0.5">
+                        <i class="fa-solid fa-pen-to-square text-[9px]"></i>
+                        <span class="hidden sm:inline">แก้ไขระบบ</span>
                     </button>
                 </div>
 
-                <!-- ปุ่มเข้าสู่ระบบ -->
+                <!-- Login button -->
                 <div id="header-login-btn-container">
-                    <button onclick="openLoginRoleModal()" class="bg-sky-400 hover:bg-sky-500 text-white px-5 py-2 rounded-full text-sm font-medium shadow-sm transition flex items-center gap-2">
+                    <button onclick="openLoginRoleModal()" class="bg-sky-400 hover:bg-sky-500 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium shadow-sm transition flex items-center gap-1.5">
                         <i class="fa-solid fa-right-to-bracket text-xs"></i>
                         <span>เข้าสู่ระบบ</span>
                     </button>
                 </div>
                 
-                <a href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2 rounded-full text-sm font-medium shadow-sm transition flex items-center gap-2">
-                    <i class="fa-brands fa-line text-base"></i>
-                    <span>ไลน์ครูมีน</span>
+                <a href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium shadow-sm transition flex items-center gap-1.5">
+                    <i class="fa-brands fa-line text-sm sm:text-base"></i>
+                    <span class="hidden sm:inline">ไลน์ครูมีน</span>
                 </a>
-                <button onclick="toggleMobileMenu()" class="md:hidden text-slate-600 p-2 rounded-lg hover:bg-slate-100">
-                    <i class="fa-solid fa-bars text-xl"></i>
+
+                <!-- Mobile Hamburger Button -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition ml-1">
+                    <i class="fa-solid fa-bars text-sm"></i>
                 </button>
             </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden lg:hidden border-t border-slate-100 bg-white px-4 py-3 space-y-2 shadow-lg">
+            <button onclick="switchTab('home'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-xl text-sm font-medium text-slate-700 hover:bg-sky-50 hover:text-sky-600 transition">🏠 หน้าแรก</button>
+            <button onclick="switchTab('courses'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-xl text-sm font-medium text-slate-700 hover:bg-sky-50 hover:text-sky-600 transition">📚 คอร์สเรียนแยกตามอายุ</button>
+            <button onclick="switchTab('schedule'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-xl text-sm font-medium text-slate-700 hover:bg-sky-50 hover:text-sky-600 transition">🗓️ ตารางสอนครูมีน</button>
+            <button onclick="switchTab('gallery'); toggleMobileMenu();" class="w-full text-left px-3 py-2 rounded-xl text-sm font-medium text-slate-700 hover:bg-sky-50 hover:text-sky-600 transition">🖼️ ภาพกิจกรรม & ผลงาน</button>
         </div>
     </header>
 
@@ -73,38 +89,38 @@
     <main class="flex-grow">
         <!-- TAB 1: HOME PAGE -->
         <div id="tab-home" class="tab-content active">
-            <section class="relative overflow-hidden py-12 md:py-20 bg-gradient-to-b from-sky-50/60 via-pink-50/30 to-white">
-                <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-                    <div class="space-y-6 text-center md:text-left">
-                        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold tracking-wide shadow-sm">
+            <section class="relative overflow-hidden py-8 sm:py-12 md:py-20 bg-gradient-to-b from-sky-50/60 via-pink-50/30 to-white">
+                <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
+                    <div class="space-y-4 sm:space-y-6 text-center lg:text-left">
+                        <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-amber-100 text-amber-800 text-[11px] sm:text-xs font-semibold tracking-wide shadow-sm">
                             <i class="fa-solid fa-star text-amber-500"></i> เปิดรับสมัครน้องๆ อายุ 6-15 ปีแล้ววันนี้!
                         </span>
-                        <h2 class="text-3xl md:text-5xl font-bold text-slate-800 leading-tight">
-                            สนุกกับโลกคอมพิวเตอร์ & โค้ดดิ้ง <br/>
-                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-pink-500">กับครูมีนคนใจดี ✨</span>
+                        <h2 class="text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-800 leading-tight">
+                            สนุกกับโลกคอมพิวเตอร์ & โค้ดดิ้ง <br class="hidden sm:inline"/>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-pink-500">กับครูมีนคนสวยใจดี ✨</span>
                         </h2>
-                        <p class="text-slate-600 text-base md:text-lg font-light leading-relaxed">
+                        <p class="text-slate-600 text-sm sm:text-base lg:text-lg font-light leading-relaxed">
                             เปลี่ยนเวลาเล่นเกมมือถือให้เป็นทักษะสร้างสรรค์อนาคต เรียนสนุก เข้าใจง่าย ปูพื้นฐานแน่นตั้งแต่ Scratch, Python จนถึงสร้างเกมและเว็บด้วยตัวเอง!
                         </p>
-                        <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 pt-2">
-                            <button onclick="switchTab('courses')" class="w-full sm:w-auto bg-sky-400 hover:bg-sky-500 text-white font-medium px-7 py-3 rounded-2xl shadow-md transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-book-open"></i> ดูคอร์สเรียนทั้งหมด
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
+                            <button onclick="switchTab('schedule')" class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white font-medium px-6 py-3 rounded-2xl shadow-md transition flex items-center justify-center gap-2 text-sm">
+                                <i class="fa-solid fa-calendar-check"></i> เช็กเวลาว่างครูมีน
                             </button>
-                            <button onclick="switchTab('gallery')" class="w-full sm:w-auto bg-purple-500 hover:bg-purple-600 text-white font-medium px-7 py-3 rounded-2xl shadow-md transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-images"></i> ชมภาพกิจกรรม & ผลงาน
+                            <button onclick="switchTab('courses')" class="w-full sm:w-auto bg-sky-400 hover:bg-sky-500 text-white font-medium px-6 py-3 rounded-2xl shadow-md transition flex items-center justify-center gap-2 text-sm">
+                                <i class="fa-solid fa-child"></i> ดูคอร์สเรียนแยกตามอายุ
                             </button>
                         </div>
                     </div>
                     <div class="relative flex justify-center">
-                        <div class="relative bg-white/95 backdrop-blur-md p-6 rounded-3xl shadow-2xl border border-sky-100 max-w-sm w-full space-y-4">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-14 h-14 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-500 text-2xl shadow-inner">👩‍🏫</div>
-                                <div><h3 class="font-bold text-slate-800 text-lg">ครูมีน (Kru Mean)</h3><p class="text-xs text-slate-500">ผู้เชี่ยวชาญวิทยาการคำนวณ</p></div>
+                        <div class="relative bg-white/95 backdrop-blur-md p-5 sm:p-6 rounded-3xl shadow-xl border border-sky-100 max-w-sm w-full space-y-4">
+                            <div class="flex items-center space-x-3.5">
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-500 text-xl sm:text-2xl shadow-inner shrink-0">👩‍🏫</div>
+                                <div><h3 class="font-bold text-slate-800 text-base sm:text-lg">ครูมีน (Kru Mean)</h3><p class="text-xs text-slate-500">ผู้เชี่ยวชาญวิทยาการคำนวณ</p></div>
                             </div>
-                            <div class="bg-sky-50 rounded-2xl p-4 space-y-2 text-sm text-slate-600">
+                            <div class="bg-sky-50 rounded-2xl p-3.5 sm:p-4 space-y-2 text-xs sm:text-sm text-slate-600">
                                 <p class="font-medium text-sky-900"><i class="fa-solid fa-quote-left text-sky-400 mr-1"></i> "โค้ดดิ้งไม่ใช่เรื่องยาก แค่เริ่มต้นด้วยความสนุก น้องๆ ก็สร้างสรรค์ผลงานเจ๋งๆ ได้เพียบเลยค่ะ!"</p>
                             </div>
-                            <a href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow transition">
+                            <a href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2.5 sm:py-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow transition">
                                 <i class="fa-brands fa-line text-base"></i> แอดไลน์พูดคุยกับครูมีน
                             </a>
                         </div>
@@ -114,34 +130,97 @@
         </div>
 
         <!-- TAB 2: COURSES CATALOG -->
-        <div id="tab-courses" class="tab-content py-12 max-w-6xl mx-auto px-4">
-            <div class="text-center space-y-3 mb-10">
-                <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full">Course Catalog</span>
-                <h2 class="text-3xl font-bold text-slate-800">คอร์สเรียนคอมพิวเตอร์และโค้ดดิ้ง</h2>
+        <div id="tab-courses" class="tab-content py-8 sm:py-12 max-w-6xl mx-auto px-4">
+            <div class="text-center space-y-2 sm:space-y-3 mb-6 sm:mb-8">
+                <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-100">COURSE CATALOG</span>
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800">คอร์สเรียนคอมพิวเตอร์และโค้ดดิ้ง</h2>
+                <p class="text-slate-500 text-xs sm:text-sm">เลือกคอร์สเรียนที่เหมาะสมตามระดับพัฒนาการและช่วงอายุของน้องๆ ได้เลยค่ะ</p>
             </div>
-            <div id="public-courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+
+            <!-- Filter Buttons -->
+            <div class="flex items-center justify-center gap-2 mb-8 flex-wrap">
+                <button onclick="filterAgeGroup('all')" id="age-filter-all" class="age-filter-btn active bg-sky-500 text-white px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold shadow-md transition">
+                    🌈 ทั้งหมด
+                </button>
+                <button onclick="filterAgeGroup('6-10')" id="age-filter-6-10" class="age-filter-btn bg-white hover:bg-sky-50 text-slate-600 border border-slate-200 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold shadow-sm transition">
+                    🐣 ปฐมวัย - ประถมต้น (6-10 ปี)
+                </button>
+                <button onclick="filterAgeGroup('7-12')" id="age-filter-7-12" class="age-filter-btn bg-white hover:bg-sky-50 text-slate-600 border border-slate-200 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold shadow-sm transition">
+                    🦁 ประถมศึกษา (7-12 ปี)
+                </button>
+                <button onclick="filterAgeGroup('9-15')" id="age-filter-9-15" class="age-filter-btn bg-white hover:bg-sky-50 text-slate-600 border border-slate-200 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold shadow-sm transition">
+                    🚀 ประถมปลาย - มัธยม (9-15 ปี)
+                </button>
+            </div>
+
+            <div id="public-courses-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"></div>
+        </div>
+
+        <!-- TAB 3: TEACHER SCHEDULE (ตารางสอนครูมีน) -->
+        <div id="tab-schedule" class="tab-content py-8 sm:py-12 max-w-5xl mx-auto px-4">
+            <div class="text-center space-y-2 sm:space-y-3 mb-6 sm:mb-8">
+                <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">TEACHER SCHEDULE</span>
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800">ตารางเวลาสอนของครูมีน</h2>
+                <p class="text-slate-500 text-xs sm:text-sm">ผู้สนใจหรือคุณแม่/คุณพ่อ สามารถเช็กวันและช่วงเวลาที่ครูมีนว่างสอน เพื่อจองคอร์สเรียนล่วงหน้าได้เลยค่ะ</p>
+            </div>
+
+            <!-- Badges -->
+            <div class="flex items-center justify-center gap-3 sm:gap-6 mb-6 text-xs font-semibold flex-wrap">
+                <div class="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full border border-emerald-200">
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 shadow-sm animate-pulse"></span>
+                    <span>🟢 สีเขียว = ว่าง (จองเรียนได้)</span>
+                </div>
+                <div class="flex items-center gap-1.5 bg-rose-50 text-rose-700 px-3 py-1.5 rounded-full border border-rose-200">
+                    <span class="w-3 h-3 rounded-full bg-rose-500 shadow-sm"></span>
+                    <span>🔴 สีแดง = ไม่ว่าง (ติดสอน)</span>
+                </div>
+            </div>
+
+            <!-- Schedule Table Card -->
+            <div class="bg-white rounded-3xl shadow-md border border-slate-100 overflow-hidden p-3 sm:p-6 space-y-4">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-center border-collapse min-w-[500px]">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-700 uppercase">
+                                <th class="p-3 text-left w-32">วัน / ช่วงเวลา</th>
+                                <th class="p-3">ช่วงเช้า<br/><span class="text-[10px] text-slate-400 font-normal">09:00 - 12:00</span></th>
+                                <th class="p-3">ช่วงบ่าย<br/><span class="text-[10px] text-slate-400 font-normal">13:00 - 16:00</span></th>
+                                <th class="p-3">ช่วงเย็น / ค่ำ<br/><span class="text-[10px] text-slate-400 font-normal">จ.-ศ. 18:00-20:00 / ส. 16:30-20:00</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="public-schedule-tbody" class="divide-y divide-slate-100 text-xs"></tbody>
+                    </table>
+                </div>
+
+                <div class="pt-4 text-center border-t border-slate-100 space-y-3">
+                    <p class="text-[11px] sm:text-xs text-slate-500">* ตารางนี้อาจมีการอัปเดตเพิ่มเติม สอบถามเวลาเรียนผ่านทางไลน์ครูมีนได้ตลอดเวลาค่ะ</p>
+                    <a href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-medium px-5 py-2.5 rounded-xl text-xs shadow-md transition">
+                        <i class="fa-brands fa-line text-base"></i> ทักไลน์จองรอบเรียนกับครูมีน
+                    </a>
+                </div>
+            </div>
         </div>
 
         <!-- TAB: GALLERY -->
-        <div id="tab-gallery" class="tab-content py-12 max-w-6xl mx-auto px-4">
-            <div class="text-center space-y-3 mb-10">
-                <span class="text-xs font-bold uppercase tracking-wider text-purple-600 bg-purple-50 px-3 py-1 rounded-full">Activity & Projects</span>
-                <h2 class="text-3xl font-bold text-slate-800">ภาพบรรยากาศการเรียนและผลงานนักเรียน</h2>
+        <div id="tab-gallery" class="tab-content py-8 sm:py-12 max-w-6xl mx-auto px-4">
+            <div class="text-center space-y-2 sm:space-y-3 mb-8">
+                <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-purple-600 bg-purple-50 px-3 py-1 rounded-full">Activity & Projects</span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-800">ภาพบรรยากาศการเรียนและผลงานนักเรียน</h2>
             </div>
-            <div id="public-gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            <div id="public-gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div>
         </div>
 
-        <!-- TAB 3: USER LOGIN -->
-        <div id="tab-user-login" class="tab-content py-16 max-w-md mx-auto px-4">
-            <div class="bg-white rounded-3xl shadow-xl border border-sky-100 p-8 space-y-6">
+        <!-- TAB 4: USER LOGIN -->
+        <div id="tab-user-login" class="tab-content py-10 sm:py-16 max-w-md mx-auto px-4">
+            <div class="bg-white rounded-3xl shadow-xl border border-sky-100 p-6 sm:p-8 space-y-5">
                 <div class="text-center space-y-2">
                     <button onclick="openLoginRoleModal()" class="text-xs text-sky-600 font-medium hover:underline flex items-center gap-1 mb-2">
                         <i class="fa-solid fa-arrow-left"></i> กลับไปเลือกประเภทการเข้าสู่ระบบ
                     </button>
-                    <div class="w-16 h-16 bg-pink-100 rounded-2xl mx-auto flex items-center justify-center text-pink-500 text-2xl shadow-inner">👦</div>
-                    <h3 class="text-2xl font-bold text-slate-800">เข้าสู่ระบบ (นักเรียน / ผู้ปกครอง)</h3>
+                    <div class="w-14 h-14 bg-pink-100 rounded-2xl mx-auto flex items-center justify-center text-pink-500 text-2xl shadow-inner">👦</div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-800">เข้าสู่ระบบ (นักเรียน / ผู้ปกครอง)</h3>
                 </div>
-                <form onsubmit="handleUserLogin(event)" class="space-y-4">
+                <form onsubmit="handleUserLogin(event)" class="space-y-3.5">
                     <input type="text" id="user-login-id" placeholder="รหัสประจำตัวนักเรียน (Student ID)" required class="w-full text-sm px-4 py-3 rounded-xl border border-slate-200 bg-slate-50">
                     <input type="password" id="user-login-pin" placeholder="รหัสผ่าน / PIN ส่วนตัว" required class="w-full text-sm px-4 py-3 rounded-xl border border-slate-200 bg-slate-50">
                     <div id="user-login-error" class="hidden text-xs text-rose-500 font-medium text-center bg-rose-50 p-2 rounded-lg">รหัสประจำตัวหรือรหัสผ่านไม่ถูกต้อง</div>
@@ -150,17 +229,17 @@
             </div>
         </div>
 
-        <!-- TAB 4: ADMIN LOGIN -->
-        <div id="tab-admin-login" class="tab-content py-16 max-w-md mx-auto px-4">
-            <div class="bg-white rounded-3xl shadow-xl border border-purple-100 p-8 space-y-6">
+        <!-- TAB 5: ADMIN LOGIN -->
+        <div id="tab-admin-login" class="tab-content py-10 sm:py-16 max-w-md mx-auto px-4">
+            <div class="bg-white rounded-3xl shadow-xl border border-purple-100 p-6 sm:p-8 space-y-5">
                 <div class="text-center space-y-2">
                     <button onclick="openLoginRoleModal()" class="text-xs text-purple-600 font-medium hover:underline flex items-center gap-1 mb-2">
                         <i class="fa-solid fa-arrow-left"></i> กลับไปเลือกประเภทการเข้าสู่ระบบ
                     </button>
-                    <div class="w-16 h-16 bg-purple-100 rounded-2xl mx-auto flex items-center justify-center text-purple-600 text-2xl shadow-inner">👩‍💻</div>
-                    <h3 class="text-2xl font-bold text-slate-800">เข้าสู่ระบบผู้ดูแลระบบ (Admin)</h3>
+                    <div class="w-14 h-14 bg-purple-100 rounded-2xl mx-auto flex items-center justify-center text-purple-600 text-2xl shadow-inner">👩‍💻</div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-800">เข้าสู่ระบบผู้ดูแลระบบ (Admin)</h3>
                 </div>
-                <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <form onsubmit="handleAdminLogin(event)" class="space-y-3.5">
                     <input type="text" id="admin-username" placeholder="ชื่อผู้ใช้งานแอดมิน" required class="w-full text-sm px-4 py-3 rounded-xl border border-slate-200 bg-slate-50">
                     <input type="password" id="admin-password" placeholder="รหัสผ่านแอดมิน" required class="w-full text-sm px-4 py-3 rounded-xl border border-slate-200 bg-slate-50">
                     <div id="admin-login-error" class="hidden text-xs text-rose-500 font-medium text-center bg-rose-50 p-2 rounded-lg">รหัสผ่านไม่ถูกต้อง</div>
@@ -169,43 +248,42 @@
             </div>
         </div>
 
-        <!-- TAB 5: STUDENT DASHBOARD -->
-        <div id="tab-dashboard" class="tab-content py-12 max-w-4xl mx-auto px-4">
-            <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-8">
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b border-slate-100">
-                    <div class="flex items-center space-x-4">
-                        <div id="student-avatar" class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-pink-400 to-sky-400 flex items-center justify-center text-white text-3xl shadow-md">👦</div>
+        <!-- TAB 6: STUDENT DASHBOARD -->
+        <div id="tab-dashboard" class="tab-content py-8 sm:py-12 max-w-4xl mx-auto px-4">
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-5 sm:p-8 space-y-6 sm:space-y-8">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b border-slate-100 text-center sm:text-left">
+                    <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                        <div id="student-avatar" class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-tr from-pink-400 to-sky-400 flex items-center justify-center text-white text-2xl sm:text-3xl shadow-md">👦</div>
                         <div>
                             <span class="text-xs font-medium text-pink-600 bg-pink-50 px-2.5 py-0.5 rounded-full" id="student-badge">นักเรียนตัวน้อย</span>
-                            <h3 class="text-xl font-bold text-slate-800 mt-1" id="student-name">น้องนักเรียน</h3>
+                            <h3 class="text-lg sm:text-xl font-bold text-slate-800 mt-1" id="student-name">น้องนักเรียน</h3>
                             <p class="text-xs text-slate-400" id="student-meta">ID: KM-XXXX • คอร์ส</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="togglePaymentSection()" class="bg-sky-400 hover:bg-sky-500 text-white text-sm font-medium px-4 py-2.5 rounded-xl shadow-md transition flex items-center gap-2">
-                            <i class="fa-solid fa-qrcode"></i> ต่อคอร์ส / แจ้งชำระเงิน
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <button onclick="togglePaymentSection()" class="flex-1 sm:flex-none bg-sky-400 hover:bg-sky-500 text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-xl shadow-md transition flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-qrcode"></i> ชำระเงิน/ต่อคอร์ส
                         </button>
-                        <button onclick="handleLogout()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-medium px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                        <button onclick="handleLogout()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs sm:text-sm font-medium px-3.5 py-2.5 rounded-xl transition flex items-center justify-center gap-1.5">
                             <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
                         </button>
                     </div>
                 </div>
 
-                <!-- สรุปชั่วโมงเรียน -->
-                <div class="bg-gradient-to-r from-sky-50 via-indigo-50/50 to-pink-50 rounded-2xl p-6 border border-sky-100/60 space-y-4">
-                    <h4 class="font-bold text-slate-800 text-lg">รายละเอียดชั่วโมงเรียนของคุณ</h4>
-                    <div class="grid grid-cols-3 gap-3 text-center">
-                        <div class="bg-white/80 p-3 rounded-xl border border-sky-100">
-                            <p class="text-xs text-slate-500 font-medium">ชั่วโมงในคอร์ส</p>
-                            <p class="text-xl font-bold text-slate-800" id="student-display-total">0 ชม.</p>
+                <div class="bg-gradient-to-r from-sky-50 via-indigo-50/50 to-pink-50 rounded-2xl p-4 sm:p-6 border border-sky-100/60 space-y-4">
+                    <h4 class="font-bold text-slate-800 text-base sm:text-lg">รายละเอียดชั่วโมงเรียนของคุณ</h4>
+                    <div class="grid grid-cols-3 gap-2 sm:gap-3 text-center">
+                        <div class="bg-white/80 p-2.5 sm:p-3 rounded-xl border border-sky-100">
+                            <p class="text-[10px] sm:text-xs text-slate-500 font-medium">ชั่วโมงในคอร์ส</p>
+                            <p class="text-base sm:text-xl font-bold text-slate-800" id="student-display-total">0 ชม.</p>
                         </div>
-                        <div class="bg-white/80 p-3 rounded-xl border border-sky-100">
-                            <p class="text-xs text-slate-500 font-medium">เรียนไปแล้ว</p>
-                            <p class="text-xl font-bold text-purple-600" id="student-display-used">0 ชม.</p>
+                        <div class="bg-white/80 p-2.5 sm:p-3 rounded-xl border border-sky-100">
+                            <p class="text-[10px] sm:text-xs text-slate-500 font-medium">เรียนไปแล้ว</p>
+                            <p class="text-base sm:text-xl font-bold text-purple-600" id="student-display-used">0 ชม.</p>
                         </div>
-                        <div class="bg-white/80 p-3 rounded-xl border border-sky-100">
-                            <p class="text-xs text-slate-500 font-medium">ชั่วโมงคงเหลือ</p>
-                            <p class="text-xl font-bold text-emerald-600" id="student-display-left">0 ชม.</p>
+                        <div class="bg-white/80 p-2.5 sm:p-3 rounded-xl border border-sky-100">
+                            <p class="text-[10px] sm:text-xs text-slate-500 font-medium">ชั่วโมงคงเหลือ</p>
+                            <p class="text-base sm:text-xl font-bold text-emerald-600" id="student-display-left">0 ชม.</p>
                         </div>
                     </div>
 
@@ -213,19 +291,17 @@
                         <div id="progress-bar" class="h-full bg-gradient-to-r from-sky-400 to-pink-500 rounded-full transition-all duration-1000" style="width: 0%;"></div>
                     </div>
 
-                    <!-- หมายเหตุเรียนเกินชั่วโมง -->
                     <div id="overdue-student-notice" class="hidden bg-rose-50 border border-rose-200 text-rose-700 p-3.5 rounded-xl text-xs flex items-center gap-2.5">
-                        <i class="fa-solid fa-triangle-exclamation text-base text-rose-500"></i>
+                        <i class="fa-solid fa-triangle-exclamation text-base text-rose-500 shrink-0"></i>
                         <div>
-                            <p class="font-bold">เรียนเกินชั่วโมงคอร์สเรียน (มีชั่วโมงค้างชำระ): <span id="overdue-hours-count" class="underline">0</span> ชั่วโมง</p>
+                            <p class="font-bold">เรียนเกินชั่วโมงคอร์สเรียน (ค้างชำระ): <span id="overdue-hours-count" class="underline">0</span> ชั่วโมง</p>
                             <p class="text-[11px] text-rose-600">รบกวนคุณแม่/คุณพ่อ ติดต่อครูมีนเพื่อสแกนชำระเงินต่อคอร์สเรียนเพิ่มเติมด้านล่างนะคะ</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- การ์ดแสดงรายละเอียดบทเรียนที่เรียนไปแล้ว -->
-                <div class="bg-white border border-slate-200 rounded-2xl p-6 space-y-4">
-                    <h4 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 space-y-4">
+                    <h4 class="font-bold text-slate-800 text-sm sm:text-base flex items-center gap-2">
                         <i class="fa-solid fa-book-bookmark text-sky-500"></i> ประวัติและรายละเอียดเนื้อหาที่เรียนไปแล้ว
                     </h4>
                     <div id="student-lesson-history-list" class="space-y-2 text-xs text-slate-600">
@@ -233,17 +309,16 @@
                     </div>
                 </div>
 
-                <!-- PRIVATE PAYMENT SECTION -->
-                <div id="private-payment-section" class="hidden bg-slate-50 border border-sky-200 rounded-3xl p-6 md:p-8 space-y-6">
-                    <div class="flex items-center justify-between border-b border-slate-200 pb-4">
-                        <h4 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                <div id="private-payment-section" class="hidden bg-slate-50 border border-sky-200 rounded-3xl p-5 sm:p-8 space-y-5">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                        <h4 class="font-bold text-slate-800 text-base sm:text-lg flex items-center gap-2">
                             <i class="fa-solid fa-qrcode text-indigo-500"></i> สแกนชำระเงินต่อคอร์ส
                         </h4>
                         <button onclick="togglePaymentSection()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i> ซ่อน</button>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                        <div class="bg-white p-5 rounded-2xl border border-slate-200 flex flex-col items-center justify-center space-y-3 shadow-sm">
-                            <div class="w-48 h-56 bg-slate-50 p-2 rounded-xl border border-slate-200 flex items-center justify-center relative overflow-hidden">
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200 flex flex-col items-center justify-center space-y-3 shadow-sm">
+                            <div class="w-44 h-52 bg-slate-50 p-2 rounded-xl border border-slate-200 flex items-center justify-center relative overflow-hidden">
                                 <img id="display-user-payment-qr" src="S__33611778.jpg" alt="Payment QR Code" class="w-full h-full object-contain rounded-lg" onerror="this.src='https://placehold.co/400x500/1E1B4B/FFFFFF?text=PromptPay+QR';">
                             </div>
                             <div class="text-center space-y-0.5">
@@ -252,7 +327,7 @@
                             </div>
                         </div>
 
-                        <div class="bg-white p-6 rounded-2xl border border-slate-200 text-center space-y-4 shadow-sm">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 text-center space-y-4 shadow-sm">
                             <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl mx-auto flex items-center justify-center text-2xl">
                                 <i class="fa-brands fa-line"></i>
                             </div>
@@ -260,7 +335,7 @@
                                 <h5 class="font-bold text-slate-800 text-base">ชำระเงินเรียบร้อยแล้ว?</h5>
                                 <p class="text-xs text-slate-500 mt-1">กรุณาส่งภาพสลิปการโอนเงินทางแชท LINE ครูมีน เพื่อให้ครูเติมชั่วโมงเรียนเข้าสู่ระบบทันทีค่ะ</p>
                             </div>
-                            <a id="send-slip-line-btn" href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-3 rounded-xl shadow-md transition text-xs flex items-center justify-center gap-2">
+                            <a id="send-slip-line-btn" href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2.5 sm:py-3 rounded-xl shadow-md transition text-xs flex items-center justify-center gap-2">
                                 <i class="fa-brands fa-line text-lg"></i>
                                 <span>ส่งสลิปชำระเงินทางไลน์ครูมีนทันที</span>
                             </a>
@@ -270,46 +345,47 @@
             </div>
         </div>
 
-        <!-- TAB 6: ADMIN DASHBOARD -->
-        <div id="tab-admin-dashboard" class="tab-content py-10 max-w-6xl mx-auto px-4">
-            <div class="bg-white rounded-3xl shadow-sm border border-purple-100 p-6 md:p-8 space-y-8">
+        <!-- TAB 7: ADMIN DASHBOARD -->
+        <div id="tab-admin-dashboard" class="tab-content py-8 sm:py-10 max-w-6xl mx-auto px-4">
+            <div class="bg-white rounded-3xl shadow-sm border border-purple-100 p-5 sm:p-8 space-y-6 sm:space-y-8">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b border-purple-100">
                     <div class="flex items-center space-x-3">
-                        <div class="w-12 h-12 rounded-2xl bg-purple-600 text-white flex items-center justify-center text-2xl shadow-md">👩‍💻</div>
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-purple-600 text-white flex items-center justify-center text-xl sm:text-2xl shadow-md shrink-0">👩‍💻</div>
                         <div>
-                            <span class="text-xs font-semibold text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full">Admin Control Panel</span>
-                            <h3 class="text-xl font-bold text-slate-800 mt-0.5">ระบบหลังบ้านครูมีน (เชื่อมต่อ Firebase Cloud)</h3>
+                            <span class="text-[10px] sm:text-xs font-semibold text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full">Admin Control Panel</span>
+                            <h3 class="text-lg sm:text-xl font-bold text-slate-800 mt-0.5">ระบบหลังบ้านครูมีน (Firebase Cloud)</h3>
                         </div>
                     </div>
-                    <button onclick="handleLogout()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-medium px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                    <button onclick="handleLogout()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs sm:text-sm font-medium px-4 py-2 rounded-xl transition flex items-center gap-2">
                         <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
                     </button>
                 </div>
 
-                <div class="flex border-b border-slate-200 space-x-4 overflow-x-auto">
-                    <button onclick="switchAdminSubTab('students')" id="admin-subtab-btn-students" class="pb-3 border-b-2 border-purple-600 text-purple-700 font-bold text-sm transition whitespace-nowrap">จัดการนักเรียน</button>
-                    <button onclick="switchAdminSubTab('courses')" id="admin-subtab-btn-courses" class="pb-3 border-b-2 border-transparent text-slate-500 font-medium text-sm transition whitespace-nowrap">จัดการคอร์สเรียน</button>
-                    <button onclick="switchAdminSubTab('gallery')" id="admin-subtab-btn-gallery" class="pb-3 border-b-2 border-transparent text-slate-500 font-medium text-sm transition whitespace-nowrap">จัดการภาพกิจกรรม</button>
-                    <button onclick="switchAdminSubTab('qrcode')" id="admin-subtab-btn-qrcode" class="pb-3 border-b-2 border-transparent text-slate-500 font-medium text-sm transition whitespace-nowrap">จัดการ QR Code</button>
+                <div class="flex border-b border-slate-200 space-x-3 sm:space-x-4 overflow-x-auto pb-1">
+                    <button onclick="switchAdminSubTab('students')" id="admin-subtab-btn-students" class="pb-2.5 border-b-2 border-purple-600 text-purple-700 font-bold text-xs sm:text-sm transition whitespace-nowrap">จัดการนักเรียน</button>
+                    <button onclick="switchAdminSubTab('courses')" id="admin-subtab-btn-courses" class="pb-2.5 border-b-2 border-transparent text-slate-500 font-medium text-xs sm:text-sm transition whitespace-nowrap">จัดการคอร์สเรียน</button>
+                    <button onclick="switchAdminSubTab('schedule')" id="admin-subtab-btn-schedule" class="pb-2.5 border-b-2 border-transparent text-slate-500 font-medium text-xs sm:text-sm transition whitespace-nowrap">จัดการตารางสอน</button>
+                    <button onclick="switchAdminSubTab('gallery')" id="admin-subtab-btn-gallery" class="pb-2.5 border-b-2 border-transparent text-slate-500 font-medium text-xs sm:text-sm transition whitespace-nowrap">จัดการภาพกิจกรรม</button>
+                    <button onclick="switchAdminSubTab('qrcode')" id="admin-subtab-btn-qrcode" class="pb-2.5 border-b-2 border-transparent text-slate-500 font-medium text-xs sm:text-sm transition whitespace-nowrap">จัดการ QR Code</button>
                 </div>
 
                 <!-- SUBTAB 1: STUDENTS -->
                 <div id="admin-subtab-students" class="admin-subtab-content space-y-6">
                     <div class="flex items-center justify-between">
-                        <h4 class="font-bold text-slate-800 text-base">รายชื่อนักเรียน (<span id="admin-total-count">0</span> คน)</h4>
+                        <h4 class="font-bold text-slate-800 text-sm sm:text-base">รายชื่อนักเรียน (<span id="admin-total-count">0</span> คน)</h4>
                         <button onclick="openAddStudentModal()" class="bg-emerald-500 text-white text-xs font-medium px-3.5 py-2 rounded-xl shadow transition flex items-center gap-1.5"><i class="fa-solid fa-user-plus"></i> เพิ่มนักเรียนใหม่</button>
                     </div>
                     <div class="overflow-x-auto rounded-2xl border border-slate-200">
-                        <table class="w-full text-left text-sm text-slate-600">
-                            <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 text-xs uppercase">
+                        <table class="w-full text-left text-xs sm:text-sm text-slate-600 min-w-[600px]">
+                            <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 text-[11px] sm:text-xs uppercase">
                                 <tr>
-                                    <th class="p-4">นักเรียน / ID</th>
-                                    <th class="p-4">PIN</th>
-                                    <th class="p-4">คอร์ส (ชั่วโมง)</th>
-                                    <th class="p-4">เรียนแล้ว</th>
-                                    <th class="p-4">คงเหลือ</th>
-                                    <th class="p-4">ค้างชำระ (ชั่วโมงเกิน)</th>
-                                    <th class="p-4 text-center">จัดการ</th>
+                                    <th class="p-3.5">นักเรียน / ID</th>
+                                    <th class="p-3.5">PIN</th>
+                                    <th class="p-3.5">คอร์ส (ชั่วโมง)</th>
+                                    <th class="p-3.5">เรียนแล้ว</th>
+                                    <th class="p-3.5">คงเหลือ</th>
+                                    <th class="p-3.5">ค้างชำระ</th>
+                                    <th class="p-3.5 text-center">จัดการ</th>
                                 </tr>
                             </thead>
                             <tbody id="admin-student-table-body" class="divide-y divide-slate-100 bg-white"></tbody>
@@ -320,30 +396,57 @@
                 <!-- SUBTAB 2: COURSES -->
                 <div id="admin-subtab-courses" class="admin-subtab-content hidden space-y-6">
                     <div class="flex items-center justify-between">
-                        <h4 class="font-bold text-slate-800 text-base">จัดการคอร์สเรียน (<span id="admin-course-count">0</span> คอร์ส)</h4>
+                        <h4 class="font-bold text-slate-800 text-sm sm:text-base">จัดการคอร์สเรียน (<span id="admin-course-count">0</span> คอร์ส)</h4>
                         <button onclick="openAddCourseModal()" class="bg-purple-600 text-white text-xs font-medium px-3.5 py-2 rounded-xl shadow transition flex items-center gap-1.5"><i class="fa-solid fa-plus"></i> เพิ่มคอร์สใหม่</button>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="admin-course-grid"></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="admin-course-grid"></div>
                 </div>
 
-                <!-- SUBTAB 3: GALLERY -->
+                <!-- SUBTAB 3: SCHEDULE MANAGEMENT -->
+                <div id="admin-subtab-schedule" class="admin-subtab-content hidden space-y-6">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-sm sm:text-base">จัดการตารางสอนครูมีน</h4>
+                            <p class="text-xs text-slate-500">คลิกที่ปุ่มเพื่อสลับสถานะระหว่าง <span class="text-emerald-600 font-bold">"ว่าง"</span> และ <span class="text-rose-600 font-bold">"ไม่ว่าง"</span></p>
+                        </div>
+                        <button onclick="handleSaveScheduleFromAdmin()" class="bg-purple-600 text-white text-xs font-medium px-4 py-2 rounded-xl shadow transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> บันทึกตารางสอน
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white p-3 sm:p-4">
+                        <table class="w-full text-center border-collapse min-w-[500px]">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-700">
+                                    <th class="p-3 text-left">วัน</th>
+                                    <th class="p-3">เช้า (09:00 - 12:00)</th>
+                                    <th class="p-3">บ่าย (13:00 - 16:00)</th>
+                                    <th class="p-3">เย็น/ค่ำ (จ.-ศ. 18:00-20:00 / ส. 16:30-20:00)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-schedule-tbody" class="divide-y divide-slate-100 text-xs"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- SUBTAB 4: GALLERY -->
                 <div id="admin-subtab-gallery" class="admin-subtab-content hidden space-y-6">
                     <div class="flex items-center justify-between">
-                        <h4 class="font-bold text-slate-800 text-base">จัดการภาพกิจกรรม</h4>
+                        <h4 class="font-bold text-slate-800 text-sm sm:text-base">จัดการภาพกิจกรรม</h4>
                         <button onclick="openAddGalleryModal()" class="bg-purple-600 text-white text-xs font-medium px-3.5 py-2 rounded-xl shadow transition flex items-center gap-1.5"><i class="fa-solid fa-plus"></i> เพิ่มภาพใหม่</button>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="admin-gallery-grid"></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="admin-gallery-grid"></div>
                 </div>
 
-                <!-- SUBTAB 4: QR CODE MANAGEMENT -->
+                <!-- SUBTAB 5: QR CODE MANAGEMENT -->
                 <div id="admin-subtab-qrcode" class="admin-subtab-content hidden space-y-6">
-                    <h4 class="font-bold text-slate-800 text-base">อัปโหลดภาพ QR Code (PromptPay & LINE)</h4>
-                    <form onsubmit="handleSaveQRCodes(event)" class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
+                    <h4 class="font-bold text-slate-800 text-sm sm:text-base">อัปโหลดภาพ QR Code (PromptPay & LINE)</h4>
+                    <form onsubmit="handleSaveQRCodes(event)" class="bg-slate-50 p-4 sm:p-6 rounded-2xl border border-slate-200 space-y-5">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Payment QR -->
                             <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
-                                <h5 class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-qrcode text-indigo-500 mr-1"></i> QR Code สแกนจ่ายเงิน (PromptPay)</h5>
-                                <div class="w-36 h-44 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 mx-auto flex items-center justify-center p-2">
+                                <h5 class="font-bold text-slate-800 text-xs sm:text-sm"><i class="fa-solid fa-qrcode text-indigo-500 mr-1"></i> QR Code สแกนจ่ายเงิน (PromptPay)</h5>
+                                <div class="w-32 h-40 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 mx-auto flex items-center justify-center p-2">
                                     <img id="admin-preview-payment-qr" src="S__33611778.jpg" class="w-full h-full object-contain">
                                 </div>
                                 <div class="space-y-1">
@@ -355,8 +458,8 @@
 
                             <!-- Line QR -->
                             <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
-                                <h5 class="font-bold text-slate-800 text-sm"><i class="fa-brands fa-line text-emerald-500 mr-1"></i> QR Code สแกนเพิ่มเพื่อน LINE</h5>
-                                <div class="w-36 h-44 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 mx-auto flex items-center justify-center p-2">
+                                <h5 class="font-bold text-slate-800 text-xs sm:text-sm"><i class="fa-brands fa-line text-emerald-500 mr-1"></i> QR Code สแกนเพิ่มเพื่อน LINE</h5>
+                                <div class="w-32 h-40 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 mx-auto flex items-center justify-center p-2">
                                     <img id="admin-preview-line-qr" src="S__33603594.jpg" class="w-full h-full object-contain">
                                 </div>
                                 <div class="space-y-1">
@@ -455,22 +558,22 @@
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">ช่วงวัย:</label>
-                        <input type="text" id="course-age" placeholder="เช่น 7-10 ปี" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">ช่วงวัย (เช่น 6-10 ปี):</label>
+                        <input type="text" id="course-age" placeholder="6-10 ปี" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">ไอคอน ( FontAwesome เช่น fa-gamepad หรือ อีโมจิ):</label>
-                        <input type="text" id="course-icon" placeholder="fa-gamepad หรือ 💻" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">ไอคอน (FontAwesome หรือ อีโมจิ):</label>
+                        <input type="text" id="course-icon" placeholder="fa-palette หรือ 🎨" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">ราคาโปรโมชัน (บาท):</label>
-                        <input type="number" id="course-price" placeholder="2500" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                        <input type="number" id="course-price" placeholder="2000" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">ราคาเต็ม (บาท):</label>
-                        <input type="number" id="course-old-price" placeholder="3200" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
+                        <input type="number" id="course-old-price" placeholder="2900" required class="w-full text-sm px-3 py-2 rounded-xl border border-slate-200 bg-slate-50">
                     </div>
                 </div>
                 <div>
@@ -557,10 +660,21 @@
         };
 
         const defaultCourses = [
-            { id: "c-1", title: "Scratch & Block Coding", subtitle: "สร้างเกมแรกด้วยบล็อก", age: "7-10 ปี", icon: "fa-gamepad", hours: "10 ชั่วโมง", tag: "ยอดนิยม", tagColor: "text-emerald-600", desc: "เรียนรู้ตรรกะเบื้องต้นผ่านการลากวางบล็อกสร้างเกมง่ายๆ", price: "2,500.-", oldPrice: "3,200.-", gradient: "from-sky-300 to-blue-400" },
-            { id: "c-2", title: "Python for Kids & Teens", subtitle: "ภาษาจริงฉบับเด็กๆ", age: "11-15 ปี", icon: "fa-code", hours: "10 ชั่วโมง", tag: "แนะนำ", tagColor: "text-pink-600", desc: "ฝึกเขียนโค้ด Python เบื้องต้น ตัวแปร ลูป เงื่อนไข", price: "3,500.-", oldPrice: "4,200.-", gradient: "from-pink-400 to-rose-400" },
-            { id: "c-3", title: "IoT & Micro:bit Maker", subtitle: "นักประดิษฐ์รุ่นเยาว์", age: "10-15 ปี", icon: "fa-microchip", hours: "10 ชั่วโมง", tag: "ใหม่", tagColor: "text-purple-600", desc: "ต่อวงจรโค้ดดิ้งร่วมกับบอร์ด Micro:bit และเซนเซอร์ต่างๆ", price: "2,900.-", oldPrice: "3,600.-", gradient: "from-purple-400 to-indigo-400" }
+            { id: "c-1", title: "Graphic Designer", subtitle: "คอร์สเรียนคุณภาพโดยครูมีน", age: "6-10 ปี", ageCategory: "6-10", icon: "fa-palette", hours: "10 ชั่วโมง", tag: "คอร์สแนะนำ", tagColor: "text-sky-600", desc: "ออกแบบสไลด์นำเสนอ, โปสเตอร์ และสร้างสรรค์งานกราฟิกสุดน่ารัก", price: "2,000.-", oldPrice: "2,900.-", gradient: "from-sky-400 to-blue-500" },
+            { id: "c-2", title: "Scratch & Block Coding", subtitle: "คอร์สเรียนคุณภาพโดยครูมีน", age: "7-12 ปี", ageCategory: "7-12", icon: "fa-gamepad", hours: "10 ชั่วโมง", tag: "คอร์สแนะนำ", tagColor: "text-sky-600", desc: "พื้นฐานการเขียนโปรแกรม สำหรับน้องๆ ประถมศึกษา สร้างเกมและอนิเมชัน", price: "2,000.-", oldPrice: "2,900.-", gradient: "from-sky-400 to-blue-500" },
+            { id: "c-3", title: "Python for Kids & Teens", subtitle: "คอร์สเรียนคุณภาพโดยครูมีน", age: "9-15 ปี", ageCategory: "9-15", icon: "fa-code", hours: "10 ชั่วโมง", tag: "คอร์สแนะนำ", tagColor: "text-sky-600", desc: "เริ่มต้นภาษาโค้ดด้วย Python ฝึกเขียนโค้ดแก้โจทย์สนุกๆ", price: "3,500.-", oldPrice: "3,800.-", gradient: "from-sky-400 to-blue-500" },
+            { id: "c-4", title: "Mini Project C,C++", subtitle: "คอร์สเรียนคุณภาพโดยครูมีน", age: "10-15 ปี", ageCategory: "9-15", icon: "fa-laptop-code", hours: "10 ชั่วโมง", tag: "คอร์สแนะนำ", tagColor: "text-sky-600", desc: "ดูแลจนจบโปรเจกต์ เขียนภาษา C/C++ สร้างโครงงานคอมพิวเตอร์สุดเจ๋ง", price: "5,000.-", oldPrice: "7,900.-", gradient: "from-sky-400 to-blue-500" }
         ];
+
+        const defaultSchedule = {
+            "mon": { dayName: "จันทร์", morning: false, afternoon: false, evening: true },
+            "tue": { dayName: "อังคาร", morning: false, afternoon: false, evening: true },
+            "wed": { dayName: "พุธ", morning: false, afternoon: false, evening: true },
+            "thu": { dayName: "พฤหัสบดี", morning: false, afternoon: false, evening: true },
+            "fri": { dayName: "ศุกร์", morning: false, afternoon: false, evening: true },
+            "sat": { dayName: "เสาร์", morning: false, afternoon: false, evening: true },
+            "sun": { dayName: "อาทิตย์", morning: true, afternoon: true, evening: false }
+        };
 
         window.getStudentDB = async function() {
             try {
@@ -616,6 +730,19 @@
         window.saveGalleryToDB = async function(id, galleryData) { await setDoc(doc(db, "gallery", String(id)), galleryData); };
         window.deleteGalleryFromDB = async function(id) { await deleteDoc(doc(db, "gallery", String(id))); };
 
+        window.getScheduleDB = async function() {
+            try {
+                const docSnap = await getDoc(doc(db, "settings", "schedule"));
+                if (docSnap.exists()) return docSnap.data();
+                await setDoc(doc(db, "settings", "schedule"), defaultSchedule);
+                return defaultSchedule;
+            } catch (e) { return defaultSchedule; }
+        };
+
+        window.saveScheduleToDB = async function(scheduleData) {
+            await setDoc(doc(db, "settings", "schedule"), scheduleData);
+        };
+
         window.getQRCodesDB = async function() {
             try {
                 const docSnap = await getDoc(doc(db, "settings", "qrcodes"));
@@ -631,19 +758,22 @@
 
     <!-- APPLICATION LOGIC -->
     <script>
-        // ฟังก์ชันช่วยเหลือแปลงข้อความ Icon ให้แสดงผลได้ถูกต้อง
+        let currentAgeFilter = 'all';
+        let currentScheduleData = {};
+
         function renderIconHTML(iconStr) {
-            if (!iconStr) return '<i class="fa-solid fa-laptop text-2xl"></i>';
+            if (!iconStr) return '<i class="fa-solid fa-laptop text-xl sm:text-2xl"></i>';
             if (iconStr.includes('fa-')) {
                 const cleanIcon = iconStr.includes('fa-solid') ? iconStr : `fa-solid ${iconStr}`;
-                return `<i class="${cleanIcon} text-2xl"></i>`;
+                return `<i class="${cleanIcon} text-xl sm:text-2xl"></i>`;
             }
-            return `<span class="text-3xl">${iconStr}</span>`;
+            return `<span class="text-2xl sm:text-3xl">${iconStr}</span>`;
         }
 
         async function initApp() {
             await renderPublicCourses();
             await renderPublicGallery();
+            await renderPublicSchedule();
             await loadQRImages();
 
             const activeUser = localStorage.getItem('kruMeanActiveUser');
@@ -676,35 +806,93 @@
             }
         }
 
+        async function renderPublicSchedule() {
+            const schedule = await window.getScheduleDB();
+            currentScheduleData = schedule;
+            const tbody = document.getElementById('public-schedule-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const daysOrder = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+            daysOrder.forEach(key => {
+                const d = schedule[key] || { dayName: key, morning: false, afternoon: false, evening: true };
+                
+                const renderBadge = (isAvailable) => {
+                    if (isAvailable) {
+                        return `<span class="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full text-[11px] sm:text-xs shadow-sm"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>ว่าง</span>`;
+                    }
+                    return `<span class="inline-flex items-center gap-1 bg-rose-100 text-rose-800 font-bold px-2.5 py-1 rounded-full text-[11px] sm:text-xs shadow-sm"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>ไม่ว่าง</span>`;
+                };
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3 text-left font-bold text-slate-800 border-r border-slate-100">วัน${d.dayName}</td>
+                        <td class="p-3">${renderBadge(d.morning)}</td>
+                        <td class="p-3">${renderBadge(d.afternoon)}</td>
+                        <td class="p-3">${renderBadge(d.evening)}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function filterAgeGroup(ageGroup) {
+            currentAgeFilter = ageGroup;
+            document.querySelectorAll('.age-filter-btn').forEach(btn => {
+                btn.className = "age-filter-btn bg-white hover:bg-sky-50 text-slate-600 border border-slate-200 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold shadow-sm transition";
+            });
+            
+            const activeBtn = document.getElementById(`age-filter-${ageGroup}`);
+            if (activeBtn) {
+                activeBtn.className = "age-filter-btn active bg-sky-500 text-white px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold shadow-md transition";
+            }
+            renderPublicCourses();
+        }
+
         async function renderPublicCourses() {
             const courses = await window.getCoursesDB();
             const container = document.getElementById('public-courses-grid');
             if (!container) return;
             container.innerHTML = '';
-            courses.forEach(c => {
+
+            const filteredCourses = courses.filter(c => {
+                if (currentAgeFilter === 'all') return true;
+                if (currentAgeFilter === '6-10') return (c.age && (c.age.includes('6') || c.age.includes('10')));
+                if (currentAgeFilter === '7-12') return (c.age && (c.age.includes('7') || c.age.includes('12')));
+                if (currentAgeFilter === '9-15') return (c.age && (c.age.includes('9') || c.age.includes('15') || c.age.includes('10-15')));
+                return true;
+            });
+
+            filteredCourses.forEach(c => {
                 container.innerHTML += `
-                    <div class="bg-white rounded-3xl shadow-sm border border-sky-100 overflow-hidden flex flex-col justify-between hover:shadow-lg transition">
+                    <div class="bg-white rounded-3xl shadow-sm border border-sky-100 overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                         <div>
-                            <div class="h-40 bg-gradient-to-tr ${c.gradient || 'from-sky-300 to-blue-400'} p-4 flex flex-col justify-between text-white relative">
-                                <span class="absolute top-3 right-3 bg-white/90 text-slate-800 text-xs px-2.5 py-1 rounded-full font-bold">${c.age || ''}</span>
-                                <div>${renderIconHTML(c.icon)}</div>
-                                <div><h3 class="font-bold text-lg">${c.title}</h3><p class="text-xs text-sky-100">${c.subtitle || ''}</p></div>
-                            </div>
-                            <div class="p-5 space-y-3">
-                                <div class="flex items-center justify-between text-xs text-slate-500">
-                                    <span><i class="fa-regular fa-clock mr-1"></i> ${c.hours || ''}</span>
-                                    <span class="${c.tagColor || 'text-sky-600'} font-medium">${c.tag || 'แนะนำ'}</span>
+                            <div class="h-40 sm:h-44 bg-gradient-to-tr ${c.gradient || 'from-sky-400 to-blue-500'} p-4 sm:p-5 flex flex-col justify-between text-white relative">
+                                <span class="absolute top-3 right-3 bg-white/95 text-slate-800 text-[10px] sm:text-[11px] px-2.5 py-1 rounded-full font-bold shadow-sm">
+                                    อายุ ${c.age || 'ทุกช่วงวัย'}
+                                </span>
+                                <div><h3 class="font-bold text-xl sm:text-2xl cute-font leading-snug drop-shadow-sm">${c.title}</h3></div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/20 flex items-center justify-center backdrop-blur-sm">
+                                        ${renderIconHTML(c.icon)}
+                                    </div>
+                                    <p class="text-[11px] sm:text-xs text-sky-100 font-light line-clamp-1">${c.subtitle || 'คอร์สเรียนคุณภาพโดยครูมีน'}</p>
                                 </div>
-                                <p class="text-xs text-slate-600 line-clamp-2">${c.desc || ''}</p>
+                            </div>
+                            <div class="p-4 sm:p-5 space-y-2.5 sm:space-y-3">
+                                <div class="flex items-center justify-between text-xs text-slate-500">
+                                    <span><i class="fa-regular fa-clock mr-1 text-sky-500"></i> ${c.hours || '10 ชั่วโมง'}</span>
+                                    <span class="text-sky-600 font-semibold bg-sky-50 px-2 py-0.5 rounded-full text-[11px]">${c.tag || 'คอร์สแนะนำ'}</span>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">${c.desc || ''}</p>
                             </div>
                         </div>
-                        <div class="p-5 pt-0">
+                        <div class="p-4 sm:p-5 pt-0">
                             <div class="flex items-center justify-between mb-3">
-                                <span class="text-lg font-bold text-sky-600">${c.price || ''}</span>
+                                <span class="text-lg sm:text-xl font-bold text-sky-600 cute-font">${c.price || ''}</span>
                                 <span class="text-xs text-slate-400 line-through">${c.oldPrice || ''}</span>
                             </div>
-                            <a href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2.5 rounded-xl text-sm shadow-md transition flex items-center justify-center gap-1.5">
-                                <i class="fa-brands fa-line"></i> สนใจสมัครผ่านไลน์
+                            <a href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2.5 rounded-xl text-xs sm:text-sm shadow-md transition flex items-center justify-center gap-1.5">
+                                <i class="fa-brands fa-line text-base"></i> สนใจสมัครผ่านไลน์
                             </a>
                         </div>
                     </div>
@@ -721,12 +909,12 @@
                 const categoryText = item.category || 'บรรยากาศการเรียน';
                 container.innerHTML += `
                     <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition">
-                        <div class="h-48 overflow-hidden relative bg-slate-100">
+                        <div class="h-44 sm:h-48 overflow-hidden relative bg-slate-100">
                             <img src="${item.imageUrl || ''}" alt="${item.title || ''}" class="w-full h-full object-cover transform hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x400/E0F2FE/0284C7?text=Kru+Mean'">
                             <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-purple-700 text-xs px-2.5 py-1 rounded-full font-bold">${categoryText}</span>
                         </div>
-                        <div class="p-5 space-y-2">
-                            <h3 class="font-bold text-slate-800 text-base">${item.title || ''}</h3>
+                        <div class="p-4 sm:p-5 space-y-1.5">
+                            <h3 class="font-bold text-slate-800 text-sm sm:text-base cute-font">${item.title || ''}</h3>
                             <p class="text-xs text-slate-500">${item.desc || ''}</p>
                         </div>
                     </div>
@@ -860,14 +1048,15 @@
         }
 
         function switchAdminSubTab(subTab) {
-            ['students', 'courses', 'gallery', 'qrcode'].forEach(tab => {
+            ['students', 'courses', 'schedule', 'gallery', 'qrcode'].forEach(tab => {
                 document.getElementById(`admin-subtab-${tab}`).classList.add('hidden');
-                document.getElementById(`admin-subtab-btn-${tab}`).className = "pb-3 border-b-2 border-transparent text-slate-500 font-medium text-sm transition whitespace-nowrap";
+                document.getElementById(`admin-subtab-btn-${tab}`).className = "pb-2.5 border-b-2 border-transparent text-slate-500 font-medium text-xs sm:text-sm transition whitespace-nowrap";
             });
             document.getElementById(`admin-subtab-${subTab}`).classList.remove('hidden');
-            document.getElementById(`admin-subtab-btn-${subTab}`).className = "pb-3 border-b-2 border-purple-600 text-purple-700 font-bold text-sm transition whitespace-nowrap";
+            document.getElementById(`admin-subtab-btn-${subTab}`).className = "pb-2.5 border-b-2 border-purple-600 text-purple-700 font-bold text-xs sm:text-sm transition whitespace-nowrap";
             if (subTab === 'students') loadAdminStudents();
             else if (subTab === 'courses') loadAdminCourses();
+            else if (subTab === 'schedule') loadAdminSchedule();
             else if (subTab === 'gallery') loadAdminGallery();
             else loadQRImages();
         }
@@ -875,6 +1064,7 @@
         async function loadAdminDashboard() {
             await loadAdminStudents();
             await loadAdminCourses();
+            await loadAdminSchedule();
             await loadAdminGallery();
             await loadQRImages();
         }
@@ -896,19 +1086,19 @@
 
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-                        <td class="p-4"><p class="font-bold text-slate-800">${s.name}</p><p class="text-xs text-sky-600 font-mono">ID: ${s.id}</p></td>
-                        <td class="p-4"><code class="bg-purple-50 text-purple-700 px-2 py-1 rounded font-bold">${s.pin}</code></td>
-                        <td class="p-4 text-xs font-medium text-slate-600">${s.course} (${total} ชม.)</td>
-                        <td class="p-4 text-xs font-semibold text-purple-600">${used} ชม.</td>
-                        <td class="p-4"><span class="font-bold text-sky-600">${hoursLeft}</span> / <span class="text-slate-500">${total} ชม.</span></td>
-                        <td class="p-4">
+                        <td class="p-3.5"><p class="font-bold text-slate-800">${s.name}</p><p class="text-xs text-sky-600 font-mono">ID: ${s.id}</p></td>
+                        <td class="p-3.5"><code class="bg-purple-50 text-purple-700 px-2 py-0.5 rounded font-bold">${s.pin}</code></td>
+                        <td class="p-3.5 text-xs font-medium text-slate-600">${s.course} (${total} ชม.)</td>
+                        <td class="p-3.5 text-xs font-semibold text-purple-600">${used} ชม.</td>
+                        <td class="p-3.5"><span class="font-bold text-sky-600">${hoursLeft}</span> / <span class="text-slate-500">${total} ชม.</span></td>
+                        <td class="p-3.5">
                             ${overdueHours > 0 
-                                ? `<span class="font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-full text-xs">-${overdueHours} ชม.</span>` 
+                                ? `<span class="font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full text-xs">-${overdueHours} ชม.</span>` 
                                 : `<span class="text-slate-400 text-xs">-</span>`}
                         </td>
-                        <td class="p-4 text-center space-x-2">
-                            <button onclick="openEditStudentModal('${s.id}')" class="bg-sky-50 text-sky-700 p-2 rounded-lg text-xs font-medium"><i class="fa-solid fa-pen-to-square"></i> แก้ไข</button>
-                            <button onclick="deleteStudent('${s.id}')" class="bg-rose-50 text-rose-600 p-2 rounded-lg text-xs font-medium"><i class="fa-solid fa-trash"></i> ลบ</button>
+                        <td class="p-3.5 text-center space-x-1">
+                            <button onclick="openEditStudentModal('${s.id}')" class="bg-sky-50 text-sky-700 p-1.5 rounded-lg text-xs font-medium"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="deleteStudent('${s.id}')" class="bg-rose-50 text-rose-600 p-1.5 rounded-lg text-xs font-medium"><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>
                 `;
@@ -927,12 +1117,12 @@
                     <div class="bg-white rounded-2xl border border-slate-200 p-4 flex flex-col justify-between space-y-3 shadow-sm hover:shadow-md transition">
                         <div class="flex items-start justify-between">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                                <div class="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
                                     ${renderIconHTML(c.icon)}
                                 </div>
                                 <div>
-                                    <h5 class="font-bold text-slate-800 text-sm">${c.title}</h5>
-                                    <p class="text-xs text-sky-600 font-medium">${c.age || ''}</p>
+                                    <h5 class="font-bold text-slate-800 text-sm cute-font">${c.title}</h5>
+                                    <p class="text-xs text-sky-600 font-medium">อายุ ${c.age || ''}</p>
                                 </div>
                             </div>
                             <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">${c.price || ''}</span>
@@ -944,6 +1134,47 @@
                     </div>
                 `;
             });
+        }
+
+        async function loadAdminSchedule() {
+            const schedule = await window.getScheduleDB();
+            currentScheduleData = schedule;
+            const tbody = document.getElementById('admin-schedule-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const daysOrder = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+            daysOrder.forEach(key => {
+                const d = schedule[key] || { dayName: key, morning: false, afternoon: false, evening: true };
+
+                const renderBtn = (dayKey, timeSlot, isAvailable) => {
+                    if (isAvailable) {
+                        return `<button type="button" onclick="toggleScheduleStatus('${dayKey}', '${timeSlot}')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-2.5 py-1 rounded-xl text-xs transition shadow-sm">🟢 ว่าง</button>`;
+                    }
+                    return `<button type="button" onclick="toggleScheduleStatus('${dayKey}', '${timeSlot}')" class="bg-rose-500 hover:bg-rose-600 text-white font-bold px-2.5 py-1 rounded-xl text-xs transition shadow-sm">🔴 ไม่ว่าง</button>`;
+                };
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-2.5 text-left font-bold text-slate-800">วัน${d.dayName}</td>
+                        <td class="p-2.5">${renderBtn(key, 'morning', d.morning)}</td>
+                        <td class="p-2.5">${renderBtn(key, 'afternoon', d.afternoon)}</td>
+                        <td class="p-2.5">${renderBtn(key, 'evening', d.evening)}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function toggleScheduleStatus(dayKey, timeSlot) {
+            if (!currentScheduleData[dayKey]) return;
+            currentScheduleData[dayKey][timeSlot] = !currentScheduleData[dayKey][timeSlot];
+            loadAdminSchedule();
+        }
+
+        async function handleSaveScheduleFromAdmin() {
+            await window.saveScheduleToDB(currentScheduleData);
+            alert("บันทึกตารางสอนของครูมีนลงระบบเรียบร้อยแล้ว!");
+            renderPublicSchedule();
         }
 
         async function loadAdminGallery() {
@@ -959,7 +1190,7 @@
                             <img src="${item.imageUrl || ''}" class="w-full h-full object-cover">
                             <span class="absolute top-2 left-2 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-full">${categoryText}</span>
                         </div>
-                        <div class="p-3"><h5 class="font-bold text-slate-800 text-xs">${item.title || ''}</h5></div>
+                        <div class="p-3"><h5 class="font-bold text-slate-800 text-xs cute-font">${item.title || ''}</h5></div>
                         <div class="p-3 pt-0 flex justify-end gap-2 border-t border-slate-100">
                             <button onclick="openEditGalleryModal('${item.id}')" class="bg-sky-50 text-sky-600 px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-sky-100 transition"><i class="fa-solid fa-pen-to-square"></i> แก้ไข</button>
                             <button onclick="deleteGalleryItem('${item.id}')" class="bg-rose-50 text-rose-600 px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-rose-100 transition"><i class="fa-solid fa-trash"></i> ลบ</button>
@@ -1033,10 +1264,10 @@
             document.getElementById('course-modal-title').innerText = "เพิ่มคอร์สใหม่";
             document.getElementById('course-edit-id').value = "";
             document.getElementById('course-title').value = "";
-            document.getElementById('course-age').value = "7-10 ปี";
-            document.getElementById('course-icon').value = "fa-gamepad";
-            document.getElementById('course-price').value = "2500";
-            document.getElementById('course-old-price').value = "3200";
+            document.getElementById('course-age').value = "6-10 ปี";
+            document.getElementById('course-icon').value = "fa-palette";
+            document.getElementById('course-price').value = "2000";
+            document.getElementById('course-old-price').value = "2900";
             document.getElementById('course-hours').value = "10 ชั่วโมง";
             document.getElementById('course-desc').value = "";
             document.getElementById('courseModal').classList.remove('hidden');
@@ -1050,7 +1281,7 @@
             document.getElementById('course-edit-id').value = c.id;
             document.getElementById('course-title').value = c.title || '';
             document.getElementById('course-age').value = c.age || '';
-            document.getElementById('course-icon').value = c.icon || 'fa-gamepad';
+            document.getElementById('course-icon').value = c.icon || 'fa-palette';
             document.getElementById('course-price').value = c.price ? String(c.price).replace(/[^0-9]/g, '') : '';
             document.getElementById('course-old-price').value = c.oldPrice ? String(c.oldPrice).replace(/[^0-9]/g, '') : '';
             document.getElementById('course-hours').value = c.hours || '';
@@ -1075,7 +1306,7 @@
                 desc: document.getElementById('course-desc').value.trim(),
                 price: Number(document.getElementById('course-price').value).toLocaleString() + ".-",
                 oldPrice: Number(document.getElementById('course-old-price').value).toLocaleString() + ".-",
-                gradient: "from-sky-300 to-blue-400"
+                gradient: "from-sky-400 to-blue-500"
             };
             await window.saveCourseToDB(id, newCourseData);
             closeCourseModal();
