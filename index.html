@@ -45,7 +45,6 @@
 
             <!-- User Auth & Action Buttons -->
             <div class="flex items-center gap-1.5 sm:gap-2">
-                <!-- User status badge -->
                 <div id="header-user-status" class="hidden items-center gap-1.5 bg-sky-50 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full border border-sky-100">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span id="header-username-display" class="text-xs font-bold text-slate-700 max-w-[90px] sm:max-w-[130px] truncate">ผู้ใช้งาน</span>
@@ -56,7 +55,6 @@
                     </button>
                 </div>
 
-                <!-- Login button -->
                 <div id="header-login-btn-container">
                     <button onclick="openLoginRoleModal()" class="bg-sky-400 hover:bg-sky-500 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium shadow-sm transition flex items-center gap-1.5">
                         <i class="fa-solid fa-right-to-bracket text-xs"></i>
@@ -69,7 +67,6 @@
                     <span class="hidden sm:inline">ไลน์ครูมีน</span>
                 </a>
 
-                <!-- Mobile Hamburger Button -->
                 <button onclick="toggleMobileMenu()" class="lg:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition ml-1">
                     <i class="fa-solid fa-bars text-sm"></i>
                 </button>
@@ -97,7 +94,7 @@
                         </span>
                         <h2 class="text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-800 leading-tight">
                             สนุกกับโลกคอมพิวเตอร์ & โค้ดดิ้ง <br class="hidden sm:inline"/>
-                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-pink-500">กับครูมีนคนใจเย็นยิ่งกว่าน้ำแข็ง ✨</span>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-pink-500">กับครูมีนคนสวยใจดี ✨</span>
                         </h2>
                         <p class="text-slate-600 text-sm sm:text-base lg:text-lg font-light leading-relaxed">
                             เปลี่ยนเวลาเล่นเกมมือถือให้เป็นทักษะสร้างสรรค์อนาคต เรียนสนุก เข้าใจง่าย ปูพื้นฐานแน่นตั้งแต่ Scratch, Python จนถึงสร้างเกมและเว็บด้วยตัวเอง!
@@ -156,11 +153,11 @@
             <div id="public-courses-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"></div>
         </div>
 
-        <!-- TAB 3: TEACHER SCHEDULE (ตารางสอนครูมีน) -->
-        <div id="tab-schedule" class="tab-content py-8 sm:py-12 max-w-5xl mx-auto px-4">
+        <!-- TAB 3: TEACHER SCHEDULE (ตารางสอนครูมีน รายชั่วโมง) -->
+        <div id="tab-schedule" class="tab-content py-8 sm:py-12 max-w-6xl mx-auto px-4">
             <div class="text-center space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                 <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">TEACHER SCHEDULE</span>
-                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800">ตารางเวลาสอนของครูมีน</h2>
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800">ตารางเวลาสอนของครูมีน (รายชั่วโมง)</h2>
                 <p class="text-slate-500 text-xs sm:text-sm">ผู้สนใจหรือคุณแม่/คุณพ่อ สามารถเช็กวันและช่วงเวลาที่ครูมีนว่างสอน เพื่อจองคอร์สเรียนล่วงหน้าได้เลยค่ะ</p>
             </div>
 
@@ -179,13 +176,20 @@
             <!-- Schedule Table Card -->
             <div class="bg-white rounded-3xl shadow-md border border-slate-100 overflow-hidden p-3 sm:p-6 space-y-4">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-center border-collapse min-w-[500px]">
+                    <table class="w-full text-center border-collapse min-w-[700px]">
                         <thead>
-                            <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-700 uppercase">
-                                <th class="p-3 text-left w-32">วัน / ช่วงเวลา</th>
-                                <th class="p-3">ช่วงเช้า<br/><span class="text-[10px] text-slate-400 font-normal">09:00 - 12:00</span></th>
-                                <th class="p-3">ช่วงบ่าย<br/><span class="text-[10px] text-slate-400 font-normal">13:00 - 16:00</span></th>
-                                <th class="p-3">ช่วงเย็น / ค่ำ<br/><span class="text-[10px] text-slate-400 font-normal">จ.-ศ. 18:00-20:00 / ส. 16:30-20:00</span></th>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-[11px] sm:text-xs font-bold text-slate-700 uppercase">
+                                <th class="p-2.5 text-left w-24 sticky left-0 bg-slate-50 border-r border-slate-200">วัน</th>
+                                <th class="p-2">09:00 - 10:00</th>
+                                <th class="p-2">10:00 - 11:00</th>
+                                <th class="p-2">11:00 - 12:00</th>
+                                <th class="p-2">13:00 - 14:00</th>
+                                <th class="p-2">14:00 - 15:00</th>
+                                <th class="p-2">15:00 - 16:00</th>
+                                <th class="p-2">16:30 - 17:30</th>
+                                <th class="p-2">17:30 - 18:30</th>
+                                <th class="p-2">18:00 - 19:00</th>
+                                <th class="p-2">19:00 - 20:00</th>
                             </tr>
                         </thead>
                         <tbody id="public-schedule-tbody" class="divide-y divide-slate-100 text-xs"></tbody>
@@ -402,12 +406,12 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="admin-course-grid"></div>
                 </div>
 
-                <!-- SUBTAB 3: SCHEDULE MANAGEMENT -->
+                <!-- SUBTAB 3: SCHEDULE MANAGEMENT (จัดการตารางสอนหลังบ้าน รายชั่วโมง) -->
                 <div id="admin-subtab-schedule" class="admin-subtab-content hidden space-y-6">
                     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                         <div>
-                            <h4 class="font-bold text-slate-800 text-sm sm:text-base">จัดการตารางสอนครูมีน</h4>
-                            <p class="text-xs text-slate-500">คลิกที่ปุ่มเพื่อสลับสถานะระหว่าง <span class="text-emerald-600 font-bold">"ว่าง"</span> และ <span class="text-rose-600 font-bold">"ไม่ว่าง"</span></p>
+                            <h4 class="font-bold text-slate-800 text-sm sm:text-base">จัดการตารางสอนครูมีน (รายชั่วโมง)</h4>
+                            <p class="text-xs text-slate-500">คลิกที่ปุ่มช่วงเวลาเพื่อสลับสถานะระหว่าง <span class="text-emerald-600 font-bold">"ว่าง"</span> และ <span class="text-rose-600 font-bold">"ไม่ว่าง"</span></p>
                         </div>
                         <button onclick="handleSaveScheduleFromAdmin()" class="bg-purple-600 text-white text-xs font-medium px-4 py-2 rounded-xl shadow transition flex items-center gap-1.5">
                             <i class="fa-solid fa-cloud-arrow-up"></i> บันทึกตารางสอน
@@ -415,13 +419,20 @@
                     </div>
 
                     <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white p-3 sm:p-4">
-                        <table class="w-full text-center border-collapse min-w-[500px]">
+                        <table class="w-full text-center border-collapse min-w-[700px]">
                             <thead>
-                                <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-700">
-                                    <th class="p-3 text-left">วัน</th>
-                                    <th class="p-3">เช้า (09:00 - 12:00)</th>
-                                    <th class="p-3">บ่าย (13:00 - 16:00)</th>
-                                    <th class="p-3">เย็น/ค่ำ (จ.-ศ. 18:00-20:00 / ส. 16:30-20:00)</th>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-700">
+                                    <th class="p-2 text-left w-24 sticky left-0 bg-slate-50 border-r border-slate-200">วัน</th>
+                                    <th class="p-2">09-10 น.</th>
+                                    <th class="p-2">10-11 น.</th>
+                                    <th class="p-2">11-12 น.</th>
+                                    <th class="p-2">13-14 น.</th>
+                                    <th class="p-2">14-15 น.</th>
+                                    <th class="p-2">15-16 น.</th>
+                                    <th class="p-2">16.30-17.30</th>
+                                    <th class="p-2">17.30-18.30</th>
+                                    <th class="p-2">18-19 น.</th>
+                                    <th class="p-2">19-20 น.</th>
                                 </tr>
                             </thead>
                             <tbody id="admin-schedule-tbody" class="divide-y divide-slate-100 text-xs"></tbody>
@@ -652,6 +663,19 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        const timeSlots = ["h09_10", "h10_11", "h11_12", "h13_14", "h14_15", "h15_16", "h1630_1730", "h1730_1830", "h18_19", "h19_20"];
+
+        // กำหนดตารางสอนเริ่มต้นเป็นรายชั่วโมงให้ตรงตามช่วงเวลาจริง
+        const defaultScheduleHourly = {
+            "mon": { dayName: "จันทร์", h09_10: false, h10_11: false, h11_12: false, h13_14: false, h14_15: false, h15_16: false, h1630_1730: false, h1730_1830: false, h18_19: true, h19_20: true },
+            "tue": { dayName: "อังคาร", h09_10: false, h10_11: false, h11_12: false, h13_14: false, h14_15: false, h15_16: false, h1630_1730: false, h1730_1830: false, h18_19: true, h19_20: true },
+            "wed": { dayName: "พุธ", h09_10: false, h10_11: false, h11_12: false, h13_14: false, h14_15: false, h15_16: false, h1630_1730: false, h1730_1830: false, h18_19: true, h19_20: true },
+            "thu": { dayName: "พฤหัสบดี", h09_10: false, h10_11: false, h11_12: false, h13_14: false, h14_15: false, h15_16: false, h1630_1730: false, h1730_1830: false, h18_19: true, h19_20: true },
+            "fri": { dayName: "ศุกร์", h09_10: false, h10_11: false, h11_12: false, h13_14: false, h14_15: false, h15_16: false, h1630_1730: false, h1730_1830: false, h18_19: true, h19_20: true },
+            "sat": { dayName: "เสาร์", h09_10: false, h10_11: false, h11_12: false, h13_14: false, h14_15: false, h15_16: false, h1630_1730: true, h1730_1830: true, h18_19: true, h19_20: true },
+            "sun": { dayName: "อาทิตย์", h09_10: true, h10_11: true, h11_12: true, h13_14: true, h14_15: true, h15_16: true, h1630_1730: false, h1730_1830: false, h18_19: false, h19_20: false }
+        };
+
         const defaultStudents = {
             "KM-13443": { id: "KM-13443", pin: "2203", name: "N ' Axon", avatar: "👦", badge: "นักเรียน Python", course: "Python for Kids", hoursUsed: 3, hoursTotal: 10, lessonHistory: "21/09/2026: เรียนเรื่อง Syntax & Variables เบื้องต้น" },
             "KM-30416": { id: "KM-30416", pin: "1422", name: "น้องลมหมอก", avatar: "👦", badge: "นักเรียน Scratch", course: "Scratch & Block Coding", hoursUsed: 4, hoursTotal: 10, lessonHistory: "21/09/2026: สร้างเกมหลบอุปสรรคเวอร์ชันแรก" },
@@ -665,16 +689,6 @@
             { id: "c-3", title: "Python for Kids & Teens", subtitle: "คอร์สเรียนคุณภาพโดยครูมีน", age: "9-15 ปี", ageCategory: "9-15", icon: "fa-code", hours: "10 ชั่วโมง", tag: "คอร์สแนะนำ", tagColor: "text-sky-600", desc: "เริ่มต้นภาษาโค้ดด้วย Python ฝึกเขียนโค้ดแก้โจทย์สนุกๆ", price: "3,500.-", oldPrice: "3,800.-", gradient: "from-sky-400 to-blue-500" },
             { id: "c-4", title: "Mini Project C,C++", subtitle: "คอร์สเรียนคุณภาพโดยครูมีน", age: "10-15 ปี", ageCategory: "9-15", icon: "fa-laptop-code", hours: "10 ชั่วโมง", tag: "คอร์สแนะนำ", tagColor: "text-sky-600", desc: "ดูแลจนจบโปรเจกต์ เขียนภาษา C/C++ สร้างโครงงานคอมพิวเตอร์สุดเจ๋ง", price: "5,000.-", oldPrice: "7,900.-", gradient: "from-sky-400 to-blue-500" }
         ];
-
-        const defaultSchedule = {
-            "mon": { dayName: "จันทร์", morning: false, afternoon: false, evening: true },
-            "tue": { dayName: "อังคาร", morning: false, afternoon: false, evening: true },
-            "wed": { dayName: "พุธ", morning: false, afternoon: false, evening: true },
-            "thu": { dayName: "พฤหัสบดี", morning: false, afternoon: false, evening: true },
-            "fri": { dayName: "ศุกร์", morning: false, afternoon: false, evening: true },
-            "sat": { dayName: "เสาร์", morning: false, afternoon: false, evening: true },
-            "sun": { dayName: "อาทิตย์", morning: true, afternoon: true, evening: false }
-        };
 
         window.getStudentDB = async function() {
             try {
@@ -732,15 +746,15 @@
 
         window.getScheduleDB = async function() {
             try {
-                const docSnap = await getDoc(doc(db, "settings", "schedule"));
+                const docSnap = await getDoc(doc(db, "settings", "schedule_hourly"));
                 if (docSnap.exists()) return docSnap.data();
-                await setDoc(doc(db, "settings", "schedule"), defaultSchedule);
-                return defaultSchedule;
-            } catch (e) { return defaultSchedule; }
+                await setDoc(doc(db, "settings", "schedule_hourly"), defaultScheduleHourly);
+                return defaultScheduleHourly;
+            } catch (e) { return defaultScheduleHourly; }
         };
 
         window.saveScheduleToDB = async function(scheduleData) {
-            await setDoc(doc(db, "settings", "schedule"), scheduleData);
+            await setDoc(doc(db, "settings", "schedule_hourly"), scheduleData);
         };
 
         window.getQRCodesDB = async function() {
@@ -760,6 +774,7 @@
     <script>
         let currentAgeFilter = 'all';
         let currentScheduleData = {};
+        const hourlyKeys = ["h09_10", "h10_11", "h11_12", "h13_14", "h14_15", "h15_16", "h1630_1730", "h1730_1830", "h18_19", "h19_20"];
 
         function renderIconHTML(iconStr) {
             if (!iconStr) return '<i class="fa-solid fa-laptop text-xl sm:text-2xl"></i>';
@@ -806,6 +821,7 @@
             }
         }
 
+        // แสดงตารางสอนรายชั่วโมงหน้าบ้าน
         async function renderPublicSchedule() {
             const schedule = await window.getScheduleDB();
             currentScheduleData = schedule;
@@ -815,23 +831,24 @@
 
             const daysOrder = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
             daysOrder.forEach(key => {
-                const d = schedule[key] || { dayName: key, morning: false, afternoon: false, evening: true };
+                const d = schedule[key] || { dayName: key };
                 
                 const renderBadge = (isAvailable) => {
                     if (isAvailable) {
-                        return `<span class="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full text-[11px] sm:text-xs shadow-sm"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>ว่าง</span>`;
+                        return `<span class="inline-block bg-emerald-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md shadow-sm">ว่าง</span>`;
                     }
-                    return `<span class="inline-flex items-center gap-1 bg-rose-100 text-rose-800 font-bold px-2.5 py-1 rounded-full text-[11px] sm:text-xs shadow-sm"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>ไม่ว่าง</span>`;
+                    return `<span class="inline-block bg-rose-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md opacity-80">ไม่ว่าง</span>`;
                 };
 
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="p-3 text-left font-bold text-slate-800 border-r border-slate-100">วัน${d.dayName}</td>
-                        <td class="p-3">${renderBadge(d.morning)}</td>
-                        <td class="p-3">${renderBadge(d.afternoon)}</td>
-                        <td class="p-3">${renderBadge(d.evening)}</td>
-                    </tr>
-                `;
+                let rowHTML = `<tr class="hover:bg-slate-50 transition">
+                    <td class="p-2.5 text-left font-bold text-slate-800 border-r border-slate-200 sticky left-0 bg-white">วัน${d.dayName}</td>`;
+                
+                hourlyKeys.forEach(slot => {
+                    rowHTML += `<td class="p-2">${renderBadge(d[slot])}</td>`;
+                });
+
+                rowHTML += `</tr>`;
+                tbody.innerHTML += rowHTML;
             });
         }
 
@@ -1136,6 +1153,7 @@
             });
         }
 
+        // โหลดตารางสอนหลังบ้านรายชั่วโมง
         async function loadAdminSchedule() {
             const schedule = await window.getScheduleDB();
             currentScheduleData = schedule;
@@ -1145,29 +1163,30 @@
 
             const daysOrder = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
             daysOrder.forEach(key => {
-                const d = schedule[key] || { dayName: key, morning: false, afternoon: false, evening: true };
+                const d = schedule[key] || { dayName: key };
 
-                const renderBtn = (dayKey, timeSlot, isAvailable) => {
+                const renderBtn = (dayKey, slotKey, isAvailable) => {
                     if (isAvailable) {
-                        return `<button type="button" onclick="toggleScheduleStatus('${dayKey}', '${timeSlot}')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-2.5 py-1 rounded-xl text-xs transition shadow-sm">🟢 ว่าง</button>`;
+                        return `<button type="button" onclick="toggleScheduleStatus('${dayKey}', '${slotKey}')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-1.5 py-1 rounded text-[10px] transition shadow-sm">🟢 ว่าง</button>`;
                     }
-                    return `<button type="button" onclick="toggleScheduleStatus('${dayKey}', '${timeSlot}')" class="bg-rose-500 hover:bg-rose-600 text-white font-bold px-2.5 py-1 rounded-xl text-xs transition shadow-sm">🔴 ไม่ว่าง</button>`;
+                    return `<button type="button" onclick="toggleScheduleStatus('${dayKey}', '${slotKey}')" class="bg-rose-500 hover:bg-rose-600 text-white font-bold px-1.5 py-1 rounded text-[10px] transition shadow-sm">🔴 ไม่ว่าง</button>`;
                 };
 
-                tbody.innerHTML += `
-                    <tr>
-                        <td class="p-2.5 text-left font-bold text-slate-800">วัน${d.dayName}</td>
-                        <td class="p-2.5">${renderBtn(key, 'morning', d.morning)}</td>
-                        <td class="p-2.5">${renderBtn(key, 'afternoon', d.afternoon)}</td>
-                        <td class="p-2.5">${renderBtn(key, 'evening', d.evening)}</td>
-                    </tr>
-                `;
+                let rowHTML = `<tr>
+                    <td class="p-2 text-left font-bold text-slate-800 sticky left-0 bg-white border-r border-slate-200">วัน${d.dayName}</td>`;
+
+                hourlyKeys.forEach(slot => {
+                    rowHTML += `<td class="p-1.5">${renderBtn(key, slot, d[slot])}</td>`;
+                });
+
+                rowHTML += `</tr>`;
+                tbody.innerHTML += rowHTML;
             });
         }
 
-        function toggleScheduleStatus(dayKey, timeSlot) {
+        function toggleScheduleStatus(dayKey, slotKey) {
             if (!currentScheduleData[dayKey]) return;
-            currentScheduleData[dayKey][timeSlot] = !currentScheduleData[dayKey][timeSlot];
+            currentScheduleData[dayKey][slotKey] = !currentScheduleData[dayKey][slotKey];
             loadAdminSchedule();
         }
 
