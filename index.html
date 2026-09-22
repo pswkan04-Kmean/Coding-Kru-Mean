@@ -44,9 +44,18 @@
             </nav>
 
             <div class="flex items-center gap-2">
+                <!-- สถานะผู้ใช้งาน + ปุ่มทางลัดกลับ Dashboard สรุปชั่วโมงเรียน -->
                 <div id="header-user-status" class="hidden items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">
                     <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
                     <span id="header-username-display" class="text-xs font-semibold text-slate-800 max-w-[120px] truncate">ผู้ใช้งาน</span>
+                    
+                    <!-- ปุ่มของนักเรียน: กลับไปหน้าสรุปชั่วโมงเรียน -->
+                    <button id="student-dashboard-badge-btn" onclick="switchTab('dashboard')" class="hidden bg-sky-700 hover:bg-sky-800 text-white px-2.5 py-1 rounded-lg text-xs font-semibold shadow-sm transition items-center gap-1">
+                        <i class="fa-solid fa-chart-pie text-[10px]"></i>
+                        <span>สรุปชั่วโมงเรียน</span>
+                    </button>
+
+                    <!-- ปุ่มของ Admin: จัดการระบบ -->
                     <button id="admin-edit-badge-btn" onclick="switchTab('admin-dashboard')" class="hidden bg-purple-700 hover:bg-purple-800 text-white px-2.5 py-1 rounded-lg text-xs font-semibold shadow-sm transition items-center gap-1">
                         <i class="fa-solid fa-pen-to-square text-[10px]"></i>
                         <span class="hidden sm:inline">จัดการระบบ</span>
@@ -280,7 +289,7 @@
                     <button onclick="switchAdminSubTab('gallery')" id="admin-subtab-btn-gallery" class="pb-2.5 border-b-2 border-transparent text-slate-600 font-medium text-xs sm:text-sm transition whitespace-nowrap">จัดการภาพกิจกรรม</button>
                 </div>
 
-                <!-- SUBTAB 1: STUDENTS (แยกคอลัมน์ชั่วโมงเรียน / คงเหลือ / เรียนเกินอย่างชัดเจน) -->
+                <!-- SUBTAB 1: STUDENTS -->
                 <div id="admin-subtab-students" class="admin-subtab-content space-y-6">
                     <div class="flex items-center justify-between">
                         <h4 class="font-bold text-slate-900 text-sm sm:text-base">รายชื่อนักเรียน (<span id="admin-total-count">0</span> คน)</h4>
@@ -421,7 +430,7 @@
         </div>
     </div>
 
-    <!-- MODAL: STUDENT (เพิ่ม / แก้ไขนักเรียน) -->
+    <!-- MODAL: STUDENT -->
     <div id="studentModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6 space-y-4 relative max-h-[90vh] overflow-y-auto border border-slate-200">
             <button onclick="closeStudentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
@@ -681,12 +690,12 @@
         let uploadedImageBase64 = "";
 
         function renderIconHTML(iconStr) {
-            if (!iconStr) return '<i class="fa-solid fa-laptop text-xl"></i>';
-            if (iconStr.includes('fa-')) {
+            if (!iconStr) return '<i class="fa-solid fa-laptop text-[16px]"></i>';
+            if (typeof iconStr === 'string' && iconStr.includes('fa-')) {
                 const cleanIcon = iconStr.includes('fa-solid') ? iconStr : `fa-solid ${iconStr}`;
-                return `<i class="${cleanIcon} text-xl"></i>`;
+                return `<i class="${cleanIcon} text-[16px]"></i>`;
             }
-            return `<span class="text-xl">${iconStr}</span>`;
+            return `<span class="text-sm font-normal">${iconStr}</span>`;
         }
 
         function selectPaletteColor(hex) {
@@ -724,109 +733,80 @@
             }
         }
 
-        // โหลดข้อมูลรายชื่อนักเรียนหลังบ้าน (แยกคอลัมน์ชัดเจน และแสดงตัวเลขเรียนเกินติดลบสีแดง)
-        async function loadAdminStudents() {
-            const db = await window.getStudentDB();
-            const tbody = document.getElementById('admin-student-table-body');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-            let count = 0;
+        // ปรับแก้การควบคุมปุ่ม Header ให้มีปุ่มสรุปชั่วโมงเรียนของนักเรียน
+        function updateHeaderAuthUI(name, role) {
+            const userStatusDiv = document.getElementById('header-user-status');
+            const loginBtnContainer = document.getElementById('header-login-btn-container');
+            const studentDashboardBadgeBtn = document.getElementById('student-dashboard-badge-btn');
+            const adminEditBadgeBtn = document.getElementById('admin-edit-badge-btn');
+            const nameDisplay = document.getElementById('header-username-display');
 
-            for (const key in db) {
-                const s = db[key];
-                count++;
+            if (name) {
+                userStatusDiv.classList.remove('hidden'); 
+                userStatusDiv.classList.add('flex');
+                loginBtnContainer.classList.add('hidden');
+                nameDisplay.innerText = name;
 
-                const totalHours = parseInt(s.hoursTotal) || 0;
-                const usedHours = parseInt(s.hoursUsed) || 0;
-                const leftHours = Math.max(0, totalHours - usedHours);
-                const overdueHours = usedHours > totalHours ? usedHours - totalHours : 0;
+                if (role === 'admin') {
+                    adminEditBadgeBtn.classList.remove('hidden');
+                    studentDashboardBadgeBtn.classList.add('hidden');
+                } else if (role === 'user') {
+                    studentDashboardBadgeBtn.classList.remove('hidden');
+                    adminEditBadgeBtn.classList.add('hidden');
+                }
+            } else {
+                userStatusDiv.classList.remove('flex'); 
+                userStatusDiv.classList.add('hidden');
+                loginBtnContainer.classList.remove('hidden');
+                studentDashboardBadgeBtn.classList.add('hidden');
+                adminEditBadgeBtn.classList.add('hidden');
+            }
+        }
 
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50 transition border-b border-slate-200">
-                        <td class="p-3">
-                            <p class="font-bold text-slate-900">${s.name}</p>
-                            <p class="text-xs text-sky-700 font-mono">ID: ${s.id}</p>
-                        </td>
-                        <td class="p-3">
-                            <code class="bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-200 font-bold">${s.pin}</code>
-                        </td>
-                        <td class="p-3 text-xs font-medium text-slate-700">${s.course}</td>
-                        <td class="p-3 text-center text-xs font-bold text-slate-800">${totalHours} ชม.</td>
-                        <td class="p-3 text-center text-xs font-bold text-sky-800">${usedHours} ชม.</td>
-                        <td class="p-3 text-center text-xs font-bold text-emerald-700">${leftHours} ชม.</td>
-                        <td class="p-3 text-center">
-                            ${overdueHours > 0 
-                                ? `<span class="font-bold text-rose-600 bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg text-xs inline-block">-${overdueHours} ชม.</span>` 
-                                : `<span class="text-slate-400 text-xs">-</span>`}
-                        </td>
-                        <td class="p-3 text-center">
-                            <button onclick="openEditStudentModal('${s.id}')" class="bg-sky-50 text-sky-800 border border-sky-200 p-1.5 rounded-lg text-xs font-medium hover:bg-sky-100 transition"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button onclick="deleteStudent('${s.id}')" class="bg-rose-50 text-rose-700 border border-rose-200 p-1.5 rounded-lg text-xs font-medium hover:bg-rose-100 transition"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
+        async function renderPublicCourses() {
+            const courses = await window.getCoursesDB();
+            const container = document.getElementById('public-courses-grid');
+            if (!container) return;
+            container.innerHTML = '';
+
+            courses.forEach(c => {
+                container.innerHTML += `
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col justify-between hover:border-sky-300 transition-all duration-300">
+                        <div>
+                            <div class="bg-sky-700 p-5 text-white relative">
+                                <span class="absolute top-3 right-3 bg-white/20 backdrop-blur-sm text-white text-[11px] px-2.5 py-0.5 rounded font-semibold">
+                                    อายุ ${c.age || 'ทุกช่วงวัย'}
+                                </span>
+                                <div class="pr-16">
+                                    <h3 class="font-bold text-base sm:text-lg leading-snug tracking-tight text-white mb-1">${c.title || ''}</h3>
+                                </div>
+                                <div class="flex items-center gap-2 mt-3 pt-2 border-t border-white/10">
+                                    <div class="w-6 h-6 rounded bg-white/20 flex items-center justify-center shrink-0">
+                                        ${renderIconHTML(c.icon)}
+                                    </div>
+                                    <p class="text-xs text-sky-100 font-medium truncate">${c.subtitle || 'หลักสูตรพิเศษโดยครูมีน'}</p>
+                                </div>
+                            </div>
+                            <div class="p-5 space-y-3">
+                                <div class="flex items-center justify-between text-xs text-slate-500 border-b border-slate-100 pb-2">
+                                    <span><i class="fa-regular fa-clock mr-1 text-sky-700"></i> ${c.hours || '10 ชั่วโมง'}</span>
+                                    <span class="text-sky-800 font-semibold bg-sky-50 px-2 py-0.5 rounded text-[11px] border border-sky-100">${c.tag || 'หลักสูตรเปิดสอน'}</span>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">${c.desc || ''}</p>
+                            </div>
+                        </div>
+                        <div class="p-5 pt-0">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-lg font-bold text-sky-800">${c.price || ''}</span>
+                                <span class="text-xs text-slate-400 line-through">${c.oldPrice || ''}</span>
+                            </div>
+                            <a href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 rounded-xl text-xs shadow-sm transition flex items-center justify-center gap-1.5">
+                                <i class="fa-brands fa-line text-base"></i> ลงทะเบียนเรียนทาง LINE
+                            </a>
+                        </div>
+                    </div>
                 `;
-            }
-            document.getElementById('admin-total-count').innerText = count;
-        }
-
-        function openAddStudentModal() {
-            document.getElementById('student-modal-title').innerText = "เพิ่มข้อมูลนักเรียน";
-            document.getElementById('student-edit-original-id').value = "";
-            document.getElementById('modal-student-id').value = "KM-" + Math.floor(10000 + Math.random() * 90000);
-            document.getElementById('modal-student-pin').value = Math.floor(1000 + Math.random() * 9000);
-            document.getElementById('modal-student-name').value = "";
-            document.getElementById('modal-student-course').value = "Scratch & Block Coding";
-            document.getElementById('modal-student-hours-total').value = "10";
-            document.getElementById('modal-student-hours-used').value = "0";
-            document.getElementById('modal-student-lesson-history').value = "";
-            document.getElementById('studentModal').classList.remove('hidden');
-        }
-
-        async function openEditStudentModal(id) {
-            const db = await window.getStudentDB();
-            const s = db[id];
-            if (!s) return;
-            document.getElementById('student-modal-title').innerText = "แก้ไขข้อมูลนักเรียน";
-            document.getElementById('student-edit-original-id').value = s.id;
-            document.getElementById('modal-student-id').value = s.id;
-            document.getElementById('modal-student-pin').value = s.pin;
-            document.getElementById('modal-student-name').value = s.name;
-            document.getElementById('modal-student-course').value = s.course;
-            document.getElementById('modal-student-hours-total').value = s.hoursTotal || 10;
-            document.getElementById('modal-student-hours-used').value = s.hoursUsed || 0;
-            document.getElementById('modal-student-lesson-history').value = s.lessonHistory || "";
-            document.getElementById('studentModal').classList.remove('hidden');
-        }
-
-        function closeStudentModal() { document.getElementById('studentModal').classList.add('hidden'); }
-
-        async function handleSaveStudent(event) {
-            event.preventDefault();
-            const originalId = document.getElementById('student-edit-original-id').value;
-            const newId = document.getElementById('modal-student-id').value.trim();
-            const pin = document.getElementById('modal-student-pin').value.trim();
-            const name = document.getElementById('modal-student-name').value.trim();
-            const course = document.getElementById('modal-student-course').value.trim();
-            const hoursTotal = parseInt(document.getElementById('modal-student-hours-total').value) || 0;
-            const hoursUsed = parseInt(document.getElementById('modal-student-hours-used').value) || 0;
-            const lessonHistory = document.getElementById('modal-student-lesson-history').value;
-
-            if (originalId && originalId !== newId) { await window.deleteStudentFromDB(originalId); }
-
-            const studentData = {
-                id: newId, pin, name, avatar: "👦", badge: "นักเรียน " + course, course, hoursTotal, hoursUsed, lessonHistory
-            };
-
-            await window.saveStudentToDB(newId, studentData);
-            closeStudentModal();
-            loadAdminStudents();
-        }
-
-        async function deleteStudent(id) {
-            if (confirm('คุณต้องการลบนักเรียนรายนี้ใช่หรือไม่?')) {
-                await window.deleteStudentFromDB(id);
-                loadAdminStudents();
-            }
+            });
         }
 
         async function renderPublicSchedule() {
@@ -949,50 +929,6 @@
 
             closeLinkStudentModal();
             loadAdminSchedule();
-        }
-
-        async function renderPublicCourses() {
-            const courses = await window.getCoursesDB();
-            const container = document.getElementById('public-courses-grid');
-            if (!container) return;
-            container.innerHTML = '';
-
-            courses.forEach(c => {
-                container.innerHTML += `
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col justify-between hover:border-sky-300 transition-all duration-300">
-                        <div>
-                            <div class="bg-sky-700 p-5 text-white relative">
-                                <span class="absolute top-3 right-3 bg-white/20 backdrop-blur-sm text-white text-xs px-2.5 py-0.5 rounded font-semibold">
-                                    อายุ ${c.age || 'ทุกช่วงวัย'}
-                                </span>
-                                <h3 class="font-bold text-lg sm:text-xl leading-snug mb-1">${c.title}</h3>
-                                <div class="flex items-center gap-2 mt-2">
-                                    <div class="w-7 h-7 rounded bg-white/20 flex items-center justify-center">
-                                        ${renderIconHTML(c.icon)}
-                                    </div>
-                                    <p class="text-xs text-sky-100 line-clamp-1">${c.subtitle || ''}</p>
-                                </div>
-                            </div>
-                            <div class="p-5 space-y-3">
-                                <div class="flex items-center justify-between text-xs text-slate-500 border-b border-slate-100 pb-2">
-                                    <span><i class="fa-regular fa-clock mr-1 text-sky-700"></i> ${c.hours || '10 ชั่วโมง'}</span>
-                                    <span class="text-sky-800 font-semibold bg-sky-50 px-2 py-0.5 rounded text-[11px] border border-sky-100">${c.tag || 'หลักสูตรเปิดสอน'}</span>
-                                </div>
-                                <p class="text-xs text-slate-600 leading-relaxed">${c.desc || ''}</p>
-                            </div>
-                        </div>
-                        <div class="p-5 pt-0">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-lg font-bold text-sky-800">${c.price || ''}</span>
-                                <span class="text-xs text-slate-400 line-through">${c.oldPrice || ''}</span>
-                            </div>
-                            <a href="https://line.me/ti/p/HfOkhDEkpm" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 rounded-xl text-xs shadow-sm transition flex items-center justify-center gap-1.5">
-                                <i class="fa-brands fa-line text-base"></i> ลงทะเบียนเรียนทาง LINE
-                            </a>
-                        </div>
-                    </div>
-                `;
-            });
         }
 
         async function renderPublicGallery() {
@@ -1275,6 +1211,22 @@
             if (foundCount === 0) {
                 linkedContainer.innerHTML = `<p class="text-slate-400 italic">ยังไม่มีรอบเรียนประจำที่คุณแม่/คุณพ่อลงทะเบียนไว้...</p>`;
             }
+
+            // แสดงประวัติการเรียนรู้
+            const historyContainer = document.getElementById('student-lesson-history-list');
+            if (historyContainer) {
+                historyContainer.innerHTML = '';
+                if (student.lessonHistory && student.lessonHistory.trim() !== '') {
+                    const lines = student.lessonHistory.split('\n');
+                    lines.forEach(line => {
+                        if (line.trim() !== '') {
+                            historyContainer.innerHTML += `<div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">${line}</div>`;
+                        }
+                    });
+                } else {
+                    historyContainer.innerHTML = `<p class="text-slate-400 italic">ยังไม่มีบันทึกประวัติการเรียน...</p>`;
+                }
+            }
         }
 
         function switchAdminSubTab(subTab) {
@@ -1304,6 +1256,110 @@
             await window.saveScheduleToDB(currentScheduleData);
             alert("บันทึกตารางและการเชื่อมโยงข้อมูลเรียบร้อยแล้ว");
             renderPublicSchedule();
+        }
+
+        async function loadAdminStudents() {
+            const db = await window.getStudentDB();
+            const tbody = document.getElementById('admin-student-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            let count = 0;
+
+            for (const key in db) {
+                const s = db[key];
+                count++;
+
+                const totalHours = parseInt(s.hoursTotal) || 0;
+                const usedHours = parseInt(s.hoursUsed) || 0;
+                const leftHours = Math.max(0, totalHours - usedHours);
+                const overdueHours = usedHours > totalHours ? usedHours - totalHours : 0;
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition border-b border-slate-200">
+                        <td class="p-3">
+                            <p class="font-bold text-slate-900">${s.name}</p>
+                            <p class="text-xs text-sky-700 font-mono">ID: ${s.id}</p>
+                        </td>
+                        <td class="p-3">
+                            <code class="bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-200 font-bold">${s.pin}</code>
+                        </td>
+                        <td class="p-3 text-xs font-medium text-slate-700">${s.course}</td>
+                        <td class="p-3 text-center text-xs font-bold text-slate-800">${totalHours} ชม.</td>
+                        <td class="p-3 text-center text-xs font-bold text-sky-800">${usedHours} ชม.</td>
+                        <td class="p-3 text-center text-xs font-bold text-emerald-700">${leftHours} ชม.</td>
+                        <td class="p-3 text-center">
+                            ${overdueHours > 0 
+                                ? `<span class="font-bold text-rose-600 bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg text-xs inline-block">-${overdueHours} ชม.</span>` 
+                                : `<span class="text-slate-400 text-xs">-</span>`}
+                        </td>
+                        <td class="p-3 text-center">
+                            <button onclick="openEditStudentModal('${s.id}')" class="bg-sky-50 text-sky-800 border border-sky-200 p-1.5 rounded-lg text-xs font-medium hover:bg-sky-100 transition"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="deleteStudent('${s.id}')" class="bg-rose-50 text-rose-700 border border-rose-200 p-1.5 rounded-lg text-xs font-medium hover:bg-rose-100 transition"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            }
+            document.getElementById('admin-total-count').innerText = count;
+        }
+
+        function openAddStudentModal() {
+            document.getElementById('student-modal-title').innerText = "เพิ่มข้อมูลนักเรียน";
+            document.getElementById('student-edit-original-id').value = "";
+            document.getElementById('modal-student-id').value = "KM-" + Math.floor(10000 + Math.random() * 90000);
+            document.getElementById('modal-student-pin').value = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('modal-student-name').value = "";
+            document.getElementById('modal-student-course').value = "Scratch & Block Coding";
+            document.getElementById('modal-student-hours-total').value = "10";
+            document.getElementById('modal-student-hours-used').value = "0";
+            document.getElementById('modal-student-lesson-history').value = "";
+            document.getElementById('studentModal').classList.remove('hidden');
+        }
+
+        async function openEditStudentModal(id) {
+            const db = await window.getStudentDB();
+            const s = db[id];
+            if (!s) return;
+            document.getElementById('student-modal-title').innerText = "แก้ไขข้อมูลนักเรียน";
+            document.getElementById('student-edit-original-id').value = s.id;
+            document.getElementById('modal-student-id').value = s.id;
+            document.getElementById('modal-student-pin').value = s.pin;
+            document.getElementById('modal-student-name').value = s.name;
+            document.getElementById('modal-student-course').value = s.course;
+            document.getElementById('modal-student-hours-total').value = s.hoursTotal || 10;
+            document.getElementById('modal-student-hours-used').value = s.hoursUsed || 0;
+            document.getElementById('modal-student-lesson-history').value = s.lessonHistory || "";
+            document.getElementById('studentModal').classList.remove('hidden');
+        }
+
+        function closeStudentModal() { document.getElementById('studentModal').classList.add('hidden'); }
+
+        async function handleSaveStudent(event) {
+            event.preventDefault();
+            const originalId = document.getElementById('student-edit-original-id').value;
+            const newId = document.getElementById('modal-student-id').value.trim();
+            const pin = document.getElementById('modal-student-pin').value.trim();
+            const name = document.getElementById('modal-student-name').value.trim();
+            const course = document.getElementById('modal-student-course').value.trim();
+            const hoursTotal = parseInt(document.getElementById('modal-student-hours-total').value) || 0;
+            const hoursUsed = parseInt(document.getElementById('modal-student-hours-used').value) || 0;
+            const lessonHistory = document.getElementById('modal-student-lesson-history').value;
+
+            if (originalId && originalId !== newId) { await window.deleteStudentFromDB(originalId); }
+
+            const studentData = {
+                id: newId, pin, name, avatar: "👦", badge: "นักเรียน " + course, course, hoursTotal, hoursUsed, lessonHistory
+            };
+
+            await window.saveStudentToDB(newId, studentData);
+            closeStudentModal();
+            loadAdminStudents();
+        }
+
+        async function deleteStudent(id) {
+            if (confirm('คุณต้องการลบนักเรียนรายนี้ใช่หรือไม่?')) {
+                await window.deleteStudentFromDB(id);
+                loadAdminStudents();
+            }
         }
 
         function openLoginRoleModal() { document.getElementById('loginRoleModal').classList.remove('hidden'); }
@@ -1346,25 +1402,6 @@
             localStorage.removeItem('kruMeanAdminAuth');
             updateHeaderAuthUI(null, null);
             switchTab('home');
-        }
-
-        function updateHeaderAuthUI(name, role) {
-            const userStatusDiv = document.getElementById('header-user-status');
-            const loginBtnContainer = document.getElementById('header-login-btn-container');
-            const adminEditBadgeBtn = document.getElementById('admin-edit-badge-btn');
-            const nameDisplay = document.getElementById('header-username-display');
-
-            if (name) {
-                userStatusDiv.classList.remove('hidden'); userStatusDiv.classList.add('flex');
-                loginBtnContainer.classList.add('hidden');
-                nameDisplay.innerText = name;
-                if (role === 'admin') adminEditBadgeBtn.classList.remove('hidden');
-                else adminEditBadgeBtn.classList.add('hidden');
-            } else {
-                userStatusDiv.classList.remove('flex'); userStatusDiv.classList.add('hidden');
-                loginBtnContainer.classList.remove('hidden');
-                adminEditBadgeBtn.classList.add('hidden');
-            }
         }
 
         function switchTab(tabId) {
