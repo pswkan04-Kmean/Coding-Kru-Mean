@@ -17,12 +17,7 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .color-dot-btn.active {
-            ring-2: 2px;
-            ring-offset-2: 2px;
-            transform: scale(1.15);
-        }
+        .color-dot-btn.active { ring: 2px; ring-offset: 2px; transform: scale(1.15); }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
@@ -285,20 +280,23 @@
                     <button onclick="switchAdminSubTab('gallery')" id="admin-subtab-btn-gallery" class="pb-2.5 border-b-2 border-transparent text-slate-600 font-medium text-xs sm:text-sm transition whitespace-nowrap">จัดการภาพกิจกรรม</button>
                 </div>
 
-                <!-- SUBTAB 1: STUDENTS -->
+                <!-- SUBTAB 1: STUDENTS (แยกคอลัมน์ชั่วโมงเรียน / คงเหลือ / เรียนเกินอย่างชัดเจน) -->
                 <div id="admin-subtab-students" class="admin-subtab-content space-y-6">
                     <div class="flex items-center justify-between">
                         <h4 class="font-bold text-slate-900 text-sm sm:text-base">รายชื่อนักเรียน (<span id="admin-total-count">0</span> คน)</h4>
                         <button onclick="openAddStudentModal()" class="bg-emerald-600 text-white text-xs font-medium px-3.5 py-2 rounded-xl shadow-sm transition"><i class="fa-solid fa-user-plus"></i> เพิ่มนักเรียน</button>
                     </div>
                     <div class="overflow-x-auto rounded-xl border border-slate-200">
-                        <table class="w-full text-left text-xs sm:text-sm text-slate-700 min-w-[600px]">
+                        <table class="w-full text-left text-xs sm:text-sm text-slate-700 min-w-[700px]">
                             <thead class="bg-slate-100 text-slate-900 font-bold border-b border-slate-200">
                                 <tr>
                                     <th class="p-3">นักเรียน / ID</th>
                                     <th class="p-3">PIN</th>
                                     <th class="p-3">หลักสูตร</th>
-                                    <th class="p-3">เรียนแล้ว / ทั้งหมด</th>
+                                    <th class="p-3 text-center">คอร์สทั้งหมด</th>
+                                    <th class="p-3 text-center">เรียนแล้ว</th>
+                                    <th class="p-3 text-center">เรียนคงเหลือ</th>
+                                    <th class="p-3 text-center">ค้างชำระ / เรียนเกิน</th>
                                     <th class="p-3 text-center">จัดการ</th>
                                 </tr>
                             </thead>
@@ -420,6 +418,52 @@
                     <button onclick="confirmSlotStudentLink()" class="w-full bg-purple-700 hover:bg-purple-800 text-white font-medium py-2.5 rounded-xl text-xs shadow-sm transition">บันทึกข้อมูล</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL: STUDENT (เพิ่ม / แก้ไขนักเรียน) -->
+    <div id="studentModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6 space-y-4 relative max-h-[90vh] overflow-y-auto border border-slate-200">
+            <button onclick="closeStudentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+            <h3 id="student-modal-title" class="text-lg font-bold text-slate-900">จัดการข้อมูลนักเรียน</h3>
+            <form id="studentForm" onsubmit="handleSaveStudent(event)" class="space-y-3.5">
+                <input type="hidden" id="student-edit-original-id" value="">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Student ID:</label>
+                        <input type="text" id="modal-student-id" required class="w-full text-sm px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">PIN เข้าสู่ระบบ:</label>
+                        <input type="text" id="modal-student-pin" required class="w-full text-sm px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 font-mono">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">ชื่อ-นามสกุล นักเรียน:</label>
+                    <input type="text" id="modal-student-name" required class="w-full text-sm px-3 py-2 rounded-lg border border-slate-300 bg-slate-50">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">หลักสูตรที่ลงทะเบียน:</label>
+                    <input type="text" id="modal-student-course" required class="w-full text-sm px-3 py-2 rounded-lg border border-slate-300 bg-slate-50">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">คอร์สทั้งหมด (ชม.):</label>
+                        <input type="number" id="modal-student-hours-total" placeholder="10" required class="w-full text-sm px-3 py-2 rounded-lg border border-slate-300 bg-slate-50">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">เรียนแล้ว (ชม.):</label>
+                        <input type="number" id="modal-student-hours-used" placeholder="0" required class="w-full text-sm px-3 py-2 rounded-lg border border-slate-300 bg-slate-50">
+                    </div>
+                </div>
+
+                <div class="space-y-1 pt-2 border-t border-slate-200">
+                    <label class="block text-xs font-bold text-slate-700">บันทึกประวัติการเรียน (ขึ้นบรรทัดใหม่เพื่อแยกรายการ):</label>
+                    <textarea id="modal-student-lesson-history" rows="3" placeholder="เช่น:&#10;21/09/2026: เรียนเรื่อง Variables ใน Python" class="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 bg-slate-50"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-purple-700 hover:bg-purple-800 text-white font-medium py-2.5 rounded-xl text-sm transition">บันทึกข้อมูลนักเรียน</button>
+            </form>
         </div>
     </div>
 
@@ -680,6 +724,111 @@
             }
         }
 
+        // โหลดข้อมูลรายชื่อนักเรียนหลังบ้าน (แยกคอลัมน์ชัดเจน และแสดงตัวเลขเรียนเกินติดลบสีแดง)
+        async function loadAdminStudents() {
+            const db = await window.getStudentDB();
+            const tbody = document.getElementById('admin-student-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            let count = 0;
+
+            for (const key in db) {
+                const s = db[key];
+                count++;
+
+                const totalHours = parseInt(s.hoursTotal) || 0;
+                const usedHours = parseInt(s.hoursUsed) || 0;
+                const leftHours = Math.max(0, totalHours - usedHours);
+                const overdueHours = usedHours > totalHours ? usedHours - totalHours : 0;
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition border-b border-slate-200">
+                        <td class="p-3">
+                            <p class="font-bold text-slate-900">${s.name}</p>
+                            <p class="text-xs text-sky-700 font-mono">ID: ${s.id}</p>
+                        </td>
+                        <td class="p-3">
+                            <code class="bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-200 font-bold">${s.pin}</code>
+                        </td>
+                        <td class="p-3 text-xs font-medium text-slate-700">${s.course}</td>
+                        <td class="p-3 text-center text-xs font-bold text-slate-800">${totalHours} ชม.</td>
+                        <td class="p-3 text-center text-xs font-bold text-sky-800">${usedHours} ชม.</td>
+                        <td class="p-3 text-center text-xs font-bold text-emerald-700">${leftHours} ชม.</td>
+                        <td class="p-3 text-center">
+                            ${overdueHours > 0 
+                                ? `<span class="font-bold text-rose-600 bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg text-xs inline-block">-${overdueHours} ชม.</span>` 
+                                : `<span class="text-slate-400 text-xs">-</span>`}
+                        </td>
+                        <td class="p-3 text-center">
+                            <button onclick="openEditStudentModal('${s.id}')" class="bg-sky-50 text-sky-800 border border-sky-200 p-1.5 rounded-lg text-xs font-medium hover:bg-sky-100 transition"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="deleteStudent('${s.id}')" class="bg-rose-50 text-rose-700 border border-rose-200 p-1.5 rounded-lg text-xs font-medium hover:bg-rose-100 transition"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            }
+            document.getElementById('admin-total-count').innerText = count;
+        }
+
+        function openAddStudentModal() {
+            document.getElementById('student-modal-title').innerText = "เพิ่มข้อมูลนักเรียน";
+            document.getElementById('student-edit-original-id').value = "";
+            document.getElementById('modal-student-id').value = "KM-" + Math.floor(10000 + Math.random() * 90000);
+            document.getElementById('modal-student-pin').value = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('modal-student-name').value = "";
+            document.getElementById('modal-student-course').value = "Scratch & Block Coding";
+            document.getElementById('modal-student-hours-total').value = "10";
+            document.getElementById('modal-student-hours-used').value = "0";
+            document.getElementById('modal-student-lesson-history').value = "";
+            document.getElementById('studentModal').classList.remove('hidden');
+        }
+
+        async function openEditStudentModal(id) {
+            const db = await window.getStudentDB();
+            const s = db[id];
+            if (!s) return;
+            document.getElementById('student-modal-title').innerText = "แก้ไขข้อมูลนักเรียน";
+            document.getElementById('student-edit-original-id').value = s.id;
+            document.getElementById('modal-student-id').value = s.id;
+            document.getElementById('modal-student-pin').value = s.pin;
+            document.getElementById('modal-student-name').value = s.name;
+            document.getElementById('modal-student-course').value = s.course;
+            document.getElementById('modal-student-hours-total').value = s.hoursTotal || 10;
+            document.getElementById('modal-student-hours-used').value = s.hoursUsed || 0;
+            document.getElementById('modal-student-lesson-history').value = s.lessonHistory || "";
+            document.getElementById('studentModal').classList.remove('hidden');
+        }
+
+        function closeStudentModal() { document.getElementById('studentModal').classList.add('hidden'); }
+
+        async function handleSaveStudent(event) {
+            event.preventDefault();
+            const originalId = document.getElementById('student-edit-original-id').value;
+            const newId = document.getElementById('modal-student-id').value.trim();
+            const pin = document.getElementById('modal-student-pin').value.trim();
+            const name = document.getElementById('modal-student-name').value.trim();
+            const course = document.getElementById('modal-student-course').value.trim();
+            const hoursTotal = parseInt(document.getElementById('modal-student-hours-total').value) || 0;
+            const hoursUsed = parseInt(document.getElementById('modal-student-hours-used').value) || 0;
+            const lessonHistory = document.getElementById('modal-student-lesson-history').value;
+
+            if (originalId && originalId !== newId) { await window.deleteStudentFromDB(originalId); }
+
+            const studentData = {
+                id: newId, pin, name, avatar: "👦", badge: "นักเรียน " + course, course, hoursTotal, hoursUsed, lessonHistory
+            };
+
+            await window.saveStudentToDB(newId, studentData);
+            closeStudentModal();
+            loadAdminStudents();
+        }
+
+        async function deleteStudent(id) {
+            if (confirm('คุณต้องการลบนักเรียนรายนี้ใช่หรือไม่?')) {
+                await window.deleteStudentFromDB(id);
+                loadAdminStudents();
+            }
+        }
+
         async function renderPublicSchedule() {
             const headerTr = document.getElementById('public-schedule-header-tr');
             const tbody = document.getElementById('public-schedule-tbody');
@@ -776,7 +925,6 @@
             studentSelect.value = slotData.studentId || '';
             document.getElementById('modal-select-slot-status').value = slotData.status || 'available';
             
-            // เลือกสี Palette
             const defaultColor = slotData.tagColor || (slotData.status === 'busy' ? '#ef4444' : '#10b981');
             selectPaletteColor(defaultColor);
 
@@ -1156,30 +1304,6 @@
             await window.saveScheduleToDB(currentScheduleData);
             alert("บันทึกตารางและการเชื่อมโยงข้อมูลเรียบร้อยแล้ว");
             renderPublicSchedule();
-        }
-
-        async function loadAdminStudents() {
-            const db = await window.getStudentDB();
-            const tbody = document.getElementById('admin-student-table-body');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-            let count = 0;
-            for (const key in db) {
-                const s = db[key];
-                count++;
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50 transition border-b border-slate-200">
-                        <td class="p-3"><p class="font-bold text-slate-900">${s.name}</p><p class="text-xs text-sky-700 font-mono">ID: ${s.id}</p></td>
-                        <td class="p-3"><code class="bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-200 font-bold">${s.pin}</code></td>
-                        <td class="p-3 text-xs font-medium text-slate-700">${s.course}</td>
-                        <td class="p-3 text-xs font-semibold text-purple-800">${s.hoursUsed || 0} / ${s.hoursTotal || 0} ชม.</td>
-                        <td class="p-3 text-center">
-                            <button onclick="openEditStudentModal('${s.id}')" class="bg-sky-50 text-sky-800 border border-sky-200 p-1.5 rounded-lg text-xs font-medium"><i class="fa-solid fa-pen-to-square"></i></button>
-                        </td>
-                    </tr>
-                `;
-            }
-            document.getElementById('admin-total-count').innerText = count;
         }
 
         function openLoginRoleModal() { document.getElementById('loginRoleModal').classList.remove('hidden'); }
